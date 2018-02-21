@@ -48,6 +48,12 @@ $container['HomeController'] = function($c) {
     return new Controllers\HomeController ($view);
 };
 
+$container['UserController'] = function($c) {
+    $settings = $c->get('settings')['renderer'];
+    $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
+    return new Controllers\UserController($view);
+};
+
 $container['UserModel'] = function ($c) {
     return new App\Src\Models\User($c['db']);
 };
