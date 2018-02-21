@@ -1,0 +1,9 @@
+git@github.com:zoonim116/eduo.git /vendor/
+/logs/*
+!/logs/README.md
+/CONTRIBUTING.md
+.DS_Store
+.idea/
+CONTRIBUTING.md
+README.md
+composer.lock
