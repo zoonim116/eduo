@@ -21,7 +21,7 @@ $container['logger'] = function ($c) {
 $container['db'] = function () {
     return new Medoo([
         'database_type' => 'mysql',
-        'database_name' => 'l_dashboard',
+        'database_name' => 'eduo',
         'server' => 'localhost',
         'username' => 'root',
         'password' => 'root'
@@ -40,6 +40,16 @@ $container['view'] = function($container) {
 
 $container['flash'] = function () {
     return new \Slim\Flash\Messages();
+};
+
+$container['HomeController'] = function($c) {
+    $settings = $c->get('settings')['renderer'];
+    $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
+    return new Controllers\HomeController ($view);
+};
+
+$container['UserModel'] = function ($c) {
+    return new App\Src\Models\User($c['db']);
 };
 
 $container['upload_directory'] = __DIR__ . '/../public/uploads';
