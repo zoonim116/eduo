@@ -47,10 +47,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputVerify3">Verify</label>
-                                <input type="password" class="form-control{{ errors.repass ? ' is-invalid' : '' }}" name="repass" value="{{ fields.repass }}" id="inputVerify3" placeholder="Confirm password">
-                                {% if errors.repass %}
+                                <input type="password" class="form-control{{ errors.verify ? ' is-invalid' : '' }}" name="verify" value="{{ fields.verify }}" id="inputVerify3" placeholder="Confirm password">
+                                {% if errors.verify %}
                                     <div class="invalid-feedback">
-                                        {{ errors.repass | first }}
+                                        {{ errors.verify | first }}
                                     </div>
                                 {% endif %}
                             </div>

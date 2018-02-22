@@ -18,9 +18,9 @@ class UserController extends BaseController
             $validation = $this->validator->validate($request, [
                 'email' => v::noWhitespace()->notEmpty()->email(),
                 'firstname' => v::noWhitespace()->notEmpty()->alpha(),
-                'lastname' => v::noWhitespace()->notEmpty(),
-                'password' => v::notEmpty(),
-                'repass' => v::notEmpty(),
+                'lastname' => v::noWhitespace()->notEmpty()->alpha(),
+                'password' => v::notEmpty()->equals('verify'),
+                'verify' => v::notEmpty()->equals('password'),
             ]);
             if ($validation->failed()) {
                 return $response->withRedirect($this->router->pathFor('sign_up'));
