@@ -71,3 +71,4 @@ $container['UserModel'] = function ($c) {
 $container['upload_directory'] = __DIR__ . '/../public/uploads';
 
 $app->add(new \App\Middleware\ValidationMiddleware($container));
+$app->add(new \App\Middleware\OldInputMiddleware($container));
