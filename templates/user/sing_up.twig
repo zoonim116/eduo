@@ -8,26 +8,51 @@
                         <h3 class="mb-0 my-2">Sign Up</h3>
                     </div>
                     <div class="card-body">
-                        <form class="form" role="form" action="{{ path_for('sign_up') }}" autocomplete="off">
+                        <form class="form" method="post" role="form" action="{{ path_for('sign_up') }}" autocomplete="off">
                             <div class="form-group">
                                 <label for="firstname">Name</label>
-                                <input type="text" class="form-control" id="firstname" placeholder="Mark">
+                                <input type="text" class="form-control{{ errors.firstname ? ' is-invalid' : '' }}" name="firstname" id="firstname" placeholder="Mark">
+                                {% if errors.firstname %}
+                                    <div class="invalid-feedback">
+                                        {{ errors.firstname | first }}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <label for="lastname">Name</label>
-                                <input type="text" class="form-control" id="lastname" placeholder="Zuckerberg">
+                                <input type="text" class="form-control{{ errors.lastname ? ' is-invalid' : '' }}" name="lastname" id="lastname" placeholder="Zuckerberg">
+                                {% if errors.lastname %}
+                                    <div class="invalid-feedback">
+                                        {{ errors.lastname | first }}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <label for="inputEmail3">Email</label>
-                                <input type="email" class="form-control" id="inputEmail3" placeholder="email@gmail.com" required="">
+                                <input type="text" class="form-control{{ errors.email ? ' is-invalid' : '' }}" name="email" id="inputEmail3" placeholder="email@gmail.com" >
+                                {% if errors.email %}
+                                    <div class="invalid-feedback">
+                                        {{ errors.email | first }}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword3">Password</label>
-                                <input type="password" class="form-control" id="inputPassword3" placeholder="Password" title="At least 6 characters with letters and numbers" required="">
+                                <input type="password" class="form-control{{ errors.password ? ' is-invalid' : '' }}" name="password" id="inputPassword3" placeholder="Password" title="At least 6 characters with letters and numbers" >
+                                {% if errors.password %}
+                                    <div class="invalid-feedback">
+                                        {{ errors.password | first }}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <label for="inputVerify3">Verify</label>
-                                <input type="password" class="form-control" id="inputVerify3" placeholder="Confirm password" required="">
+                                <input type="password" class="form-control{{ errors.repass ? ' is-invalid' : '' }}" name="repass" id="inputVerify3" placeholder="Confirm password">
+                                {% if errors.repass %}
+                                    <div class="invalid-feedback">
+                                        {{ errors.repass | first }}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success btn-lg float-right">Register</button>

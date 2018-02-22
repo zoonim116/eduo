@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Src\Controllers;
+namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface;
 use Slim\Views\Twig;
@@ -20,7 +20,8 @@ class BaseController
         $output = $data;
         $output['title'] = $this->title;
         $output['app_name'] = $this->container->get('settings')['appName'];
-        $this->container['view']->render($response, $template, $output);
+//        $this->container['view']->render($response, $template, $output);
+        $this->view->render($response, $template, $output);
     }
 
     /**
@@ -39,8 +40,14 @@ class BaseController
         return $filename;
     }
 
-    public function __invoke($request, $response, $args) {
-        return $response;
+    public function __get($property)
+    {
+        if ($this->container->{$property}) {
+            return $this->container->{$property};
+        }
     }
+//    public function __invoke($request, $response, $args) {
+//        return $response;
+//    }
 
 }

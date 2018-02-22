@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Src\Models;
+namespace App\Models;
 
 use Medoo\Medoo;
 
@@ -21,18 +21,15 @@ class User
         die(var_dump($user));
     }
 
-    public function sign_up() {
+    public function sign_up($data) {
         $res = $this->db->insert("users", [
-            'email' => 'maximko91@gmail.com',
-            'firstname' => 'Maxim',
-            'lastname' => 'Maxim',
-            'password' => password_hash('333666', PASSWORD_DEFAULT),
+            'email' => $data['email'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'created_at' => time(),
         ]);
-        echo "<pre>";
-        die(var_dump($res->id));
     }
-
 
     public function reset_password() {
         //TODO reset password

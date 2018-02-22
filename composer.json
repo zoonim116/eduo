@@ -24,7 +24,7 @@
     },
     "autoload": {
       "psr-4": {
-        "App\\Src\\" : "src"
+        "App\\" : "src"
       }
     },
     "require-dev": {

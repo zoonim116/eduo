@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Src\Controllers;
+namespace App\Controllers;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Respect\Validation\Validator as v;
 
 class UserController extends BaseController
 {
@@ -13,6 +14,20 @@ class UserController extends BaseController
     }
 
     public function sign_up($request, $response) {
+        if($request->isPost()) {
+            $validation = $this->validator->validate($request, [
+                'email' => v::noWhitespace()->notEmpty()->email(),
+                'firstname' => v::noWhitespace()->notEmpty()->alpha(),
+                'lastname' => v::noWhitespace()->notEmpty(),
+                'password' => v::notEmpty(),
+                'repass' => v::notEmpty(),
+            ]);
+            if ($validation->failed()) {
+                return $response->withRedirect($this->router->pathFor('sign_up'));
+            }
+            $this->UserModel->sign_up($request->getParams());
+        }
+
         $this->title = "Sign Up";
         $this->render($response,'user/sing_up.twig');
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Src\Controllers;
+namespace App\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -17,6 +17,7 @@ class HomeController extends BaseController
 
 //        $this->container['UserModel']->sign_in();
 //        $this->container['UserModel']->sign_up();
+        $this->UserModel->test();
         $this->title = "Homepage";
         $this->render($response,'home/homepage.twig');
     }
