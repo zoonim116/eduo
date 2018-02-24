@@ -9,9 +9,15 @@ use Monolog\Processor\UidProcessor;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use \App\Validation\Validator;
+use Respect\Validation\Validator as v;
+use Dotenv\Dotenv;
 // DIC configuration
 
 $container = $app->getContainer();
+
+
+$dotenv = new Dotenv(__DIR__ . '/../');
+$dotenv->load();
 
 
 // monolog
@@ -25,13 +31,7 @@ $container['logger'] = function ($c) {
 
 // medoo
 $container['db'] = function () {
-    return new Medoo([
-        'database_type' => 'mysql',
-        'database_name' => 'eduo',
-        'server' => 'localhost',
-        'username' => 'root',
-        'password' => 'root'
-    ]);
+
 };
 
 $container['view'] = function($container) {
@@ -72,3 +72,5 @@ $container['upload_directory'] = __DIR__ . '/../public/uploads';
 
 $app->add(new \App\Middleware\ValidationMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
+
+v::with('App\\Validation\\Rules');

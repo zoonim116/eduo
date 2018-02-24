@@ -2,37 +2,30 @@
 
 namespace App\Models;
 
-use Medoo\Medoo;
+class User extends Model {
 
+    private static $_table = 'users';
 
-class User
-{
-    private $db;
+    /**
+     * @param $data
+     * @return bool|int|mixed|string
+     */
 
-    public function __construct($db) {
-        $this->db = $db;
-    }
-
-    public function sign_in() {
-        $user = $this->db->get('users', '*', [
-            "id[=]" => 1
-        ]);
-        echo "<pre>";
-        die(var_dump($user));
-    }
-
-    public function sign_up($data) {
-        $res = $this->db->insert("users", [
+    public static function sign_up($data) {
+        $db =  self::forge();
+        $result = $db->insert(self::$_table, [
             'email' => $data['email'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'created_at' => time(),
         ]);
+        return $db->id() ? $db->id() : false;
     }
 
-    public function reset_password() {
-        //TODO reset password
+    public static function is_unique_email() {
+            return true;
     }
+
 
 }
