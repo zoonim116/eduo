@@ -9,6 +9,7 @@
                     </div>
                     <div class="card-body">
                         <form class="form" method="post" role="form" action="{{ path_for('sign_up') }}" autocomplete="off">
+                            {{ csrf.field | raw }}
                             <div class="form-group">
                                 <label for="firstname">Name</label>
                                 <input type="text" class="form-control{{ errors.firstname ? ' is-invalid' : '' }}" name="firstname" value="{{ fields.firstname }}" id="firstname" placeholder="Mark">

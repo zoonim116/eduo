@@ -21,7 +21,8 @@
         "slim/flash": "^0.4.0",
         "davidepastore/slim-validation": "^0.5.0",
         "kanellov/slim-twig-flash": "^0.2.0",
-        "vlucas/phpdotenv": "^2.4"
+        "vlucas/phpdotenv": "^2.4",
+        "slim/csrf": "^0.8.2"
     },
     "autoload": {
       "psr-4": {

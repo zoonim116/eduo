@@ -11,6 +11,7 @@ use Monolog\Logger;
 use \App\Validation\Validator;
 use Respect\Validation\Validator as v;
 use Dotenv\Dotenv;
+use \Slim\Csrf\Guard;
 // DIC configuration
 
 $container = $app->getContainer();
@@ -64,13 +65,17 @@ $container['validator'] = function ($c) {
     return new Validator;
 };
 
-$container['UserModel'] = function ($c) {
-    return new App\Models\User($c['db']);
+
+$container['csrf'] = function ($c) {
+    return new Guard;
 };
 
 $container['upload_directory'] = __DIR__ . '/../public/uploads';
 
 $app->add(new \App\Middleware\ValidationMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
+$app->add(new \App\Middleware\CsrfViewMiddleware($container));
+$app->add($container->csrf);
+
 
 v::with('App\\Validation\\Rules');
