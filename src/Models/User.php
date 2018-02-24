@@ -13,7 +13,7 @@ class User extends Model {
 
     public static function sign_up($data) {
         $db =  self::forge();
-        $result = $db->insert(self::$_table, [
+        $db->insert(self::$_table, [
             'email' => $data['email'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
@@ -23,8 +23,13 @@ class User extends Model {
         return $db->id() ? $db->id() : false;
     }
 
-    public static function is_unique_email() {
-            return true;
+    /**
+     * @param $email
+     * @return bool
+     */
+    public static function is_unique_email($email) {
+        $db = self::forge();
+        return $db->count(self::$_table, ['email' => $email]) === 0;
     }
 
 
