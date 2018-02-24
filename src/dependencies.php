@@ -70,11 +70,16 @@ $container['csrf'] = function ($c) {
     return new Guard;
 };
 
+$container['auth'] = function ($c) {
+    return new \App\Auth;
+};
+
 $container['upload_directory'] = __DIR__ . '/../public/uploads';
 
 $app->add(new \App\Middleware\ValidationMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
 $app->add(new \App\Middleware\CsrfViewMiddleware($container));
+$app->add(new \App\Middleware\AuthMiddleware($container));
 $app->add($container->csrf);
 
 

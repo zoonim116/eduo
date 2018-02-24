@@ -17,7 +17,7 @@ class HomeController extends BaseController
 
 //        $this->container['UserModel']->sign_in();
 //        $this->container['UserModel']->sign_up();
-        $this->UserModel->test();
+//        $this->UserModel->test();
         $this->title = "Homepage";
         $this->render($response,'home/homepage.twig');
     }

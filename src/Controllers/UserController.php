@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Auth;
 use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -10,6 +11,15 @@ class UserController extends BaseController
 {
 
     public function sign_in($request, $response) {
+        if ($request->isPost()) {
+            $auth = $this->auth->attempt($request->getParam('email', false), $request->getParam('password', false));
+            if(!$auth) {
+
+                return $response->withRedirect($this->router->pathFor('sign_in'));
+            } else {
+                return $response->withRedirect($this->router->pathFor('dashboard'));
+            }
+        }
         $this->title = "Sign In";
         $this->render($response,'user/sign_in.twig');
     }
@@ -34,6 +44,11 @@ class UserController extends BaseController
 
         $this->title = "Sign Up";
         $this->render($response,'user/sing_up.twig');
+    }
+
+    public function logout($request, $response) {
+        unset($_SESSION['user']);
+        return $response->withRedirect($this->router->pathFor('sign_in'));
     }
 
 }

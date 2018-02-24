@@ -7,6 +7,7 @@ class User extends Model {
     private static $_table = 'users';
 
     /**
+     * Sign up user
      * @param $data
      * @return bool|int|mixed|string
      */
@@ -24,6 +25,7 @@ class User extends Model {
     }
 
     /**
+     * Check if the email exists
      * @param $email
      * @return bool
      */
@@ -32,5 +34,24 @@ class User extends Model {
         return $db->count(self::$_table, ['email' => $email]) === 0;
     }
 
+    /**
+     * Find user by email
+     * @param $email
+     * @return array|bool|mixed
+     */
+    public static function find_by_email($email) {
+        $db = self::forge();
+        return $db->get(self::$_table,'*', ['email =' => $email]);
+    }
+
+    /**
+     * Find user by id
+     * @param $id
+     * @return array|bool|mixed
+     */
+    public static function find_by_id($id) {
+        $db = self::forge();
+        return $db->get(self::$_table, '*', ['id =' => $id]);
+    }
 
 }
