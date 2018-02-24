@@ -21,4 +21,8 @@ class HomeController extends BaseController
         $this->title = "Homepage";
         $this->render($response,'home/homepage.twig');
     }
+
+    public function dashboard($request, $response, $args) {
+        die("Dashboard");
+    }
 }

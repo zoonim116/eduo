@@ -12,6 +12,13 @@ class UserController extends BaseController
 
     public function sign_in($request, $response) {
         if ($request->isPost()) {
+            $validation = $this->validator->validate($request, [
+                'email' => v::noWhitespace()->notEmpty()->email(),
+                'password' => v::notEmpty()->length(6, 25, true),
+            ]);
+            if($validation->failed()) {
+                return $response->withRedirect($this->router->pathFor('sign_in'));
+            }
             $auth = $this->auth->attempt($request->getParam('email', false), $request->getParam('password', false));
             if(!$auth) {
 
@@ -30,8 +37,8 @@ class UserController extends BaseController
                 'email' => v::noWhitespace()->notEmpty()->email()->emailAvailable(),
                 'firstname' => v::noWhitespace()->notEmpty()->alpha(),
                 'lastname' => v::noWhitespace()->notEmpty()->alpha(),
-                'password' => v::notEmpty()->equals($request->getParam('verify')),
-                'verify' => v::notEmpty()->equals($request->getParam('password')),
+                'password' => v::notEmpty()->length(6, 25, true)->equals($request->getParam('verify')),
+                'verify' => v::notEmpty()->length(6, 25, true)->equals($request->getParam('password')),
             ]);
             if ($validation->failed()) {
                 return $response->withRedirect($this->router->pathFor('sign_up'));

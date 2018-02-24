@@ -37,7 +37,10 @@ class Auth
     }
 
     public function user() {
-        return User::find_by_id($_SESSION['user']);
+        if(isset($_SESSION['user'])) {
+            return User::find_by_id($_SESSION['user']);
+        }
+        return false;
     }
 
 }
