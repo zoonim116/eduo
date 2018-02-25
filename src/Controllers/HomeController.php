@@ -23,6 +23,8 @@ class HomeController extends BaseController
     }
 
     public function dashboard($request, $response, $args) {
-        die("Dashboard");
+
+        $this->title = "Dashboard";
+        $this->render($response,'home/dashboard.twig');
     }
 }
