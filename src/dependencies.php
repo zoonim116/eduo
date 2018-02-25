@@ -2,7 +2,6 @@
 use Medoo\Medoo;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
-use Knlv\Slim\Views\TwigMessages;
 use Slim\Flash\Messages;
 use \App\Controllers;
 use Monolog\Processor\UidProcessor;
@@ -39,9 +38,6 @@ $container['view'] = function($container) {
     $settings = $container->get('settings')['renderer'];
     $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
     $view->addExtension(new TwigExtension($container['router'], $container['request']->getUri()));
-    $view->addExtension(new TwigMessages(
-        new Messages()
-    ));
     return $view;
 };
 
@@ -65,6 +61,10 @@ $container['validator'] = function ($c) {
     return new Validator;
 };
 
+$container['flash'] = function ($c) {
+    return new Slim\Flash\Messages;
+};
+
 
 $container['csrf'] = function ($c) {
     return new Guard;
@@ -80,6 +80,7 @@ $app->add(new \App\Middleware\ValidationMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
 $app->add(new \App\Middleware\CsrfViewMiddleware($container));
 $app->add(new \App\Middleware\AuthMiddleware($container));
+$app->add(new \App\Middleware\FlashMiddleware($container));
 $app->add($container->csrf);
 
 

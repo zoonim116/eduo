@@ -11,6 +11,7 @@ class UserController extends BaseController
 {
 
     public function sign_in($request, $response) {
+
         if ($request->isPost()) {
             $validation = $this->validator->validate($request, [
                 'email' => v::noWhitespace()->notEmpty()->email(),
@@ -21,7 +22,7 @@ class UserController extends BaseController
             }
             $auth = $this->auth->attempt($request->getParam('email', false), $request->getParam('password', false));
             if(!$auth) {
-
+                $this->flash->addMessage('error', "There is no user with such email/password");
                 return $response->withRedirect($this->router->pathFor('sign_in'));
             } else {
                 return $response->withRedirect($this->router->pathFor('dashboard'));
