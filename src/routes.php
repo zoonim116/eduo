@@ -25,4 +25,6 @@ $app->group('', function () {
     $this->get('/repository/delete/{id}', \App\Controllers\RepositoryController::class. ':delete')->setName('repository.delete');
     $this->get('/repository/edit/{id}', \App\Controllers\RepositoryController::class. ':edit')->setName('repository.edit');
     $this->post('/repository/edit/{id}', \App\Controllers\RepositoryController::class. ':edit');
+    $this->get('/text/create', \App\Controllers\TextController::class. ':create')->setName('text.create');
+    $this->post('/text/create', \App\Controllers\TextController::class. ':create');
 })->add(new \App\Middleware\IsAuthMiddleware($container));

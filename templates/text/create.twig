@@ -7,15 +7,18 @@
                 <a href="{{ path_for('dashboard') }}" class="list-group-item list-group-item-action ">
                     Dashboard
                 </a>
-                <a href="{{ path_for('repository.all') }}" class="list-group-item list-group-item-action active">Repositories</a>
+                <a href="{{ path_for('repository.all') }}" class="list-group-item list-group-item-action ">Repositories</a>
+                <a href="" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
             </div>
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-10 offset-md-2">
+                <div class="col-md-8 offset-md-2">
                     {% include '_partials/flash.twig' %}
-                    <p class="h2">Edit: {{ fields.name }}</p>
-                    <form class="form" role="form" action="{{ path_for('repository.edit', {'id': fields.id}) }}" novalidate="" method="POST" class="border">
+                    <p class="h2">Create a new text</p>
+                    <form class="form" role="form" action="{{ path_for('text.create') }}" novalidate="" method="POST" class="border">
                         {{ csrf.field | raw }}
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -36,27 +39,20 @@
                             {% endif %}
                         </div>
                         <div class="form-group">
-                            <div class="form-check form-check-inline">
-                                {% if fields.visibility == 1  %}
-                                    <input class="form-check-input" type="radio" name="visibility" id="private" value="1" checked>
-                                {% else %}
-                                    <input class="form-check-input" type="radio" name="visibility" id="private" value="1">
-                                {% endif %}
-                                <label class="form-check-label" for="private">Private</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                {% if fields.visibility == 2 %}
-                                    <input class="form-check-input" type="radio" name="visibility" id="public" value="2" checked>
-                                {% else %}
-                                    <input class="form-check-input" type="radio" name="visibility" id="public" value="2">
-                                {% endif %}
-                                <label class="form-check-label" for="public">Public</label>
-                            </div>
+                            <select class="custom-select" name="repository">
+                                <option> - Select Repository -</option>
+                                {% for repo in repos %}
+                                    <option value="{{ repo.id }}"> {{ repo.name }}</option>
+                                {% endfor  %}
+                            </select>
                         </div>
-                        <button type="submit" class="btn btn-success float-right" id="create">Update</button>
+                        <button type="submit" class="btn btn-success float-right" id="create">Create</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
+<script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">

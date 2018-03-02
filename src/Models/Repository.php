@@ -50,7 +50,9 @@ class Repository extends Model
                 '[><]users' => ['user_id' => 'id']
             ], $columns, ['visibility' => $visibilty, 'ORDER' => ['created_at' => 'DESC']]);
         } else {
-            $repositories = $db->select(self::$_table, $columns, ['visibility' => $visibilty, 'ORDER' => ['created_at' => 'DESC']]);
+            $repositories = $db->select(self::$_table, [
+                '[><]users' => ['user_id' => 'id']
+            ], $columns, ['ORDER' => ['created_at' => 'DESC']]);
         }
         return $repositories;
     }
@@ -79,6 +81,18 @@ class Repository extends Model
     public static function delete_repository($id) {
         $db = self::forge();
         $db->delete(self::$_table, ['id' => $id]);
+    }
+
+    public static function update($repository_id, $data) {
+        $db = self::forge();
+        $db->update(self::$_table, [
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'visibility' => $data['visibility'],
+            'updated_at' => time()
+        ], [
+            'id[=]' => $repository_id
+        ]);
     }
 
 }

@@ -57,6 +57,19 @@ class RepositoryController extends BaseController
         $repoId = $args['id'];
         $repo = Repository::get_repository($repoId);
         if ($repo && $repo['user_id'] === $this->auth->get_user_id()) {
+            if($request->isPost()) {
+                $validation = $this->validator->validate($request, [
+                    'name' => v::notEmpty(),
+                    'description' => v::notEmpty(),
+                    'visibility' => v::notEmpty()->length(1, 2, true),
+                ]);
+                if($validation->failed()) {
+                    return $response->withRedirect($this->router->pathFor('repository.edit'));
+                }
+                Repository::update($repoId, $request->getParams());
+                $this->flash->addMessage('success', "Repository was successfully updated");
+                return $response->withRedirect($this->router->pathFor('repository.all'));
+            }
             $this->title = "Edit: {$repo['name']}";
             $this->render($response,'repository/edit.twig', ['fields' => $repo]);
         } else {

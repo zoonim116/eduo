@@ -8,14 +8,11 @@
                     Dashboard
                 </a>
                 <a href="{{ path_for('repository.all') }}" class="list-group-item list-group-item-action active">Repositories</a>
-                <a href="" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
             </div>
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-8 offset-md-2">
+                <div class="col-md-10 offset-md-2">
                     {% include '_partials/flash.twig' %}
                     <p class="h2">Create a new repository</p>
                     <form class="form" role="form" action="{{ path_for('repository.create') }}" novalidate="" method="POST" class="border">
