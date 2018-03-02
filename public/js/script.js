@@ -6,4 +6,8 @@ $(document).ready(function () {
             return $(content).children(".popover-body").html();
         },
     });
+
+    if ($('.medium-text').length > 0) {
+        var editor = new MediumEditor('.medium-text');
+    }
 });

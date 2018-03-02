@@ -21,32 +21,38 @@
                     <form class="form" role="form" action="{{ path_for('text.create') }}" novalidate="" method="POST" class="border">
                         {{ csrf.field | raw }}
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control rounded-0{{ errors.name ? ' is-invalid' : '' }}" name="name" id="name" value="{{ fields.name }}">
-                            {% if errors.name %}
+                            <label for="name">Title</label>
+                            <input type="text" class="form-control rounded-0{{ errors.title ? ' is-invalid' : '' }}" name="title" id="title" value="{{ fields.title }}">
+                            {% if errors.title %}
                                 <div class="invalid-feedback">
-                                    {{ errors.name | first }}
+                                    {{ errors.title | first }}
                                 </div>
                             {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control rounded-0{{ errors.name ? ' is-invalid' : '' }}" name="description" id="description">{{ fields.description }}</textarea>
-                            {% if errors.description %}
+                            <label for="name">Short description</label>
+                            <input type="text" class="form-control rounded-0{{ errors.short_description ? ' is-invalid' : '' }}" name="short_description" id="short_description" value="{{ fields.short_description }}">
+                            {% if errors.short_description %}
                                 <div class="invalid-feedback">
-                                    {{ errors.description | first }}
+                                    {{ errors.short_description | first }}
                                 </div>
                             {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Text</label>
+                            <div class="medium-text"></div>
                         </div>
                         <div class="form-group">
                             <select class="custom-select" name="repository">
-                                <option> - Select Repository -</option>
+                                <option value=""> - Select Repository -</option>
                                 {% for repo in repos %}
                                     <option value="{{ repo.id }}"> {{ repo.name }}</option>
                                 {% endfor  %}
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success float-right" id="create">Create</button>
+                        <button type="submit" name="publish" class="btn btn-success float-right " id="publish">Publush</button>
+                        <button type="submit"  name="draft" class="btn btn-info float-right mr-2" id="draft">Save to Draft</button>
+
                     </form>
                 </div>
             </div>
@@ -54,5 +60,3 @@
     </div>
 {% endblock %}
 
-<script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
