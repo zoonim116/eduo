@@ -29,7 +29,7 @@ class Auth
     }
 
     public function get_user_id() {
-        return 12;
+        return $_SESSION['user'];
     }
 
     public function get_user_firstname() {

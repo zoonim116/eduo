@@ -14,10 +14,6 @@ class HomeController extends BaseController
      * @param $args
      */
     public function index(Request $request, Response $response, $args) {
-
-//        $this->container['UserModel']->sign_in();
-//        $this->container['UserModel']->sign_up();
-//        $this->UserModel->test();
         $this->title = "Homepage";
         $this->render($response,'home/homepage.twig');
     }

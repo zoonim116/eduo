@@ -1,0 +1,24 @@
+<div class="col-md-12 repository-item">
+    <div class="repository-item__title clearfix">
+        <strong> {{ repository.name }}</strong>
+        <button type="button" class="btn btn-light menu-popover float-right" data-container="body" data-toggle="popover" data-placement="bottom" data-popover-content="#rep-{{ repository.id }}">
+            <i class="fa fa-angle-down fa-xs"></i>
+        </button>
+        <div class="d-none" id="rep-{{ repository.id }}">
+            <div class="popover-body">
+                <a class="btn btn-outline-success btn-sm" href="{{ path_for('repository.edit', {'id': repository.id}) }}">Edit</a>
+                <a class="btn btn-outline-danger btn-sm" href="{{ path_for('repository.delete', {'id': repository.id}) }}">Delete</a>
+            </div>
+        </div>
+        <small class="float-right"> {{ repository.updated_at | timeDiff }} </small>
+
+    </div>
+    <div class="repository-item__desc">
+        <span>{{ repository.description }}</span>
+    </div>
+    <div class="repository-item__date clearfix">
+
+
+    </div>
+
+</div>

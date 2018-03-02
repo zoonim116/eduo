@@ -10,7 +10,7 @@ use Respect\Validation\Validator as v;
 class UserController extends BaseController
 {
 
-    public function sign_in($request, $response) {
+    public function sign_in(Request $request, Response $response, $args) {
 
         if ($request->isPost()) {
             $validation = $this->validator->validate($request, [
@@ -32,7 +32,7 @@ class UserController extends BaseController
         $this->render($response,'user/sign_in.twig');
     }
 
-    public function sign_up($request, $response) {
+    public function sign_up(Request $request, Response $response, $args) {
         if($request->isPost()) {
             $validation = $this->validator->validate($request, [
                 'email' => v::noWhitespace()->notEmpty()->email()->emailAvailable(),
@@ -54,7 +54,7 @@ class UserController extends BaseController
         $this->render($response,'user/sing_up.twig');
     }
 
-    public function logout($request, $response) {
+    public function logout(Request $request, Response $response, $args) {
         unset($_SESSION['user']);
         return $response->withRedirect($this->router->pathFor('sign_in'));
     }

@@ -1,0 +1,29 @@
+main {
+    margin-bottom: 30px;
+}
+
+.repository-item {
+    padding-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-top: 15px;
+}
+
+/*.repository-item__title, .repository-item__desc {*/
+    /*display: inline-block;*/
+    /*vertical-align: top;*/
+/*}*/
+
+.menu-popover {
+    line-height: 0;
+    padding: 6px 8px;
+}
+
+.repository-item__title small {
+    margin-right: 10px;
+}
+
+.repository-item strong {
+    float: left;
+    width: calc(100% - 140px);
+}

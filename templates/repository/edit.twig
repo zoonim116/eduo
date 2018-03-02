@@ -1,0 +1,65 @@
+{% extends "layout.twig" %}
+{% block content %}
+    {% include '_partials/greeting.twig' %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{{ path_for('dashboard') }}" class="list-group-item list-group-item-action ">
+                    Dashboard
+                </a>
+                <a href="{{ path_for('repository.all') }}" class="list-group-item list-group-item-action active">Repositories</a>
+                <a href="" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    {% include '_partials/flash.twig' %}
+                    <p class="h2">Edit: {{ fields.name }}</p>
+                    <form class="form" role="form" action="{{ path_for('repository.create') }}" novalidate="" method="POST" class="border">
+                        {{ csrf.field | raw }}
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control rounded-0{{ errors.name ? ' is-invalid' : '' }}" name="name" id="name" value="{{ fields.name }}">
+                            {% if errors.name %}
+                                <div class="invalid-feedback">
+                                    {{ errors.name | first }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control rounded-0{{ errors.name ? ' is-invalid' : '' }}" name="description" id="description">{{ fields.description }}</textarea>
+                            {% if errors.description %}
+                                <div class="invalid-feedback">
+                                    {{ errors.description | first }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                {% if fields.visibility == 1  %}
+                                    <input class="form-check-input" type="radio" name="visibility" id="private" value="1" checked>
+                                {% else %}
+                                    <input class="form-check-input" type="radio" name="visibility" id="private" value="1">
+                                {% endif %}
+                                <label class="form-check-label" for="private">Private</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                {% if fields.visibility == 2 %}
+                                    <input class="form-check-input" type="radio" name="visibility" id="public" value="2" checked>
+                                {% else %}
+                                    <input class="form-check-input" type="radio" name="visibility" id="public" value="2">
+                                {% endif %}
+                                <label class="form-check-label" for="public">Public</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success float-right" id="create">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

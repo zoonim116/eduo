@@ -29,15 +29,11 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
-// medoo
-$container['db'] = function () {
-
-};
-
 $container['view'] = function($container) {
     $settings = $container->get('settings')['renderer'];
     $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
     $view->addExtension(new TwigExtension($container['router'], $container['request']->getUri()));
+    $view->addExtension(new \App\AppExtension());
     return $view;
 };
 
@@ -55,6 +51,11 @@ $container['UserController'] = function($c) {
     $settings = $c->get('settings')['renderer'];
     $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
     return new Controllers\UserController($view);
+};
+$container['RepositoryController'] = function($c) {
+    $settings = $c->get('settings')['renderer'];
+    $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
+    return new Controllers\RepositoryController($view);
 };
 
 $container['validator'] = function ($c) {

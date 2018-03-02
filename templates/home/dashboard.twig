@@ -1,4 +1,20 @@
 {% extends "layout.twig" %}
 {% block content %}
-    <h1>Dashboard</h1>
+    {% include '_partials/greeting.twig' %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{{ path_for('dashboard') }}" class="list-group-item list-group-item-action active">
+                    Dashboard
+                </a>
+                <a href="{{ path_for('repository.all') }}" class="list-group-item list-group-item-action">Repositories</a>
+                <a href="" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+
+        </div>
+    </div>
 {% endblock %}
