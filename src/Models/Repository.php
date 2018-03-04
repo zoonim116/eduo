@@ -95,4 +95,9 @@ class Repository extends Model
         ]);
     }
 
+    public static function is_owner($repository_id, $user_id) {
+        $db = self::forge();
+        return $db->get(self::$_table, 'user_id', ['id' => $repository_id]) === $user_id;
+    }
+
 }

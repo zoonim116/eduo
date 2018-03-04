@@ -8,9 +8,6 @@
                     Dashboard
                 </a>
                 <a href="{{ path_for('repository.all') }}" class="list-group-item list-group-item-action ">Repositories</a>
-                <a href="" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -18,7 +15,7 @@
                 <div class="col-md-8 offset-md-2">
                     {% include '_partials/flash.twig' %}
                     <p class="h2">Create a new text</p>
-                    <form class="form" role="form" action="{{ path_for('text.create') }}" novalidate="" method="POST" class="border">
+                    <form class="form" role="form" name="create_text" action="{{ path_for('text.create') }}" novalidate="" method="POST" class="border">
                         {{ csrf.field | raw }}
                         <div class="form-group">
                             <label for="name">Title</label>
@@ -40,19 +37,28 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Text</label>
-                            <div class="medium-text"></div>
+                            <div class="medium-text">{{ fields.text | raw }} </div>
+                            <input type="hidden" name="text" class="hidden-medium-text" />
+                            {% if errors.text %}
+                                <div class="invalid-feedback">
+                                    {{ errors.text | first }}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group">
                             <select class="custom-select" name="repository">
                                 <option value=""> - Select Repository -</option>
                                 {% for repo in repos %}
-                                    <option value="{{ repo.id }}"> {{ repo.name }}</option>
+                                    {% if repo.id == fields.repository  %}
+                                        <option value="{{ repo.id }}" selected> {{ repo.name }}</option>
+                                    {%  else %}
+                                        <option value="{{ repo.id }}"> {{ repo.name }}</option>
+                                    {% endif %}
                                 {% endfor  %}
                             </select>
                         </div>
                         <button type="submit" name="publish" class="btn btn-success float-right " id="publish">Publush</button>
                         <button type="submit"  name="draft" class="btn btn-info float-right mr-2" id="draft">Save to Draft</button>
-
                     </form>
                 </div>
             </div>

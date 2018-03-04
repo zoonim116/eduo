@@ -61,7 +61,7 @@ $container['RepositoryController'] = function($c) {
 $container['TextController'] = function($c) {
     $settings = $c->get('settings')['renderer'];
     $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
-    return new Controllers\TextController($view);
+    return new Controllers\Text($view);
 };
 
 $container['validator'] = function ($c) {

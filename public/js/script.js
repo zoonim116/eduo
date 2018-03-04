@@ -10,4 +10,8 @@ $(document).ready(function () {
     if ($('.medium-text').length > 0) {
         var editor = new MediumEditor('.medium-text');
     }
+
+    $('[name="create_text"]').on('submit', function () {
+        $('.hidden-medium-text').val($('.medium-text').html());
+    })
 });
