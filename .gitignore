@@ -8,4 +8,4 @@ git@github.com:zoonim116/eduo.git /vendor/
 CONTRIBUTING.md
 README.md
 composer.lock
-/.env
+.env
