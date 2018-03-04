@@ -46,7 +46,23 @@ class Text extends Model
         return $db->get(self::$_table, 'user_id', ['id' => $text_id]) === $user_id;
     }
 
-    public static function delete($text_id) {
+    public static function get($id) {
+        $db = self::forge();
+        $columns = [
+            'id',
+            'title',
+            'short_description',
+            'text',
+            'status',
+            'repository_id',
+            'created_at',
+            'updated_at'
+        ];
+        return $db->get(self::$_table, $columns, ['id' => $id]);
+    }
 
+    public static function delete($id) {
+        $db = self::forge();
+        $db->delete(self::$_table, ['id' => $id]);
     }
 }

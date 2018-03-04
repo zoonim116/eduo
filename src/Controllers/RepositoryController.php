@@ -49,8 +49,11 @@ class RepositoryController extends BaseController
         if (Repository::is_owner($repo_id, $this->auth->get_user_id())) {
             Repository::delete($repo_id);
             $this->flash->addMessage('success', "Repository successfully removed");
-            return $response->withRedirect($this->router->pathFor('repository.all'));
+        } else {
+            $this->flash->addMessage('error', "You don't have permission");
         }
+
+        return $response->withRedirect($this->router->pathFor('repository.all'));
     }
 
     public function edit(Request $request, Response $response, $args) {

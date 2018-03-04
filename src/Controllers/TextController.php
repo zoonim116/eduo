@@ -38,9 +38,18 @@ class TextController extends BaseController
 
     public function delete(Request $request, Response $response, $args) {
         $text_id = $args['id'];
+        $repository = Text::get($text_id);
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
-            Text::
+            Text::delete($text_id);
+            $this->flash->addMessage('success', "Text successfully removed");
+        } else {
+            $this->flash->addMessage('error', "You don't have permission.");
         }
+        return $response->withRedirect($this->router->pathFor('repository.texts', ['id' => $repository['repository_id']]));
+    }
+
+    public static function edit(Request $request, Response $response, $args) {
+
     }
 
 }
