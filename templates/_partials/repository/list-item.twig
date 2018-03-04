@@ -1,6 +1,6 @@
 <div class="col-md-12 repository-item">
     <div class="repository-item__title clearfix">
-        <strong> {{ repository.name }}</strong>
+        <a href="{{ path_for('repository.texts', {'id': repository.id }) }}"><strong> {{ repository.name }}</strong></a>
         <button type="button" class="btn btn-light menu-popover float-right" data-container="body" data-toggle="popover" data-placement="bottom" data-popover-content="#rep-{{ repository.id }}">
             <i class="fa fa-angle-down fa-xs"></i>
         </button>

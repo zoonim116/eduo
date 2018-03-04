@@ -1,0 +1,25 @@
+{% extends "layout.twig" %}
+{% block content %}
+    {% include '_partials/greeting.twig' %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{{ path_for('dashboard') }}" class="list-group-item list-group-item-action ">
+                    Dashboard
+                </a>
+                <a href="{{ path_for('repository.all') }}" class="list-group-item list-group-item-action active">Repositories</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+
+                <div class="col-md-11 offset-md-1">
+                    <h2><strong>{{ repo.name }}</strong> texts: </h2>
+                    {% for text in texts %}
+                        {% include '_partials/texts/list-item.twig' %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

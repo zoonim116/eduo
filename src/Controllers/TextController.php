@@ -36,4 +36,11 @@ class TextController extends BaseController
         $this->render($response,'text/create.twig', compact('repos'));
     }
 
+    public function delete(Request $request, Response $response, $args) {
+        $text_id = $args['id'];
+        if(Text::is_owner($text_id, $this->auth->get_user_id())) {
+            Text::
+        }
+    }
+
 }

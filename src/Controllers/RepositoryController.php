@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Repository;
+use App\Models\Text;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
@@ -12,8 +13,8 @@ class RepositoryController extends BaseController
 {
 
     public function all(Request $request, Response $response, $args) {
-        $private = Repository::get_repositories($this->auth->get_user_id(), 1);
-        $public = Repository::get_repositories($this->auth->get_user_id(), 2);
+        $private = Repository::find($this->auth->get_user_id(), 1);
+        $public = Repository::find($this->auth->get_user_id(), 2);
         $this->title = "All repositories";
         $this->render($response,'repository/all.twig', compact('private', 'public'));
     }
@@ -44,19 +45,18 @@ class RepositoryController extends BaseController
     }
 
     public function delete(Request $request, Response $response, $args) {
-        $repoId = $args['id'];
-        $repo = Repository::get_repository($repoId);
-        if ($repo && $repo['user_id'] === $this->auth->get_user_id()) {
-            Repository::delete_repository($repoId);
+        $repo_id = $args['id'];
+        if (Repository::is_owner($repo_id, $this->auth->get_user_id())) {
+            Repository::delete($repo_id);
             $this->flash->addMessage('success', "Repository successfully removed");
             return $response->withRedirect($this->router->pathFor('repository.all'));
         }
     }
 
     public function edit(Request $request, Response $response, $args) {
-        $repoId = $args['id'];
-        $repo = Repository::get_repository($repoId);
-        if ($repo && $repo['user_id'] === $this->auth->get_user_id()) {
+        $repo_id = $args['id'];
+        $repo = Repository::get($repo_id);
+        if (Repository::is_owner($repo_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
                 $validation = $this->validator->validate($request, [
                     'name' => v::notEmpty(),
@@ -66,13 +66,25 @@ class RepositoryController extends BaseController
                 if($validation->failed()) {
                     return $response->withRedirect($this->router->pathFor('repository.edit'));
                 }
-                Repository::update($repoId, $request->getParams());
+                Repository::update($repo_id, $request->getParams());
                 $this->flash->addMessage('success', "Repository was successfully updated");
                 return $response->withRedirect($this->router->pathFor('repository.all'));
             }
             $this->title = "Edit: {$repo['name']}";
             $this->render($response,'repository/edit.twig', ['fields' => $repo]);
         } else {
+            return $response->withRedirect($this->router->pathFor('repository.all'));
+        }
+    }
+
+    public function texts(Request $request, Response $response, $args) {
+        $repo_id = $args['id'];
+        if (Repository::is_owner($repo_id, $this->auth->get_user_id())) {
+            $texts = Text::get_by_repo($repo_id);
+            $repo = Repository::get($repo_id);
+            $this->render($response,'repository/texts.twig', compact('texts','repo'));
+        } else {
+            $this->flash->addMessage('error', "You are not owner of repository");
             return $response->withRedirect($this->router->pathFor('repository.all'));
         }
     }

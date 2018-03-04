@@ -34,7 +34,7 @@ class Repository extends Model
      * @param null $visibilty
      * @return array|bool
      */
-    public static function get_repositories($user_id, $visibilty = null) {
+    public static function find($user_id, $visibilty = null) {
         $db = self::forge();
         $columns = [
             self::$_table.'.id',
@@ -63,7 +63,7 @@ class Repository extends Model
      * @return array|bool
      */
 
-    public static function get_repository($id) {
+    public static function get($id) {
         $db = self::forge();
         $columns = [
             self::$_table.'.id',
@@ -78,7 +78,7 @@ class Repository extends Model
 
     }
 
-    public static function delete_repository($id) {
+    public static function delete($id) {
         $db = self::forge();
         $db->delete(self::$_table, ['id' => $id]);
     }
