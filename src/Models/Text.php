@@ -61,6 +61,36 @@ class Text extends Model
         return $db->get(self::$_table, $columns, ['id' => $id]);
     }
 
+    public static function get_with_relations($id) {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.id',
+            self::$_table.'.title',
+            self::$_table.'.short_description',
+            self::$_table.'.text',
+            self::$_table.'.status',
+            self::$_table.'.repository_id',
+            self::$_table.'.created_at',
+            self::$_table.'.updated_at',
+            'user' => [
+                'users.firstname',
+                'users.lastname',
+                'users.id',
+                'users.email',
+            ],
+            'repository' => [
+                'repositories.name',
+                'repositories.updated_at',
+                'repositories.description',
+            ],
+
+        ];
+        return $db->get(self::$_table, [
+            "[>]users" => ['user_id' => 'id'],
+            "[>]repositories" => ['repository_id' => 'id']
+        ], $columns, [self::$_table.'.id' => $id]);
+    }
+
     public static function delete($id) {
         $db = self::forge();
         $db->delete(self::$_table, ['id' => $id]);

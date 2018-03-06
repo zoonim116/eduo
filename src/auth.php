@@ -29,7 +29,7 @@ class Auth
     }
 
     public function get_user_id() {
-        return $_SESSION['user'];
+        return isset($_SESSION['user']) ? $_SESSION['user'] : false ;
     }
 
     public function get_user_firstname() {

@@ -15,9 +15,15 @@
                 <div class="col-md-11 offset-md-1">
                     <h2><strong>{{ repo.name }}</strong> texts: </h2>
                     {% include '_partials/flash.twig' %}
-                    {% for text in texts %}
-                        {% include '_partials/texts/list-item.twig' %}
-                    {% endfor %}
+                    {% if (texts) %}
+                        {% for text in texts %}
+                            {% include '_partials/texts/list-item.twig' %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-primary mt-3">
+                            <span>There is no text</span>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

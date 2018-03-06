@@ -16,4 +16,13 @@ class Diff extends Model
         ]);
         return $db->id() ? $db->id() : false;
     }
+
+    public static function get($text_id) {
+        $db = self::forge();
+        return $db->select(self::$_table, [
+            'id',
+            'created_at',
+            'diff',
+        ], ['text_id' => $text_id, 'ORDER' => ['created_at' => 'DESC']]);
+    }
 }

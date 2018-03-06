@@ -57,7 +57,8 @@ class TextController extends BaseController
         $repos = Repository::find($this->auth->get_user_id());
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
-                if($text['status'] == 2) {
+
+                if((int)$text['status'] === 2) {
                     $diff = Helper::htmlDiff($text['text'], $request->getParam('text'));
                     preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
                     foreach ($desc_out[0] as $sentence) {
@@ -78,32 +79,17 @@ class TextController extends BaseController
         }
         $this->title = "Edit: {$text['title']}";
         $this->render($response,'text/edit.twig', ['fields' => $text, 'repos' => $repos]);
-        
     }
 
-    public function test(Request $request, Response $response, $args) {
-        $diff = Helper::htmlDiff('Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. 
-        Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.
-         В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, 
-         используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без 
-         заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое
-          время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее 
-          время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.
-
-', 'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является 
-стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал
- большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его 
- популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, 
- в менее недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.
-
-');
-         // разделить на предложения текст
-        preg_match_all("/.*?[.?!](?:\s|$)/s", $diff,$desc_out);
-        echo "<pre>";
-        die(var_dump($desc_out[0]));
-        echo $diff;
-//        echo "<pre>";
-//        die(ec($diff));
+    public function view(Request $request, Response $response, $args) {
+        $text_id = $args['id'];
+        $text = Text::get_with_relations($text_id);
+        if($text && $text['status'] === 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
+            $diffs = Diff::get($text_id);
+            $this->title = $text['title'];
+            $this->render($response,'text/view.twig', compact('text', 'diffs'));
+        } else {
+            die("Access denied");
+        }
     }
-
 }

@@ -1,9 +1,11 @@
 main {
     margin-bottom: 30px;
+    padding-top: 20px;
 }
 
 .repository-item {
     padding-top: 10px;
+    padding-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-top: 15px;

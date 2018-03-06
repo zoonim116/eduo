@@ -1,0 +1,22 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 title">
+           <h1> {{ text.title  }} </h1>
+        </div>
+        <div class="col-md-12 text">
+            {{ text.text | raw}}
+        </div>
+        <div class="col-md-12 changes">
+            <h2>Changes:</h2>
+            {% if(diffs) %}
+                {% for diff in diffs %}
+                    {% include '_partials/texts/diff-item.twig' %}
+                {% endfor %}
+            {% else %}
+                <small>There is no any changes</small>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
