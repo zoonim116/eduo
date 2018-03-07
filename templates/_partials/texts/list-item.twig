@@ -10,7 +10,15 @@
                 <a class="btn btn-outline-danger btn-sm" href="{{ path_for('text.delete', {'id': text.id}) }}">Delete</a>
             </div>
         </div>
-        <small class="float-right"> {{ text.updated_at | timeDiff }} </small>
+
+         <small class="float-right">
+             {% if(text.status == 2) %}
+                 <b> Published: </b>
+             {% else %}
+                 <b>Drafted: </b>
+             {% endif %}
+             {{ text.updated_at | timeDiff }}
+         </small>
 
     </div>
     <div class="repository-item__desc">

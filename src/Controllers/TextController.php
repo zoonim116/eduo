@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Helper;
 use App\Models\Diff;
 use App\Models\Model;
+use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Models\Repository;
@@ -59,7 +60,7 @@ class TextController extends BaseController
             if($request->isPost()) {
 
                 if((int)$text['status'] === 2) {
-                    $diff = Helper::htmlDiff($text['text'], $request->getParam('text'));
+                    $diff = Helper::htmlDiff(strip_tags($text['text'], '<b><a><i><u><blockquote>'), strip_tags($request->getParam('text'), '<b><a><i><u><blockquote>'));
                     preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
                     foreach ($desc_out[0] as $sentence) {
                         $res = preg_match('/<del>/ui', $sentence);
@@ -67,9 +68,10 @@ class TextController extends BaseController
                             Diff::create($text_id, $sentence);
                         }
                     }
+                    // TODO if there is no sentence only a few words. Make a diff validation
                 }
                 $status = 2;
-                if ($request->getParam('draft', false) == '') {
+                if (empty($request->getParam('draft', 'published'))) {
                     $status = 1;
                 }
                 Text::update($text_id, $request->getParams(), $status);
@@ -84,10 +86,10 @@ class TextController extends BaseController
     public function view(Request $request, Response $response, $args) {
         $text_id = $args['id'];
         $text = Text::get_with_relations($text_id);
-        if($text && $text['status'] === 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
+        if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
             $diffs = Diff::get($text_id);
             $this->title = $text['title'];
-            $this->render($response,'text/view.twig', compact('text', 'diffs'));
+            $this->render($response,'text/view.twig', compact('text', 'diffs', 'user'));
         } else {
             die("Access denied");
         }

@@ -82,6 +82,7 @@ class Text extends Model
                 'repositories.name',
                 'repositories.updated_at',
                 'repositories.description',
+                'repositories.visibility'
             ],
 
         ];

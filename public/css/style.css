@@ -27,7 +27,7 @@ main {
 
 .repository-item strong {
     float: left;
-    width: calc(100% - 140px);
+    width: calc(100% - 180px);
 }
 
 html {
@@ -49,4 +49,8 @@ body {
 .medium-editor-element {
     border: 1px solid #ced4da;
     min-height: 200px;
+}
+
+.changes-item {
+    margin-top: 10px;
 }
