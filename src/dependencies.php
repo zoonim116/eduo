@@ -88,7 +88,10 @@ $app->add(new \App\Middleware\OldInputMiddleware($container));
 $app->add(new \App\Middleware\CsrfViewMiddleware($container));
 $app->add(new \App\Middleware\AuthMiddleware($container));
 $app->add(new \App\Middleware\FlashMiddleware($container));
-$app->add($container->csrf);
+if(!$container->request->isXhr()) {
+    $app->add($container->csrf);
+}
+
 
 
 v::with('App\\Validation\\Rules');

@@ -64,7 +64,7 @@ class Text extends Model
     public static function get_with_relations($id) {
         $db = self::forge();
         $columns = [
-            self::$_table.'.id',
+            'texts.id(text_id)',
             self::$_table.'.title',
             self::$_table.'.short_description',
             self::$_table.'.text',
@@ -84,7 +84,6 @@ class Text extends Model
                 'repositories.description',
                 'repositories.visibility'
             ],
-
         ];
         return $db->get(self::$_table, [
             "[>]users" => ['user_id' => 'id'],

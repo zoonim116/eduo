@@ -50,7 +50,7 @@ class Helper
                 $ret .= (!empty($k['d']) ? "<del>" . implode(' ', $k['d']) . "</del> " : '') .
                     (!empty($k['i']) ? "<ins>" . implode(' ', $k['i']) . "</ins> " : '');
             }
-            else $ret .= $k . ' ';
+            else $ret .= ' ';
         }
         return $ret;
     }

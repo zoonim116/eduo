@@ -33,6 +33,7 @@ $app->group('', function () {
     $this->get('/text/edit/{id}', \App\Controllers\TextController::class. ':edit')->setName('text.edit');
     $this->post('/text/edit/{id}', \App\Controllers\TextController::class. ':edit');
     $this->get('/text/test', \App\Controllers\TextController::class. ':test');
+    $this->post('/text/highlight', \App\Controllers\TextController::class. ':highlight');
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 

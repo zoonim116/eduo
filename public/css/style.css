@@ -54,3 +54,7 @@ body {
 .changes-item {
     margin-top: 10px;
 }
+
+.selectionSharer a.action {
+    text-indent: initial;
+}

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Helper;
 use App\Models\Diff;
+use App\Models\Highlight;
 use App\Models\Model;
 use App\Models\User;
 use Slim\Http\Request;
@@ -33,7 +34,7 @@ class TextController extends BaseController
             }
             Text::create($request->getParams(), $this->auth->get_user_id());
             $this->flash->addMessage('success', "New text created successfully");
-            return $response->withRedirect($this->router->pathFor('repository.view', ['id' => $request->getParam('repository')]));
+            return $response->withRedirect($this->router->pathFor('repository.texts', ['id' => $request->getParam('repository')]));
 
         }
         $this->title = "Add new text";
@@ -58,17 +59,20 @@ class TextController extends BaseController
         $repos = Repository::find($this->auth->get_user_id());
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
-
                 if((int)$text['status'] === 2) {
-                    $diff = Helper::htmlDiff(strip_tags($text['text'], '<b><a><i><u><blockquote>'), strip_tags($request->getParam('text'), '<b><a><i><u><blockquote>'));
+                    $allowed_tags = '<ul><ol><li><b><a><i><u><blockquote>';
+                    $diff = Helper::htmlDiff(strip_tags($text['text'], $allowed_tags), strip_tags($request->getParam('text'), $allowed_tags));
                     preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
-                    foreach ($desc_out[0] as $sentence) {
-                        $res = preg_match('/<del>/ui', $sentence);
-                        if ($res) {
-                            Diff::create($text_id, $sentence);
+                    if($desc_out[0]) {
+                        foreach ($desc_out[0] as $sentence) {
+                            $res = preg_match('/<del>/ui', $sentence);
+                            if ($res) {
+                                Diff::create($text_id, $sentence);
+                            }
                         }
+                    } else {
+                        Diff::create($text_id, $diff);
                     }
-                    // TODO if there is no sentence only a few words. Make a diff validation
                 }
                 $status = 2;
                 if (empty($request->getParam('draft', 'published'))) {
@@ -88,10 +92,22 @@ class TextController extends BaseController
         $text = Text::get_with_relations($text_id);
         if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
             $diffs = Diff::get($text_id);
+            $highlights = Highlight::get($text_id, $this->auth->get_user_id());
             $this->title = $text['title'];
-            $this->render($response,'text/view.twig', compact('text', 'diffs', 'user'));
+            $this->render($response,'text/view.twig', compact('text', 'diffs', 'user', 'highlights'));
         } else {
             die("Access denied");
         }
+    }
+
+    public function highlight(Request $request, Response $response, $args) {
+        if(!empty($request->getParam('data')) && $request->getParam('id')) {
+            $result = Highlight::create($this->auth->get_user_id(), $request->getParam('data'), $request->getParam('id'));
+            if ($result) {
+                die(json_encode(['status' => 'success']));
+            }
+            die(json_encode(['status' => 'error']));
+        }
+        die(json_encode(['status' => 'error']));
     }
 }

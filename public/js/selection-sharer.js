@@ -257,13 +257,33 @@
             return true;
         };
 
+        this.highlight = function (e) {
+            e.preventDefault();
+            var text = self.textSelection.replace(/<p[^>]*>/ig,'\n').replace(/<\/p>|  /ig,'').trim();
+            var text_id = $('[name="text_id"]').val();
+            $.post( "/text/highlight", { data: text, id: text_id}).done(function( data ) {
+                var response = JSON.parse(data);
+                if(response.status == 'success') {
+                    window.location.reload();
+                }
+            });
+            return false;
+        };
+        
+        this.comment = function (e) {
+            e.preventDefault();
+            var text = self.textSelection.replace(/<p[^>]*>/ig,'\n').replace(/<\/p>|  /ig,'').trim();
+            console.log(text);
+            $.post( "/text/highlight", { data: text} );
+            return false;
+        };
+
         this.render = function() {
             var popoverHTML =  '<div class="selectionSharer" id="selectionSharerPopover" style="position:absolute;">'
                 + '  <div id="selectionSharerPopover-inner">'
                 + '    <ul>'
-                + '      <li><a class="action tweet" href="" title="Share this selection on Twitter" target="_blank">Tweet</a></li>'
-                + '      <li><a class="action facebook" href="" title="Share this selection on Facebook" target="_blank">Facebook</a></li>'
-                + '      <li><a class="action email" href="" title="Share this selection by email"><svg width="20" height="20"><path stroke="%23FFF" stroke-width="6" d="m16,25h82v60H16zl37,37q4,3 8,0l37-37M16,85l30-30m22,0 30,30"/></svg></a></li>'
+                + '      <li><a class="action highlight" href="#" title="Share this selection on Twitter" ><i class="fa fa-floppy-o" aria-hidden="true"></i></a></li>'
+                + '      <li><a class="action comment" href="#" title="Share this selection on Twitter" ><i class="fa fa-comment-o" aria-hidden="true"></i></a></li>'
                 + '    </ul>'
                 + '  </div>'
                 + '  <div class="selectionSharerPopover-clip"><span class="selectionSharerPopover-arrow"></span></div>'
@@ -280,9 +300,10 @@
                 + '  </div>'
                 + '</div>';
             self.$popover = $(popoverHTML);
-            self.$popover.find('a.tweet').on('click', function(e) { self.shareTwitter(e); });
-            self.$popover.find('a.facebook').on('click', function(e) { self.shareFacebook(e); });
-            self.$popover.find('a.email').on('click', function(e) { self.shareEmail(e); });
+            self.$popover.find('a.highlight').on('click', function(e) { self.highlight(e); });
+            self.$popover.find('a.comment').on('click', function(e) { self.comment(e); });
+            // self.$popover.find('a.facebook').on('click', function(e) { self.shareFacebook(e); });
+            // self.$popover.find('a.email').on('click', function(e) { self.shareEmail(e); });
             $('body').append(self.$popover);
 
             self.$popunder = $(popunderHTML);
