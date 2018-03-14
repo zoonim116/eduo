@@ -30,10 +30,10 @@ class TextController extends BaseController
                 return $response->withRedirect($this->router->pathFor('text.create'));
             }
             $status = 2;
-            if ($request->getParam('draft', false) == '') {
+            if (empty($request->getParam('draft', 'published'))) {
                 $status = 1;
             }
-            Text::create($request->getParams(), $this->auth->get_user_id());
+            Text::create($request->getParams(), $this->auth->get_user_id(), $status);
             $this->flash->addMessage('success', "New text created successfully");
             return $response->withRedirect($this->router->pathFor('repository.texts', ['id' => $request->getParam('repository')]));
 
@@ -61,7 +61,7 @@ class TextController extends BaseController
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
                 if((int)$text['status'] === 2) {
-                    $allowed_tags = '<ul><ol><li><b><a><i><u><blockquote>';
+                    $allowed_tags = '<ul><ol><li><b><a><i><u><blockquote><img><p>';
                     $diff = Helper::htmlDiff(strip_tags($text['text'], $allowed_tags), strip_tags($request->getParam('text'), $allowed_tags));
                     preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
                     if($desc_out[0]) {

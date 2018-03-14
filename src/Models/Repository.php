@@ -48,11 +48,11 @@ class Repository extends Model
         if($visibilty) {
             $repositories = $db->select(self::$_table, [
                 '[><]users' => ['user_id' => 'id']
-            ], $columns, ['visibility' => $visibilty, 'ORDER' => ['created_at' => 'DESC']]);
+            ], $columns, ["AND" => ['user_id' => $user_id, 'visibility' => $visibilty], 'ORDER' => ['created_at' => 'DESC']]);
         } else {
             $repositories = $db->select(self::$_table, [
                 '[><]users' => ['user_id' => 'id']
-            ], $columns, ['ORDER' => ['created_at' => 'DESC']]);
+            ], $columns, ['user_id' => $user_id, 'ORDER' => ['created_at' => 'DESC']]);
         }
         return $repositories;
     }
