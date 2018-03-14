@@ -58,3 +58,6 @@ body {
 .selectionSharer a.action {
     text-indent: initial;
 }
+a.action {
+    color: #fff;
+}

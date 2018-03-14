@@ -110,4 +110,8 @@ class TextController extends BaseController
         }
         die(json_encode(['status' => 'error']));
     }
+
+    public function comment(Request $request, Response $response, $args) {
+
+    }
 }

@@ -22,6 +22,8 @@
         this.sel = null;
         this.textSelection='';
         this.htmlSelection='';
+        this.startPosition = 0;
+        this.endPosition = 0;
 
         this.appId = $('meta[property="fb:app_id"]').attr("content") || $('meta[property="fb:app_id"]').attr("value");
         this.url2share = $('meta[property="og:url"]').attr("content") || $('meta[property="og:url"]').attr("value") || window.location.href;
@@ -29,6 +31,8 @@
         this.getSelectionText = function(sel) {
             var html = "", text = "";
             sel = sel || window.getSelection();
+            self.startPosition = sel.anchorOffset;
+            self.endPosition = sel.focusOffset;
             if (sel.rangeCount) {
                 var container = document.createElement("div");
                 for (var i = 0, len = sel.rangeCount; i < len; ++i) {
@@ -273,17 +277,22 @@
         this.comment = function (e) {
             e.preventDefault();
             var text = self.textSelection.replace(/<p[^>]*>/ig,'\n').replace(/<\/p>|  /ig,'').trim();
-            console.log(text);
-            $.post( "/text/highlight", { data: text} );
+            $('#commentModal').modal('show');
+            // console.log(text);
+            // $.post( "/text/highlight", { data: text} );
             return false;
         };
+
+        this.getSelectedText = function (e) {
+            return self.textSelection.replace(/<p[^>]*>/ig,'\n').replace(/<\/p>|  /ig,'').trim();
+        }
 
         this.render = function() {
             var popoverHTML =  '<div class="selectionSharer" id="selectionSharerPopover" style="position:absolute;">'
                 + '  <div id="selectionSharerPopover-inner">'
                 + '    <ul>'
-                + '      <li><a class="action highlight" href="#" title="Share this selection on Twitter" ><i class="fa fa-floppy-o" aria-hidden="true"></i></a></li>'
-                + '      <li><a class="action comment" href="#" title="Share this selection on Twitter" ><i class="fa fa-comment-o" aria-hidden="true"></i></a></li>'
+                + '      <li><a class="action highlight" href="#" title="Highlight this selection" ><i class="fa fa-floppy-o" aria-hidden="true"></i></a></li>'
+                + '      <li><a class="action comment" href="#" title="Comment this selection" ><i class="fa fa-comment-o" aria-hidden="true"></i></a></li>'
                 + '    </ul>'
                 + '  </div>'
                 + '  <div class="selectionSharerPopover-clip"><span class="selectionSharerPopover-arrow"></span></div>'
@@ -311,7 +320,11 @@
             self.$popunder.find('a.facebook').on('click', function(e) { self.shareFacebook(e); });
             self.$popunder.find('a.email').on('click', function(e) { self.shareEmail(e); });
             $('body').append(self.$popunder);
-
+            $('.add-comment').on('click', function (e) {
+                // console.log();
+                self.getSelectionText(self.getSelectedText(e))
+                // console.log(self.getSelectedText(e));
+            })
             if (self.appId && self.url2share){
                 $(".selectionSharer a.facebook").css('display','inline-block');
             }
@@ -360,7 +373,6 @@
         if(options.elements) {
             this.setElements(options.elements);
         }
-
     };
 
     // jQuery plugin
