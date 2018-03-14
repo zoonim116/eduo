@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Helper;
+use App\Models\Comment;
 use App\Models\Diff;
 use App\Models\Highlight;
 use App\Models\Model;
@@ -93,25 +94,54 @@ class TextController extends BaseController
         if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
             $diffs = Diff::get($text_id);
             $highlights = Highlight::get($text_id, $this->auth->get_user_id());
+            $comments = Comment::get_all($text_id);
             $this->title = $text['title'];
-            $this->render($response,'text/view.twig', compact('text', 'diffs', 'user', 'highlights'));
+            $this->render($response,'text/view.twig', compact('text', 'diffs', 'user', 'highlights',
+                                                                        'comments'));
         } else {
             die("Access denied");
         }
     }
 
     public function highlight(Request $request, Response $response, $args) {
-        if(!empty($request->getParam('data')) && $request->getParam('id')) {
-            $result = Highlight::create($this->auth->get_user_id(), $request->getParam('data'), $request->getParam('id'));
-            if ($result) {
-                die(json_encode(['status' => 'success']));
+        if($request->isXhr()) {
+            if (!empty($request->getParam('data')) && $request->getParam('id')) {
+                $result = Highlight::create($this->auth->get_user_id(), $request->getParam('data'),
+                                            $request->getParam('id'));
+                if ($result) {
+                    die(json_encode(['status' => 'success']));
+                }
+                die(json_encode(['status' => 'error']));
             }
             die(json_encode(['status' => 'error']));
         }
-        die(json_encode(['status' => 'error']));
+        $response->withStatus(404);
     }
 
     public function comment(Request $request, Response $response, $args) {
+        if($request->isXhr()) {
+            $text_id = (int)$args['id'];
 
+            if(Text::get($text_id)) {
+
+                if(!empty($request->getParam('text')) && !empty($request->getParam('comment'))) {
+                    $validation = $this->validator->validate($request, [
+                        'text' => v::notEmpty(),
+                        'comment' => v::notEmpty(),
+                    ]);
+                    if($validation->failed()) {
+                        die(json_encode(['status' => 'validation_failed']));
+                    }
+                    $result = Comment::create($this->auth->get_user_id(), $request->getParam('comment'),
+                                    $request->getParam('text'), $text_id);
+                    if($result) {
+                        die(json_encode(['status' => 'success']));
+                    }
+                }
+                die(json_encode(['status' => 'error']));
+            }
+        }
+
+        $response->withStatus(404);
     }
 }

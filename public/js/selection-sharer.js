@@ -311,8 +311,6 @@
             self.$popover = $(popoverHTML);
             self.$popover.find('a.highlight').on('click', function(e) { self.highlight(e); });
             self.$popover.find('a.comment').on('click', function(e) { self.comment(e); });
-            // self.$popover.find('a.facebook').on('click', function(e) { self.shareFacebook(e); });
-            // self.$popover.find('a.email').on('click', function(e) { self.shareEmail(e); });
             $('body').append(self.$popover);
 
             self.$popunder = $(popunderHTML);
@@ -320,9 +318,20 @@
             self.$popunder.find('a.facebook').on('click', function(e) { self.shareFacebook(e); });
             self.$popunder.find('a.email').on('click', function(e) { self.shareEmail(e); });
             $('body').append(self.$popunder);
+
+            // Add comment
             $('.add-comment').on('click', function (e) {
-                // console.log();
-                self.getSelectionText(self.getSelectedText(e))
+                var comment = $('#commentModal #message-text').val();
+                var text = self.getSelectedText(e);
+                var text_id = $('[name="text_id"]').val();
+                $.post( "/text/comment/" + text_id, { comment: comment, text: text}).done(function( data ) {
+                    var response = JSON.parse(data);
+                    if(response.status == 'success') {
+                        // var comment = $('#commentModal #message-text').val('');
+                        // $('#commentModal').modal('hide');
+                        window.location.reload();
+                    }
+                });
                 // console.log(self.getSelectedText(e));
             })
             if (self.appId && self.url2share){

@@ -34,6 +34,7 @@ $app->group('', function () {
     $this->post('/text/edit/{id}', \App\Controllers\TextController::class. ':edit');
     $this->get('/text/test', \App\Controllers\TextController::class. ':test');
     $this->post('/text/highlight', \App\Controllers\TextController::class. ':highlight');
+    $this->post('/text/comment/{id}', \App\Controllers\TextController::class. ':comment');
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 

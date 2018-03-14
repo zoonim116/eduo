@@ -28,6 +28,16 @@
                 <small>There is no any highlights</small>
             {% endif %}
         </div>
+        <div class="col-md-12 comments">
+            <h2>Comments:</h2>
+            {% if(comments) %}
+                {% for comment in comments %}
+                    {% include '_partials/texts/comment-item.twig' %}
+                {% endfor %}
+            {% else %}
+                <small>There is no any comments</small>
+            {% endif %}
+        </div>
     </div>
 
     <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
