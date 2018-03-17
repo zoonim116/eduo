@@ -23,4 +23,28 @@ class Text_Tracking extends Model
         return $db->id() ? $db->id() : false;
     }
 
+    public static function get($user_id) {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.user_id',
+            self::$_table.'.text_id',
+            self::$_table.'.created_at',
+            'text' => [
+                'texts.repository_id',
+                'texts.title',
+                'texts.short_description',
+                'texts.id(text_id)'
+            ],
+            'repository' => [
+                'repositories.id(repo_id)',
+                'repositories.name',
+                'repositories.description'
+            ]
+        ];
+        return $db->select(self::$_table, [
+            "[>]texts" => ['text_id' => 'id'],
+            "[>]repositories" => ['texts.repository_id' => 'id']
+        ], $columns, [self::$_table.'.user_id' => $user_id, 'GROUP' => self::$_table.'.text_id', 'ORDER' => [self::$_table.'.created_at' => 'DESC']]);
+    }
+
 }

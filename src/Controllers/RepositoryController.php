@@ -95,10 +95,11 @@ class RepositoryController extends BaseController
 
     public function view(Request $request, Response $response, $args) {
         $repo_id = $args['id'];
-        if($this->auth->check() && $repo_id) {
+        $repo = Repository::get($repo_id);
+        if($this->auth->check() && $repo_id && $repo['user_id'] !== $this->auth->get_user_id()) {
             Repository_Tracking::create($this->auth->get_user_id(), $repo_id);
         }
-        $repo = Repository::get($repo_id);
+
         $texts = Text::get_by_repo($repo_id);
         $this->render($response,'repository/view.twig', compact('texts', 'repo'));
     }

@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\Repository;
+use App\Models\Repository_Tracking;
 use App\Models\Text;
+use App\Models\Text_Tracking;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -29,8 +31,9 @@ class HomeController extends BaseController
      * @param $args
      */
     public function dashboard($request, $response, $args) {
-
+        $trackings = Repository_Tracking::get($this->auth->get_user_id());
+        $trackings_text = Text_Tracking::get($this->auth->get_user_id());
         $this->title = "Dashboard";
-        $this->render($response,'home/dashboard.twig');
+        $this->render($response,'home/dashboard.twig', compact('trackings', 'trackings_text'));
     }
 }

@@ -11,7 +11,51 @@
             </div>
         </div>
         <div class="col-md-9">
+            <p class="h1">Recently watched repos:</p>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Visited</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for tracking in trackings %}
+                    <tr>
+                        <th scope="row"> {{ loop.index }}</th>
+                        <td> <a href="{{ path_for('repository.view', {id: tracking.repository_id}) }}"> {{ tracking.repository.name }} </a></td>
+                        <td>{{ tracking.repository.description }}</td>
+                        <td>{{ tracking.created_at | timeDiff }}</td>
+                    </tr>
+                {% endfor  %}
+                </tbody>
+            </table>
 
+            <p class="h1">Recently watched texts:</p>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Repository</th>
+                    <th scope="col">Visited</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for tt in trackings_text %}
+                    <tr>
+                        <th scope="row"> {{ loop.index }}</th>
+                        <td> <a href="{{ path_for('text.view', {id: tt.text_id}) }}"> {{ tt.text.title }} </a></td>
+                        <td>{{ tt.text.short_description }}</td>
+                        <td><a href="{{ path_for('repository.view', {id: tt.repository.repo_id}) }}">{{ tt.repository.name }}</a> </td>
+                        <td>{{ tt.created_at | timeDiff }}</td>
+                    </tr>
+                {% endfor  %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

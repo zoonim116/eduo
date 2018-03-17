@@ -23,4 +23,22 @@ class Repository_Tracking extends Model
         return $db->id() ? $db->id() : false;
     }
 
+
+
+    public static function get($user_id) {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.user_id',
+            self::$_table.'.repository_id',
+            self::$_table.'.created_at',
+            'repository' => [
+                'repositories.name',
+                'repositories.description'
+            ]
+        ];
+        return $db->select(self::$_table, [
+            "[>]repositories" => ['repository_id' => 'id'],
+        ], $columns, [self::$_table.'.user_id' => $user_id, 'GROUP' => self::$_table.'.repository_id', 'ORDER' => [self::$_table.'.created_at' => 'DESC']]);
+    }
+
 }
