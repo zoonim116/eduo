@@ -91,4 +91,11 @@ class RepositoryController extends BaseController
             return $response->withRedirect($this->router->pathFor('repository.all'));
         }
     }
+
+    public function view(Request $request, Response $response, $args) {
+        $repo_id = $args['id'];
+
+        echo "<pre>";
+        die(var_dump($repo_id));
+    }
 }

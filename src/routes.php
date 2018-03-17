@@ -24,7 +24,7 @@ $app->group('', function () {
     $this->post('/repository/create', \App\Controllers\RepositoryController::class. ':create');
     $this->get('/repository/delete/{id}', \App\Controllers\RepositoryController::class. ':delete')->setName('repository.delete');
     $this->get('/repository/edit/{id}', \App\Controllers\RepositoryController::class. ':edit')->setName('repository.edit');
-    $this->get('/repository/view/{id}', \App\Controllers\RepositoryController::class. ':view')->setName('repository.view');
+
     $this->get('/repository/texts/{id}', \App\Controllers\RepositoryController::class. ':texts')->setName('repository.texts');
     $this->post('/repository/edit/{id}', \App\Controllers\RepositoryController::class. ':edit');
     $this->get('/text/create', \App\Controllers\TextController::class. ':create')->setName('text.create');
@@ -41,3 +41,4 @@ $app->group('', function () {
 // Both
 
 $app->get('/text/view/{id}', \App\Controllers\TextController::class. ':view')->setName('text.view');
+$app->get('/repository/view/{id}', \App\Controllers\RepositoryController::class. ':view')->setName('repository.view');

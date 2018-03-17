@@ -100,4 +100,23 @@ class Repository extends Model
         return $db->get(self::$_table, 'user_id', ['id' => $repository_id]) === $user_id;
     }
 
+    public static function get_recent() {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.id(repo_id)',
+            self::$_table.'.name',
+            self::$_table.'.description',
+            self::$_table.'.updated_at',
+            'user' => [
+                'users.firstname',
+                'users.lastname',
+                'users.id',
+                'users.email',
+            ],
+        ];
+        return $db->select(self::$_table, [
+            "[>]users" => ['user_id' => 'id'],
+        ], $columns, [self::$_table.'.visibility' => 2, 'ORDER' => [self::$_table.'.updated_at' => 'DESC'], 'LIMIT' => 10]);
+    }
+
 }
