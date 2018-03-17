@@ -108,4 +108,8 @@ class Text extends Model
             'id[=]' => $id
         ]);
     }
+
+    public static function get_recent() {
+
+    }
 }

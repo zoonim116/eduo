@@ -1,6 +1,7 @@
 {% extends "layout.twig" %}
 {% block content %}
-    <p class="h1">Recent repositories:</p>
+    <p class="d-inline h1">Recent repositories:</p>
+    <a class="btn btn btn-link" href="">Show more</a>
     {% if(repos) %}
         <div class="card-columns">
             {% for repo in repos %}
@@ -11,5 +12,7 @@
         <p class="text-center">No repositories :(</p>
     {% endif %}
 
+    <p class="d-inline h1">Recent texts:</p>
+    <a class="btn btn btn-link" href="">Show more</a>
 
 {% endblock %}

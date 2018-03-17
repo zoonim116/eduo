@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Diff;
 use App\Models\Highlight;
 use App\Models\Model;
+use App\Models\Text_Tracking;
 use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -90,6 +91,9 @@ class TextController extends BaseController
 
     public function view(Request $request, Response $response, $args) {
         $text_id = $args['id'];
+        if($this->auth->check() && $text_id) {
+            Text_Tracking::create($this->auth->get_user_id(), $text_id);
+        }
         $text = Text::get_with_relations($text_id);
         if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
             $diffs = Diff::get($text_id);
