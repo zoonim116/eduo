@@ -1,0 +1,18 @@
+{% extends "layout.twig" %}
+{% block content %}
+
+    <div class="col-md-12">
+        <p class="h1">{{ repo.name }} :</p>
+        <small>{{ repo.description  }}</small>
+    </div>
+
+    {% if(texts) %}
+        <div class="card-columns">
+        {% for text in texts %}
+            {% include '_partials/repository/view-item.twig' %}
+        {% endfor %}
+        </div>
+    {% else %}
+        <span>There is no texts in this repo :(</span>
+    {% endif %}
+{% endblock %}

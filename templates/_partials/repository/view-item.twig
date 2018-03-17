@@ -1,0 +1,7 @@
+<div class="card border-success">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{{ path_for('text.view', {'id': text.id }) }}" >{{ text.title }}</a></h5>
+        <p class="card-text">{{ text.short_description }}</p>
+        <p class="card-text"><small class="text-muted">Last updated {{ text.updated_at | timeDiff }}</small></p>
+    </div>
+</div>

@@ -119,4 +119,8 @@ class Repository extends Model
         ], $columns, [self::$_table.'.visibility' => 2, 'ORDER' => [self::$_table.'.updated_at' => 'DESC'], 'LIMIT' => 10]);
     }
 
+    public static function trach($user_id, $repo_id) {
+
+    }
+
 }
