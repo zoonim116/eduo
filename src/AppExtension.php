@@ -14,6 +14,9 @@ class AppExtension extends \Twig_Extension
 
     public function timediffFilter($time)
     {
-        return Helper::time_elapsed_string("@{$time}");
+        if($time) {
+            return Helper::time_elapsed_string("@{$time}");
+        }
+        return '';
     }
 }
