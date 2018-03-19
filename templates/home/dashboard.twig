@@ -58,7 +58,13 @@
             </table>
 
             <p class="h1">My highlights:</p>
-            {% include '_partials/dashboard/highlight_item.twig' %}
+            {% if (highlights) %}
+                {% for highlight in highlights %}
+                    {% include '_partials/dashboard/highlight_item.twig' %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center mt-3">No highlight :(</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -1,7 +1,9 @@
-<div class="card ">
+<div class="card changes-item">
     <div class="card-body">
-        <h5 class="card-title"><a href="{{ path_for('repository.view', {'id': repo.repo_id }) }}" >{{ repo.name }}</a></h5>
-        <p class="card-text">{{ repo.description }}</p>
-        <p class="card-text"><small class="text-muted">Last updated {{ repo.updated_at | timeDiff }}</small></p>
+        <h5 class="card-title"><a href="{{ path_for('text.view', {'id' : highlight.text_id}) }}"> {{ highlight.text.title }}</a></h5>
+        <p class="card-text">{{ highlight.highlight | raw }}</p>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted"><b>Created</b> {{ highlight.created_at | timeDiff }}</small>
     </div>
 </div>
