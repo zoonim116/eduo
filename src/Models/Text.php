@@ -137,7 +137,7 @@ class Text extends Model
         return $db->select(self::$_table, [
             "[>]users" => ['user_id' => 'id'],
             "[>]repositories" => ['repository_id' => 'id']
-        ], $columns, [self::$_table.'.status' => 2, 'ORDER' => [self::$_table.'.updated_at' => 'DESC'], 'LIMIT' => 12]);
+        ], $columns, ["AND" => [self::$_table.'.status' => 2, 'repositories.visibility' => 2], 'ORDER' => [self::$_table.'.updated_at' => 'DESC'], 'LIMIT' => 12]);
 
     }
 }

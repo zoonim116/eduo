@@ -1,27 +1,27 @@
 {% extends "layout.twig" %}
 {% block content %}
-    <p class="d-inline h1">Recent repositories:</p>
-    <a class="btn btn btn-link" href="#">Show more</a>
+    <p class="d-inline h1 ">Recent repositories:</p>
+    {#<a class="btn btn btn-link" href="#">Show more</a>#}
     {% if(repos) %}
-        <div class="card-columns">
+        <div class="card-columns mt-3">
             {% for repo in repos %}
                 {% include '_partials/homepage/repository_item.twig' %}
             {% endfor  %}
         </div>
     {% else %}
-        <p class="text-center">No repositories :(</p>
+        <p class="text-center mt-3">No repositories :(</p>
     {% endif %}
 
     <p class="d-inline h1">Recent texts:</p>
-    <a class="btn btn btn-link" href="#">Show more</a>
+    {#<a class="btn btn btn-link" href="#">Show more</a>#}
     {% if(texts) %}
-        <div class="card-columns">
+        <div class="card-columns mt-3">
             {% for text in texts %}
                 {% include '_partials/homepage/text_item.twig' %}
             {% endfor  %}
         </div>
     {% else %}
-        <p class="text-center">No text :(</p>
+        <p class="text-center mt-3">No text :(</p>
     {% endif %}
 
 {% endblock %}

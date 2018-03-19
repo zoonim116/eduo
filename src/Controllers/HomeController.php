@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Highlight;
 use App\Models\Repository;
 use App\Models\Repository_Tracking;
 use App\Models\Text;
@@ -33,7 +34,9 @@ class HomeController extends BaseController
     public function dashboard($request, $response, $args) {
         $trackings = Repository_Tracking::get($this->auth->get_user_id());
         $trackings_text = Text_Tracking::get($this->auth->get_user_id());
+        $highlights = Highlight::get_by_user($this->auth->get_user_id());
         $this->title = "Dashboard";
-        $this->render($response,'home/dashboard.twig', compact('trackings', 'trackings_text'));
+        $this->render($response,'home/dashboard.twig', compact('trackings', 'trackings_text',
+                                                                'highlights'));
     }
 }
