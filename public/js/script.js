@@ -11,6 +11,4 @@ $(document).ready(function () {
         $('.medium-text').find('.medium-insert-buttons').remove();
         $('.hidden-medium-text').val($('.medium-text').html());
     });
-
-    $('.text').selectionSharer();
 });

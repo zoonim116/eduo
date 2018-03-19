@@ -64,5 +64,12 @@
             </div>
         </div>
     </div>
+    {% if(auth.check) %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            $('.text').selectionSharer();
+        });
+    </script>
+    {% endif %}
 {% endblock %}
 
