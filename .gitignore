@@ -1,4 +1,4 @@
-git@github.com:zoonim116/eduo.git /vendor/
+/vendor/
 /logs/*
 /public/upload/*
 !/logs/README.md
