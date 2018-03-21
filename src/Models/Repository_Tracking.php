@@ -24,7 +24,6 @@ class Repository_Tracking extends Model
     }
 
 
-
     public static function get($user_id) {
         $db = self::forge();
         $columns = [
@@ -40,5 +39,7 @@ class Repository_Tracking extends Model
             "[>]repositories" => ['repository_id' => 'id'],
         ], $columns, [self::$_table.'.user_id' => $user_id, 'GROUP' => self::$_table.'.repository_id', 'ORDER' => [self::$_table.'.created_at' => 'DESC']]);
     }
+
+    public static function isWatching($user_id, $repo_id);
 
 }

@@ -105,6 +105,8 @@ class RepositoryController extends BaseController
             Repository_Tracking::create($this->auth->get_user_id(), $repo_id);
         }
 
+        $isWatching = Repository_Tracking::get()
+
         $texts = Text::get_by_repo($repo_id);
         $this->render($response,'repository/view.twig', compact('texts', 'repo'));
     }
