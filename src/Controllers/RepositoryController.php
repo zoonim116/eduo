@@ -13,11 +13,11 @@ use Respect\Validation\Validator as v;
 class RepositoryController extends BaseController
 {
 
-    public function all(Request $request, Response $response, $args) {
+    public function my(Request $request, Response $response, $args) {
         $private = Repository::find($this->auth->get_user_id(), 1);
         $public = Repository::find($this->auth->get_user_id(), 2);
         $this->title = "All repositories";
-        $this->render($response,'repository/all.twig', compact('private', 'public'));
+        $this->render($response,'repository/my.twig', compact('private', 'public'));
     }
 
     public function create(Request $request, Response $response, $args) {
@@ -35,7 +35,7 @@ class RepositoryController extends BaseController
 
             if($res) {
                 $this->flash->addMessage('success', "Repository {$request->getParam('name')} created successfully");
-                return $response->withRedirect($this->router->pathFor('repository.all'));
+                return $response->withRedirect($this->router->pathFor('repository.my'));
             } else {
                 $this->flash->addMessage('error', "Something went wrong");
                 return $response->withRedirect($this->router->pathFor('repository.create'));
@@ -54,7 +54,7 @@ class RepositoryController extends BaseController
             $this->flash->addMessage('error', "You don't have permission");
         }
 
-        return $response->withRedirect($this->router->pathFor('repository.all'));
+        return $response->withRedirect($this->router->pathFor('repository.my'));
     }
 
     public function edit(Request $request, Response $response, $args) {
@@ -72,12 +72,12 @@ class RepositoryController extends BaseController
                 }
                 Repository::update($repo_id, $request->getParams());
                 $this->flash->addMessage('success', "Repository was successfully updated");
-                return $response->withRedirect($this->router->pathFor('repository.all'));
+                return $response->withRedirect($this->router->pathFor('repository.my'));
             }
             $this->title = "Edit: {$repo['name']}";
             $this->render($response,'repository/edit.twig', ['fields' => $repo]);
         } else {
-            return $response->withRedirect($this->router->pathFor('repository.all'));
+            return $response->withRedirect($this->router->pathFor('repository.my'));
         }
     }
 
@@ -89,7 +89,7 @@ class RepositoryController extends BaseController
             $this->render($response,'repository/texts.twig', compact('texts','repo'));
         } else {
             $this->flash->addMessage('error', "You are not owner of repository");
-            return $response->withRedirect($this->router->pathFor('repository.all'));
+            return $response->withRedirect($this->router->pathFor('repository.my'));
         }
     }
 
