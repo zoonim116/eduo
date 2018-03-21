@@ -20,6 +20,11 @@ class RepositoryController extends BaseController
         $this->render($response,'repository/my.twig', compact('private', 'public'));
     }
 
+    public function all(Request $request, Response $response, $args) {
+        $repos = Repository::get_all();
+        $this->render($response,'repository/all.twig', compact('repos'));
+    }
+
     public function create(Request $request, Response $response, $args) {
         if($request->isPost()) {
             $validation = $this->validator->validate($request, [

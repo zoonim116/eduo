@@ -138,4 +138,23 @@ class Repository extends Model
             ], $columns, [self::$_table.'.visibility' => 2, 'ORDER' => [self::$_table.'.updated_at' => 'DESC'], 'LIMIT' => 12]);
     }
 
+    public static function get_all() {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.id(repo_id)',
+            self::$_table.'.name',
+            self::$_table.'.description',
+            self::$_table.'.updated_at',
+            'user' => [
+                'users.firstname',
+                'users.lastname',
+                'users.id',
+                'users.email',
+            ],
+        ];
+        return $db->select(self::$_table, [
+            "[>]users" => ['user_id' => 'id'],
+        ], $columns, [self::$_table.'.visibility' => 2, 'ORDER' => [self::$_table.'.updated_at' => 'DESC']]);
+    }
+
 }

@@ -20,6 +20,8 @@ $app->group('', function () {
     $this->get('/user/logout', \App\Controllers\UserController::class. ':logout')->setName('logout');
     $this->get('/repository/my', \App\Controllers\RepositoryController::class. ':my')->setName('repository.my');
     $this->post('/repository/my', \App\Controllers\RepositoryController::class. ':my');
+    $this->get('/repository/all', \App\Controllers\RepositoryController::class. ':all')->setName('repository.all');
+    $this->post('/repository/all', \App\Controllers\RepositoryController::class. ':all');
     $this->get('/repository/create', \App\Controllers\RepositoryController::class. ':create')->setName('repository.create');
     $this->post('/repository/create', \App\Controllers\RepositoryController::class. ':create');
     $this->get('/repository/delete/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':delete')->setName('repository.delete');
