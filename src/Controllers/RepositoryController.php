@@ -101,13 +101,38 @@ class RepositoryController extends BaseController
     public function view(Request $request, Response $response, $args) {
         $repo_id = $args['id'];
         $repo = Repository::get($repo_id);
+        $isWatching = false;
+
         if($this->auth->check() && $repo_id && $repo['user_id'] !== $this->auth->get_user_id()) {
-            Repository_Tracking::create($this->auth->get_user_id(), $repo_id);
+            $isWatching = Repository_Tracking::isWatching($this->auth->get_user_id(), $repo_id);
         }
-
-        $isWatching = Repository_Tracking::get()
-
         $texts = Text::get_by_repo($repo_id);
-        $this->render($response,'repository/view.twig', compact('texts', 'repo'));
+        $this->render($response,'repository/view.twig', compact('texts', 'repo', 'isWatching'));
+    }
+
+    public function watch(Request $request, Response $response, $args) {
+        $repo_id = $request->getParam('repo_id');
+        if ($repo_id && (int)$repo_id > 0) {
+            $repo = Repository::get($repo_id);
+            if($repo['user_id'] !== $this->auth->get_user_id()) {
+                $res = Repository_Tracking::create($this->auth->get_user_id(), $repo_id);
+                if($res)
+                    die(json_encode(['status' => 'success', 'sub_id' => $res]));
+            }
+        }
+        die(json_encode(['status' => 'error']));
+    }
+
+    public function unwatch(Request $request, Response $response, $args) {
+        $sub_id = $request->getParam('sub_id');
+        if($sub_id && (int)$sub_id > 0) {
+            $subscription = Repository_Tracking::get($sub_id);
+            if($subscription && $subscription['user_id'] == $this->auth->get_user_id()) {
+                if(Repository_Tracking::delete($sub_id)) {
+                    die(json_encode(['status' => 'success', 'repo_id' => $subscription['repository_id']]));
+                }
+            }
+        }
+        die(json_encode(['status' => 'error']));
     }
 }

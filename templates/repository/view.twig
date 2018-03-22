@@ -1,9 +1,15 @@
 {% extends "layout.twig" %}
 {% block content %}
 
-    <div class="col-md-12">
+    <div class="col-md-12 repository-header-title">
         <p class="d-inline h1">{{ repo.name }} :</p>
-        <a href="#" data class="btn float-right btn-outline-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
+        {%  if(auth.check) %}
+            {% if(isWatching) %}
+                <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning repo-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+            {% else %}
+                <a href="#" data-repo-id="{{ repo.id }}"  class="btn float-right btn-outline-warning repo-subscribe"><i class="fa fa-eye" aria-hidden="true"></i></a>
+            {% endif %}
+        {%  endif %}
     </div>
 
     {% if(texts) %}

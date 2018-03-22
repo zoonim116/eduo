@@ -26,6 +26,8 @@ $app->group('', function () {
     $this->post('/repository/create', \App\Controllers\RepositoryController::class. ':create');
     $this->get('/repository/delete/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':delete')->setName('repository.delete');
     $this->get('/repository/edit/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':edit')->setName('repository.edit');
+    $this->post('/repository/watch', \App\Controllers\RepositoryController::class. ':watch');
+    $this->post('/repository/unwatch', \App\Controllers\RepositoryController::class. ':unwatch');
 
     $this->get('/repository/texts/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':texts')->setName('repository.texts');
     $this->post('/repository/edit/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':edit');
