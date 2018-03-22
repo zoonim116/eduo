@@ -32,7 +32,7 @@ class HomeController extends BaseController
      * @param $args
      */
     public function dashboard($request, $response, $args) {
-        $trackings = Repository_Tracking::get($this->auth->get_user_id());
+        $trackings = Repository_Tracking::get_by_id($this->auth->get_user_id());
         $trackings_text = Text_Tracking::get($this->auth->get_user_id());
         $highlights = Highlight::get_by_user($this->auth->get_user_id());
         $this->title = "Dashboard";

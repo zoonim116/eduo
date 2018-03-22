@@ -251,6 +251,21 @@
             self.$popunder.find('a.comment').on('click', function(e) { self.comment(e); });
             $('body').append(self.$popunder);
 
+            // Add comment
+            $('.add-comment').on('click', function (e) {
+                var comment = $('#commentModal #message-text').val();
+                var text = self.getSelectedText(e);
+                var text_id = $('[name="text_id"]').val();
+                $.post( "/text/comment/" + text_id, { comment: comment, text: text}).done(function( data ) {
+                        var response = JSON.parse(data);
+                        if(response.status == 'success') {
+                            // var comment = $('#commentModal #message-text').val('');
+                            // $('#commentModal').modal('hide');
+                            window.location.reload();
+                        }
+                });
+                // console.log(self.getSelectedText(e));
+            });
         };
 
         this.setElements = function(elements) {
