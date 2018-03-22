@@ -12,6 +12,7 @@ $(document).ready(function () {
         $('.hidden-medium-text').val($('.medium-text').html());
     });
 
+    //Watch for repository
     $(document).on('click', '.repo-subscribe', function (e) {
         e.preventDefault();
         var repo_id = $(this).data('repo-id');
@@ -26,6 +27,7 @@ $(document).ready(function () {
         }
     });
 
+    //Unwatch for repository
     $(document).on('click', '.repo-unsubscribe', function (e) {
         e.preventDefault();
         var sub_id = $(this).data('sub-id');
@@ -40,5 +42,34 @@ $(document).ready(function () {
         }
     });
 
+    //Watch for text
 
+    $(document).on('click', '.text-subscribe', function (e) {
+        e.preventDefault();
+        var text_id = $(this).data('text-id');
+        if(text_id && text_id > 0) {
+            $.post( "/text/watch", { text_id: text_id}).done(function( data ) {
+                var response = JSON.parse(data);
+                if(response.status == 'success') {
+                    $('.text-subscribe').remove();
+                    $('.title').append("<a href=\"#\" data-sub-id=\""+ response.sub_id +"\" class=\"btn float-right btn-outline-warning text-unsubscribe\"><i class=\"fa fa-eye-slash\" aria-hidden=\"true\"></i></a>");
+                }
+            });
+        }
+    });
+
+    // Unwatch for text
+    $(document).on('click', '.text-unsubscribe', function (e) {
+        e.preventDefault();
+        var sub_id = $(this).data('sub-id');
+        if(sub_id && sub_id > 0) {
+            $.post( "/text/unwatch", { sub_id: sub_id}).done(function( data ) {
+                var response = JSON.parse(data);
+                if(response.status == 'success') {
+                    $('.text-unsubscribe').remove();
+                    $('.title').append("<a href=\"#\" data-text-id=\""+ response.text_id +"\" class=\"btn float-right btn-outline-warning text-subscribe\"><i class=\"fa fa-eye\" aria-hidden=\"true\"></i></a>");
+                }
+            });
+        }
+    });
 });

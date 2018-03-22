@@ -53,6 +53,7 @@ class Text extends Model
             'title',
             'short_description',
             'text',
+            'user_id',
             'status',
             'repository_id',
             'created_at',

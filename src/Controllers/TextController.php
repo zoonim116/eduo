@@ -91,17 +91,18 @@ class TextController extends BaseController
 
     public function view(Request $request, Response $response, $args) {
         $text_id = $args['id'];
-        if($this->auth->check() && $text_id) {
-            Text_Tracking::create($this->auth->get_user_id(), $text_id);
-        }
         $text = Text::get_with_relations($text_id);
         if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
+            $isWatching = false;
             $diffs = Diff::get($text_id);
             $highlights = Highlight::get($text_id, $this->auth->get_user_id());
             $comments = Comment::get_all($text_id);
+            if($this->auth->check()) {
+                $isWatching = Text_Tracking::isWatching($this->auth->get_user_id(), $text_id);
+            }
             $this->title = $text['title'];
             $this->render($response,'text/view.twig', compact('text', 'diffs', 'user', 'highlights',
-                                                                        'comments'));
+                                                                        'comments', 'isWatching'));
         } else {
             die("Access denied");
         }
@@ -147,5 +148,28 @@ class TextController extends BaseController
         }
 
         $response->withStatus(404);
+    }
+
+    public function watch(Request $request, Response $response, $args) {
+        $text_id = $request->getParam('text_id');
+        $text = Text::get($text_id);
+        if($text && $text['status'] == 2 && $text['user_id'] !== $this->auth->get_user_id()) {
+            $sub_id =  Text_Tracking::create($this->auth->get_user_id(), $text_id);
+            if ($sub_id)
+                die(json_encode(['status' => 'success', 'sub_id' => $sub_id]));
+        }
+        die(json_encode(['status' => 'error']));
+    }
+
+    public function unwatch(Request $request, Response $response, $args) {
+        $sub_id = $request->getParam('sub_id');
+        if($sub_id && (int)$sub_id > 0) {
+            $subscription = Text_Tracking::get($sub_id);
+            if($subscription && $subscription['user_id'] === $this->auth->get_user_id()) {
+                if(Text_Tracking::delete($sub_id))
+                    die(json_encode(['status' => 'success', 'repo_id' => $subscription['text_id']]));
+            }
+        }
+        die(json_encode(['status' => 'error']));
     }
 }

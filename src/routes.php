@@ -36,9 +36,10 @@ $app->group('', function () {
     $this->get('/text/delete/{id:[0-9]+}', \App\Controllers\TextController::class. ':delete')->setName('text.delete');
     $this->get('/text/edit/{id:[0-9]+}', \App\Controllers\TextController::class. ':edit')->setName('text.edit');
     $this->post('/text/edit/{id:[0-9]+}', \App\Controllers\TextController::class. ':edit');
-    $this->get('/text/test', \App\Controllers\TextController::class. ':test');
     $this->post('/text/highlight', \App\Controllers\TextController::class. ':highlight');
     $this->post('/text/comment/{id:[0-9]+}', \App\Controllers\TextController::class. ':comment');
+    $this->post('/text/watch', \App\Controllers\TextController::class. ':watch');
+    $this->post('/text/unwatch', \App\Controllers\TextController::class. ':unwatch');
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 

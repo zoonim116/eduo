@@ -2,8 +2,15 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12 title">
-           <h1> {{ text.title  }} </h1>
+           <h1 class="d-inline"> {{ text.title  }} </h1>
             <input type="hidden" name="text_id" value="{{ text.text_id}}">
+            {%  if(auth.check) %}
+                {% if(isWatching) %}
+                    <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning text-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                {% else %}
+                    <a href="#" data-text-id="{{ text.text_id }}"  class="btn float-right btn-outline-warning text-subscribe"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                {% endif %}
+            {%  endif %}
         </div>
         <div class="col-md-12 text">
             {{ text.text | raw}}
