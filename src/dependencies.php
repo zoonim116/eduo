@@ -11,6 +11,8 @@ use \App\Validation\Validator;
 use Respect\Validation\Validator as v;
 use Dotenv\Dotenv;
 use \Slim\Csrf\Guard;
+use Aptoma\Twig\Extension\MarkdownExtension;
+use Aptoma\Twig\Extension\MarkdownEngine;
 // DIC configuration
 
 $container = $app->getContainer();
@@ -34,6 +36,8 @@ $container['view'] = function($container) {
     $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
     $view->addExtension(new TwigExtension($container['router'], $container['request']->getUri()));
     $view->addExtension(new \App\AppExtension());
+    $engine = new MarkdownEngine\MichelfMarkdownEngine();
+    $view->addExtension(new MarkdownExtension($engine));
     return $view;
 };
 

@@ -61,3 +61,12 @@ body {
 a.action {
     color: #fff;
 }
+
+.ChangeReplace ins, .ChangeDelete ins, .ChangeInsert ins {
+    background: #b8fdba;
+    text-decoration: none;
+}
+
+.ChangeReplace del, .ChangeDelete del, .ChangeInsert del {
+    background: #fdc8c8;
+}

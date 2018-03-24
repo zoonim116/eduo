@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Helper;
+use App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Context;
+use App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Unified;
 use App\Models\Comment;
 use App\Models\Diff;
 use App\Models\Highlight;
@@ -55,6 +57,39 @@ class TextController extends BaseController
         return $response->withRedirect($this->router->pathFor('repository.texts', ['id' => $text['repository_id']]));
     }
 
+//    public function edit(Request $request, Response $response, $args) {
+//        $text_id = $args['id'];
+//        $text = Text::get($text_id);
+//        $repos = Repository::find($this->auth->get_user_id());
+//        if(Text::is_owner($text_id, $this->auth->get_user_id())) {
+//            if($request->isPost()) {
+//                if((int)$text['status'] === 2) {
+//                    $diff = Helper::htmlDiff($text['text'], rtrim($request->getParam('text')), "+");
+//                    preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
+//                    if($desc_out[0]) {
+//                        foreach ($desc_out[0] as $sentence) {
+//                            $res = preg_match('/<del>/ui', $sentence);
+//                            if ($res) {
+//                                Diff::create($text_id, $sentence);
+//                            }
+//                        }
+//                    } else {
+//                        Diff::create($text_id, $diff);
+//                    }
+//                }
+//                $status = 2;
+//                if (empty($request->getParam('draft', 'published'))) {
+//                    $status = 1;
+//                }
+//                Text::update($text_id, $request->getParams(), $status);
+//                $this->flash->addMessage('success', "Text successfully updated");
+//                return $response->withRedirect($this->router->pathFor('repository.texts', ['id' => $text['repository_id']]));
+//            }
+//        }
+//        $this->title = "Edit: {$text['title']}";
+//        $this->render($response,'text/edit.twig', ['fields' => $text, 'repos' => $repos]);
+//    }
+
     public function edit(Request $request, Response $response, $args) {
         $text_id = $args['id'];
         $text = Text::get($text_id);
@@ -62,19 +97,45 @@ class TextController extends BaseController
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
                 if((int)$text['status'] === 2) {
-                    $allowed_tags = '<ul><ol><li><b><a><i><u><blockquote><img><p>';
-                    $diff = Helper::htmlDiff(strip_tags($text['text'], $allowed_tags), strip_tags($request->getParam('text'), $allowed_tags));
-                    preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
-                    if($desc_out[0]) {
-                        foreach ($desc_out[0] as $sentence) {
-                            $res = preg_match('/<del>/ui', $sentence);
-                            if ($res) {
-                                Diff::create($text_id, $sentence);
-                            }
-                        }
-                    } else {
-                        Diff::create($text_id, $diff);
-                    }
+
+                    $old = explode("\n", $text['text']);
+                    $new = explode("\n", rtrim($request->getParam('text'), '+'));
+
+                    $options = array(
+                        'ignoreWhitespace' => true,
+                        'ignoreCase' => true,
+                    );
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff.php';
+                    $diff = new \App\Libraries\Diff($old, $new, $options);
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/Inline.php';
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Text/Unified.php';
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Text/Context.php';
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/Array.php';
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/SideBySide.php';
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/Inline.php';
+
+//                    $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_Inline();
+//                    $renderer = new \App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Unified();
+//                    $renderer = new \App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Context();
+//                    $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_Array();
+                        $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_SideBySide();
+//                    echo "<pre>";
+//                    die(var_dump($diff->render($renderer)));
+//                    die(var_dump(Helper::htmlDiff($diff->render($renderer))));
+                    Diff::create($text_id, $diff->render($renderer));
+//                    $allowed_tags = '<ul><ol><li><b><a><i><u><blockquote><img>';
+//                    $diff = Helper::htmlDiff(strip_tags($text['text'], $allowed_tags), strip_tags($request->getParam('text'), $allowed_tags));
+//                    preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
+//                    if($desc_out[0]) {
+//                        foreach ($desc_out[0] as $sentence) {
+//                            $res = preg_match('/<del>/ui', $sentence);
+//                            if ($res) {
+//                                Diff::create($text_id, $sentence);
+//                            }
+//                        }
+//                    } else {
+//                        Diff::create($text_id, $diff);
+//                    }
                 }
                 $status = 2;
                 if (empty($request->getParam('draft', 'published'))) {

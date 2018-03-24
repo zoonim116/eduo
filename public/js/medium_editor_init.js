@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    var markDownEl = document.querySelector(".hidden-medium-text");
+
     if ($('.medium-text').length > 0) {
         var editor = new MediumEditor('.medium-text', {
             toolbar: {
@@ -6,19 +8,22 @@ document.addEventListener("DOMContentLoaded", function () {
             },
                 buttonLabels: 'fontawesome',
                 extensions: {
-                markdown: new MeMarkdown(function (md) {
-                // markDownEl.textContent = md;
-            }),
+                markdown: new MeMarkdown({
+                    events: ["input", "change", 'upd']
+                },
+                function (md) {
+                    markDownEl.value = md;
+                }),
                 table: new MediumEditorTable(),
                 'list-extension': new MediumEditorList(),
                 autolist: new AutoList()
             },
                 mediumEditorList: {
-                newParagraphTemplate: '<li>...</li>',
-                buttonTemplate: '<b><i class="fa fa-list" aria-hidden="true"></i></b>',
-                addParagraphTemplate: 'Add new item',
-                isEditable: true
-            }
+                    newParagraphTemplate: '<li>...</li>',
+                    buttonTemplate: '<b><i class="fa fa-list" aria-hidden="true"></i></b>',
+                    addParagraphTemplate: 'Add new item',
+                    isEditable: true
+                }
         });
         $('.medium-text').mediumInsert({
             editor: editor,

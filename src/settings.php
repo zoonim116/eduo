@@ -1,10 +1,10 @@
 <?php
 return [
     'settings' => [
-        'appName' => 'Eduo',
+        'appName' => 'Edoo',
         'displayErrorDetails' => true, // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
-
+        'librariesPath' => __DIR__ . '/Libraries/',
         // Renderer settings
         'renderer' => [
             'template_path' => __DIR__ . '/../templates/',

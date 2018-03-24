@@ -42,17 +42,27 @@ class Helper
      * @param $new
      * @return array
      */
-    public static function htmlDiff($old, $new){
-        $ret = '';
-        $diff = self::diff(preg_split("/[\s]+/", $old), preg_split("/[\s]+/", $new));
-        foreach($diff as $k){
-            if(is_array($k)) {
-                $ret .= (!empty($k['d']) ? "<del>" . implode(' ', $k['d']) . "</del> " : '') .
-                    (!empty($k['i']) ? "<ins>" . implode(' ', $k['i']) . "</ins> " : '');
+//    public static function htmlDiff($old, $new){
+//        $ret = '';
+//        $diff = self::diff(preg_split("/[\s]+/", $old), preg_split("/[\s]+/", $new));
+//        foreach($diff as $k){
+//            if(is_array($k)) {
+//                $ret .= (!empty($k['d']) ? "<del>" . implode(' ', $k['d']) . "</del> " : '') .
+//                    (!empty($k['i']) ? "<ins>" . implode(' ', $k['i']) . "</ins> " : '');
+//            }
+//            else $ret .= ' ';
+//        }
+//        return $ret;
+//    }
+
+    public static function htmlDiff($diffs){
+        foreach ($diffs as $diff) {
+            foreach ($diff as $d) {
+                if($d['tag'] == 'replace') {
+
+                }
             }
-            else $ret .= ' ';
         }
-        return $ret;
     }
 
     private static function diff($old, $new){

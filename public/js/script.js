@@ -7,9 +7,8 @@ $(document).ready(function () {
         },
     });
 
-    $('[name="create_text"]').on('submit', function () {
-        $('.medium-text').find('.medium-insert-buttons').remove();
-        $('.hidden-medium-text').val($('.medium-text').html());
+    $('.medium-text').focusout(function () {
+        document.querySelector('.medium-text').dispatchEvent(new Event('upd'));
     });
 
     //Watch for repository
