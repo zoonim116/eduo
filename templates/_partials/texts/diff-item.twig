@@ -1,6 +1,6 @@
 <div class="card changes-item">
-    <div class="card-body">
+    <div class="card-body table-responsive">
         <h5 class="card-title"><i>{{ text.user.firstname }} {{ text.user.lastname }}</i> updated {{ diff.created_at | timeDiff }}</h5>
-        <p class="card-text">{{ diff.diff | raw }}</p>
+        <p class="card-text">{{ diff.diff | markdown }}</p>
     </div>
 </div>

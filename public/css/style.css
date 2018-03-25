@@ -70,3 +70,37 @@ a.action {
 .ChangeReplace del, .ChangeDelete del, .ChangeInsert del {
     background: #fdc8c8;
 }
+
+.Differences img {
+    max-width: 200px;
+}
+
+img {
+    max-width: 100%;
+}
+
+div {
+    word-wrap: break-word;
+}
+
+.changes-item table {
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 10px;
+}
+
+@media only screen and (max-width: 480px) {
+    .flex-nowrap {
+        flex-wrap: wrap !important;
+    }
+
+    .blog-header > .row > div {
+        justify-content: center !important;
+        -webkit-box-pack: center !important;
+        -ms-flex-pack: center !important;
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+
+}

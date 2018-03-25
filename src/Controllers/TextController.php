@@ -221,10 +221,13 @@ class TextController extends BaseController
 
         // handle single input with single file upload
         foreach ($uploadedFiles['files'] as $uploadedFile) {
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                $filename = Helper::moveUploadedFile($directory, $uploadedFile);
-                $url = $request->getUri()->getBaseUrl().'/uploads/'.$filename;
-                die(json_encode(['files' => [['url' => $url]]]));
+            if(in_array($uploadedFile->getClientMediaType(), ['image/jpeg', 'image/png', ['image/gif']])) {
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                    $filename = Helper::moveUploadedFile($directory, $uploadedFile);
+                    $url = $request->getUri()->getBaseUrl().'/uploads/'.$filename;
+                    $this->logger->debug($url);
+                    die(json_encode(['files' => [['url' => $url]]]));
+                }
             }
         }
         $response->write(json_encode(['status' => 'error']));
