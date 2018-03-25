@@ -85,7 +85,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 					foreach($change['changed']['lines'] as $no => $line) {
                         if ($url = strstr($line, "![](")) {
                             $url = strrchr($line,'(');
-                            $url = str_replace(' ','+', str_replace(['(', ')'], '',  $url));
+                            $url = str_replace(['(', ')'], '',  $url);
                             $line = "<img src='{$url}' alt='' />";
                         }
 						$toLine = $change['changed']['offset'] + $no + 1;
@@ -99,12 +99,13 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 				}
 				// Show deleted lines only on the left side
 				else if($change['tag'] == 'delete') {
-                    if ($url = strstr($line, "![](")) {
-                        $url = strrchr($line,'(');
-                        $url = str_replace(' ','+', str_replace(['(', ')'], '',  $url));
-                        $line = "<img src='{$url}' alt='' />";
-                    }
+
 					foreach($change['base']['lines'] as $no => $line) {
+                        if ($url = strstr($line, "![](")) {
+                            $url = strrchr($line,'(');
+                            $url = str_replace(['(', ')'], '',  $url);
+                            $line = "<img src='{$url}' alt='' />";
+                        }
 						$fromLine = $change['base']['offset'] + $no + 1;
 						$html .= '<tr>';
 //						$html .= '<th>'.$fromLine.'</th>';
@@ -120,7 +121,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 						foreach($change['base']['lines'] as $no => $line) {
                             if ($url = strstr($line, "![](")) {
                                 $url = strrchr($line,'(');
-                                $url = str_replace(' ','+', str_replace(['(', ')'], '',  $url));
+                                $url = str_replace(['(', ')'], '',  $url);
                                 $line = "<img src='{$url}' alt='' />";
                             }
 							$fromLine = $change['base']['offset'] + $no + 1;
@@ -152,7 +153,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 							}
                             if ($url = strstr($line, "![](")) {
                                 $url = strrchr($line,'(');
-                                $url = str_replace(' ','+', str_replace(['(', ')'], '',  $url));
+                                $url = str_replace(['(', ')'], '',  $url);
                                 $line = "<img src='{$url}' alt='' />";
                             }
 							$html .= '<tr>';
