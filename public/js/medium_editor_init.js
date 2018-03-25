@@ -27,6 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         $('.medium-text').mediumInsert({
             editor: editor,
+            addons: {
+                images: {
+                    fileUploadOptions: {
+                        url: '/text/upload',
+                    }
+                }
+            }
+
         });
     }
 });

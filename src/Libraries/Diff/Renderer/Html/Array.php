@@ -223,6 +223,6 @@ class Diff_Renderer_Html_Array extends Renderer\Diff_Renderer_Abstract
 	 */
 	private function htmlSafe($string)
 	{
-		return htmlspecialchars($string, ENT_NOQUOTES, 'UTF-8');
+		return $string;
 	}
 }

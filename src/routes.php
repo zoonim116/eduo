@@ -39,6 +39,7 @@ $app->group('', function () {
     $this->post('/text/comment/{id:[0-9]+}', \App\Controllers\TextController::class. ':comment');
     $this->post('/text/watch', \App\Controllers\TextController::class. ':watch');
     $this->post('/text/unwatch', \App\Controllers\TextController::class. ':unwatch');
+    $this->post('/text/upload', \App\Controllers\TextController::class. ':upload');
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 

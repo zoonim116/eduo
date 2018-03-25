@@ -107,35 +107,9 @@ class TextController extends BaseController
                     );
                     require_once $this->container->get('settings')['librariesPath'] . 'Diff.php';
                     $diff = new \App\Libraries\Diff($old, $new, $options);
-                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/Inline.php';
-                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Text/Unified.php';
-                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Text/Context.php';
-                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/Array.php';
-                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/SideBySide.php';
-                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/Inline.php';
-
-//                    $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_Inline();
-//                    $renderer = new \App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Unified();
-//                    $renderer = new \App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Context();
-//                    $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_Array();
-                        $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_SideBySide();
-//                    echo "<pre>";
-//                    die(var_dump($diff->render($renderer)));
-//                    die(var_dump(Helper::htmlDiff($diff->render($renderer))));
+                    require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/SideBySide.php';;
+                    $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_SideBySide();
                     Diff::create($text_id, $diff->render($renderer));
-//                    $allowed_tags = '<ul><ol><li><b><a><i><u><blockquote><img>';
-//                    $diff = Helper::htmlDiff(strip_tags($text['text'], $allowed_tags), strip_tags($request->getParam('text'), $allowed_tags));
-//                    preg_match_all("/.*?[.?!](?:\s|$)/s", $diff, $desc_out);
-//                    if($desc_out[0]) {
-//                        foreach ($desc_out[0] as $sentence) {
-//                            $res = preg_match('/<del>/ui', $sentence);
-//                            if ($res) {
-//                                Diff::create($text_id, $sentence);
-//                            }
-//                        }
-//                    } else {
-//                        Diff::create($text_id, $diff);
-//                    }
                 }
                 $status = 2;
                 if (empty($request->getParam('draft', 'published'))) {
@@ -232,5 +206,28 @@ class TextController extends BaseController
             }
         }
         die(json_encode(['status' => 'error']));
+    }
+
+    /**
+     * Upload text images
+     * @param Request $request
+     * @param Response $response
+     * @param $args
+     * @return string $url
+     */
+    public function upload(Request $request, Response $response, $args) {
+        $directory = $this->container->get('settings')['uploadDirectory'] ;
+        $uploadedFiles = $request->getUploadedFiles();
+
+        // handle single input with single file upload
+        foreach ($uploadedFiles['files'] as $uploadedFile) {
+            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                $filename = Helper::moveUploadedFile($directory, $uploadedFile);
+                $url = $request->getUri()->getBaseUrl().'/uploads/'.$filename;
+                die(json_encode(['files' => [['url' => $url]]]));
+            }
+        }
+        $response->write(json_encode(['status' => 'error']));
+
     }
 }
