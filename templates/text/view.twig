@@ -4,7 +4,7 @@
         <div class="col-md-12 title">
            <h1 class="d-inline"> {{ text.title  }} </h1>
             <input type="hidden" name="text_id" value="{{ text.text_id}}">
-            {%  if(auth.check) %}
+            {%  if(auth.check and auth.get_user_id != text.user_id) %}
                 {% if(isWatching) %}
                     <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning text-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 {% else %}
