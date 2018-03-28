@@ -127,10 +127,10 @@ class TextController extends BaseController
     public function view(Request $request, Response $response, $args) {
         $text_id = $args['id'];
         $text = Text::get_with_relations($text_id);
-        if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || Text::is_owner($text_id, $this->auth->get_user_id())) {
+        if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || $text && Text::is_owner($text_id, $this->auth->get_user_id())) {
             $isWatching = false;
             $diffs = Diff::get($text_id);
-            $highlights = Highlight::get($text_id, $this->auth->get_user_id());
+            $highlights = Highlight::get_by_id($text_id, $this->auth->get_user_id());
             $comments = Comment::get_all($text_id);
             if($this->auth->check()) {
                 $isWatching = Text_Tracking::isWatching($this->auth->get_user_id(), $text_id);
@@ -139,7 +139,8 @@ class TextController extends BaseController
             $this->render($response,'text/view.twig', compact('text', 'diffs', 'user', 'highlights',
                                                                         'comments', 'isWatching'));
         } else {
-            die("Access denied");
+            $this->render($response, '404.twig',[], 404 );
+//            die("Access denied");
         }
     }
 

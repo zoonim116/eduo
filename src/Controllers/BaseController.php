@@ -16,12 +16,11 @@ class BaseController
         $this->container = $container;
     }
 
-    public function render(ResponseInterface $response, $template, $data = []) {
-        $output = $data;
-        $output['title'] = $this->title;
-        $output['app_name'] = $this->container->get('settings')['appName'];
+    public function render(ResponseInterface $response, $template, $data = [], $httpCode = 200) {
+        $data['title'] = $this->title;
+        $data['app_name'] = $this->container->get('settings')['appName'];
 //        $this->container['view']->render($response, $template, $output);
-        $this->view->render($response, $template, $output);
+        $this->view->render($response, $template, $data, $httpCode);
     }
 
     /**

@@ -1,6 +1,6 @@
 <div class="card changes-item">
     <div class="card-body">
-        <h5 class="card-title"> created {{ highlight.created_at | timeDiff }}</h5>
+        <h5 class="card-title"> {{ highlight.user.firstname }} {{ highlight.user.lastname }}  created {{ highlight.created_at | timeDiff }}</h5>
         <p class="card-text">{{ highlight.highlight | raw }}</p>
     </div>
 </div>

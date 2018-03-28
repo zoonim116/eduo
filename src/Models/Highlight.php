@@ -41,6 +41,25 @@ class Highlight extends Model
         );
     }
 
+
+    public static function get_by_id($text_id) {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.id(highlight_id)',
+            self::$_table.'.highlight',
+            self::$_table.'.created_at',
+            'user' => [
+                'users.firstname',
+                'users.lastname',
+                'users.id',
+                'users.email',
+            ],
+        ];
+        return $db->select(self::$_table, [
+            "[>]users" => ['user_id' => 'id'],
+        ], $columns, [self::$_table.'.text_id' => $text_id, 'ORDER' => [self::$_table.'.created_at' => 'DESC']]);
+    }
+
     public static function get_by_user($user_id) {
         $db = self::forge();
         return $db->select(self::$_table,
