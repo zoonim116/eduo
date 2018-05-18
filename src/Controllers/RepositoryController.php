@@ -8,6 +8,7 @@ use App\Models\Text;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
+use App\Models\User;
 
 
 class RepositoryController extends BaseController
@@ -107,7 +108,8 @@ class RepositoryController extends BaseController
             $isWatching = Repository_Tracking::isWatching($this->auth->get_user_id(), $repo_id);
         }
         $texts = Text::get_by_repo($repo_id);
-        $this->render($response,'repository/view.twig', compact('texts', 'repo', 'isWatching'));
+        $user = User::find_by_id($this->auth->get_user_id());
+        $this->render($response,'repository/view.twig', compact('texts', 'repo', 'isWatching', 'user'));
     }
 
     public function watch(Request $request, Response $response, $args) {

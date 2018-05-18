@@ -35,9 +35,14 @@ class HomeController extends BaseController
         $trackings = Repository_Tracking::get_by_user($this->auth->get_user_id());
         $trackings_text = Text_Tracking::get_by_user($this->auth->get_user_id());
         $highlights = Highlight::get_by_user($this->auth->get_user_id());
+
+        $repos = Repository::find($this->auth->get_user_id() );
+        //$public = Repository::find($this->auth->get_user_id(), 2);
+        
+        
         $this->title = "Dashboard";
         $this->render($response,'home/dashboard.twig', compact('trackings',
                                                             'trackings_text',
-                                                                'highlights'));
+                                                                'highlights','repos'));
     }
 }

@@ -47,4 +47,5 @@ $app->group('', function () {
 $app->get('/repository/all', \App\Controllers\RepositoryController::class. ':all')->setName('repository.all');
 $app->post('/repository/all', \App\Controllers\RepositoryController::class. ':all');
 $app->get('/text/view/{id:[0-9]+}', \App\Controllers\TextController::class. ':view')->setName('text.view');
+$app->get('/text/presentation/{id:[0-9]+}', \App\Controllers\TextController::class. ':presentation')->setName('text.presentation');
 $app->get('/repository/view/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':view')->setName('repository.view');

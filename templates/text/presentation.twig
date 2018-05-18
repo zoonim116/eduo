@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="/revealjs/css/reveal.css">
+		<link rel="stylesheet" href="/revealjs/css/theme/white.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section data-markdown Xdata-background-iframe="http://icollege.cz">
+					<textarea data-template>
+						{{ text.text }}
+					</textarea>
+				</section>
+
+				<section>{{ text.text }}</section>
+
+			</div>
+		</div>
+		<script src="/revealjs/js/reveal.js"></script>
+		<script src="/revealjs/plugin/markdown/marked.js"></script>
+		<script src="/revealjs/plugin/markdown/markdown.js"></script>
+		<script>
+			Reveal.initialize();
+		</script>
+	</body>
+</html>

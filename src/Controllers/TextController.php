@@ -109,7 +109,7 @@ class TextController extends BaseController
                     $diff = new \App\Libraries\Diff($old, $new, $options);
                     require_once $this->container->get('settings')['librariesPath'] . 'Diff/Renderer/Html/SideBySide.php';;
                     $renderer = new \App\Libraries\Diff\Renderer\Html\Diff_Renderer_Html_SideBySide();
-                    Diff::create($text_id, $diff->render($renderer));
+                    Diff::create($text_id, $diff->render($renderer), rtrim($request->getParam('text'), '+'));
                 }
                 $status = 2;
                 if (empty($request->getParam('draft', 'published'))) {
@@ -132,11 +132,25 @@ class TextController extends BaseController
             $diffs = Diff::get($text_id);
             $highlights = Highlight::get_by_id($text_id, $this->auth->get_user_id());
             $comments = Comment::get_all($text_id);
+            $user = User::find_by_id($this->auth->get_user_id());
             if($this->auth->check()) {
                 $isWatching = Text_Tracking::isWatching($this->auth->get_user_id(), $text_id);
             }
             $this->title = $text['title'];
             $this->render($response,'text/view.twig', compact('text', 'diffs', 'user', 'highlights',
+                                                                        'comments', 'isWatching'));
+        } else {
+            $this->render($response, '404.twig',[], 404 );
+//            die("Access denied");
+        }
+    }
+
+    public function presentation(Request $request, Response $response, $args) {
+        $text_id = $args['id'];
+        $text = Text::get_with_relations($text_id);
+        if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || $text && Text::is_owner($text_id, $this->auth->get_user_id())) {
+            $this->title = $text['title'];
+            $this->render($response,'text/presentation.twig', compact('text', 'diffs', 'user', 'highlights',
                                                                         'comments', 'isWatching'));
         } else {
             $this->render($response, '404.twig',[], 404 );

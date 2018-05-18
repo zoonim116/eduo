@@ -2,12 +2,14 @@
 {% block content %}
 
     <div class="col-md-12 repository-header-title">
-        <p class="d-inline h1">{{ repo.name }} :</p>
+        <p class="d-inline h1">{{ repo.name }}</p>
         {%  if(auth.check) %}
-            {% if(isWatching) %}
-                <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning repo-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
-            {% else %}
-                <a href="#" data-repo-id="{{ repo.id }}"  class="btn float-right btn-outline-warning repo-subscribe"><i class="fa fa-eye" aria-hidden="true"></i></a>
+        	{% if(repo.user_id != user.id ) %}
+	            {% if(isWatching) %}
+	                <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning repo-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i> Unfollow</a>
+	            {% else %}
+	                <a href="#" data-repo-id="{{ repo.id }}"  class="btn float-right btn-outline-warning repo-subscribe"><i class="fa fa-eye" aria-hidden="true"></i> Follow</a>
+	            {% endif %}
             {% endif %}
         {%  endif %}
     </div>

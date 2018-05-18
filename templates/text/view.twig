@@ -2,49 +2,55 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12 title">
-           <h1 class="d-inline"> {{ text.title  }} </h1>
+			<a href="{{ path_for('repository.view', {'id': text.repository_id }) }}">{{ text.repository.name  }}</a><br />
+			{{ text.user.firstname }} {{ text.user.lastname }}<br />
+			
+           <h1 class="d-inline">{{ text.title  }}</h1>
             <input type="hidden" name="text_id" value="{{ text.text_id}}">
-            {%  if(auth.check and auth.get_user_id != text.user_id) %}
-                {% if(isWatching) %}
-                    <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning text-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
-                {% else %}
-                    <a href="#" data-text-id="{{ text.text_id }}"  class="btn float-right btn-outline-warning text-subscribe"><i class="fa fa-eye" aria-hidden="true"></i></a>
+            {%  if(auth.check ) %}
+                {% if(text.user.id != user.id ) %}
+	                {% if(isWatching) %}
+	                    <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning text-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i> Unwatch</a>
+	                {% else %}
+	                    <a href="#" data-text-id="{{ text.text_id }}"  class="btn float-right btn-outline-warning text-subscribe"><i class="fa fa-eye" aria-hidden="true"></i> Watch</a>
+	                {% endif %}
                 {% endif %}
-            {%  endif %}
+                {% if(text.user.id == user.id ) %}
+	                <a class="btn btn-outline-success btn-sm float-right mr-2" href="{{ path_for('text.edit', {'id': text.text_id}) }}">Edit</a>
+	            {% endif %}
+	           
+            {% endif %}
         </div>
         <div class="col-md-12 text ">
             {{ text.text | markdown}}
         </div>
+
+        {% if(diffs) %}
         <div class="col-md-12 changes">
             <h2>Changes:</h2>
-            {% if(diffs) %}
                 {% for diff in diffs %}
                     {% include '_partials/texts/diff-item.twig' %}
                 {% endfor %}
-            {% else %}
-                <small>There is no any changes</small>
-            {% endif %}
         </div>
+        {% endif %}
+
+        {% if(highlights) %}
         <div class="col-md-12 highlights">
             <h2>Highlights:</h2>
-            {% if(highlights) %}
                 {% for highlight in highlights %}
                     {% include '_partials/texts/highlight-item.twig' %}
                 {% endfor %}
-            {% else %}
-                <small>There is no any highlights</small>
-            {% endif %}
         </div>
-        <div class="col-md-12 comments">
+        {% endif %}
+
+        {% if(comments) %}
+	    <div class="col-md-12 comments">
             <h2>Comments:</h2>
-            {% if(comments) %}
                 {% for comment in comments %}
                     {% include '_partials/texts/comment-item.twig' %}
                 {% endfor %}
-            {% else %}
-                <small>There is no any comments</small>
-            {% endif %}
         </div>
+        {% endif %}
     </div>
 
     <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
