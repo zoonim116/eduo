@@ -3,6 +3,8 @@
 namespace App\Middleware;
 
 
+use App\Helper;
+
 class IsAuthMiddleware extends Middleware
 {
     public function __invoke($request, $response, $next)

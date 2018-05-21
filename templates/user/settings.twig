@@ -1,0 +1,81 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <p class="h1"> Profile settings</p>
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="col-md-8 offset-md-2">
+                {% include '_partials/flash.twig' %}
+                <form class="form" role="form" name="update_settings" action="{{ path_for('user.settings') }}" novalidate="" method="POST" class="border">
+                    {{ csrf.field | raw }}
+                    <div class="form-group">
+                        <label for="name">Email</label>
+                        <input type="text" class="form-control rounded-0{{ errors.email ? ' is-invalid' : '' }}" name="email" id="email" value="{{ user.email }}" disabled>
+                        {% if errors.email %}
+                            <div class="invalid-feedback">
+                                {{ errors.email | first }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Firstname</label>
+                        <input type="text" class="form-control rounded-0{{ errors.firstname ? ' is-invalid' : '' }}" name="firstname" id="firstname" value="{{ user.firstname }}">
+                        {% if errors.firstname %}
+                            <div class="invalid-feedback">
+                                {{ errors.firstname | first }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Lastname</label>
+                        <input type="text" class="form-control rounded-0{{ errors.lastname ? ' is-invalid' : '' }}" name="lastname" id="lastname" value="{{ user.lastname }}">
+                        {% if errors.lastname %}
+                            <div class="invalid-feedback">
+                                {{ errors.lastname | first }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group form-check">
+                        {% if user.is_teacher %}
+                            <input type="checkbox" class="form-check-input" name="is_teacher" id="isTeacher" checked>
+                        {% else %}
+                            <input type="checkbox" class="form-check-input" name="is_teacher" id="isTeacher">
+                        {% endif  %}
+                        <label for="isTeacher" class="form-check-label">Are you a teacher?</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="password">New password</label>
+                        <input type="password" name="new_password" class="form-control rounded-0{{ errors.new_password ? ' is-invalid' : '' }}" id="new_password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm password</label>
+                        <input type="password" name="confirm_password" class="form-control rounded-0{{ errors.confirm_password ? ' is-invalid' : '' }}" id="confirm_password">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <a href="{{ fb_url }}" class="btn btn-lg btn-social btn-facebook">
+                                    <i class="fa fa-facebook fa-fw"></i> Use Facebook
+                                </a>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="submit" class="btn btn-success btn-lg float-right">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-12 settings">
+                    <img title="" class="post-item-avatar" src="{{ gravatar_x80 }}">
+                </div>
+                <div class="col-sm-12">
+                    <a href="/user/delete" class="btn btn-danger btn-lg btn-block delete-my-account">Delete Account</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

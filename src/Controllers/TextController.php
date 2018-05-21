@@ -93,12 +93,17 @@ class TextController extends BaseController
     public function edit(Request $request, Response $response, $args) {
         $text_id = $args['id'];
         $text = Text::get($text_id);
+        $text['text'] = explode("\n", $text['text']);
+        foreach ($text['text'] as $key => $t) {
+            $text['text'][$key] = str_replace(array("\n", "\r"), '', $t);
+        }
+
         $repos = Repository::find($this->auth->get_user_id());
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
                 if((int)$text['status'] === 2) {
 
-                    $old = explode("\n", $text['text']);
+                    $old = $text['text'];
                     $new = explode("\n", rtrim($request->getParam('text'), '+'));
 
                     $options = array(

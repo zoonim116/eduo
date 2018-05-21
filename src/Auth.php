@@ -2,6 +2,7 @@
 
 namespace App;
 use App\Models\User;
+use Facebook\Facebook;
 
 class Auth
 {
@@ -33,7 +34,8 @@ class Auth
     }
 
     public function get_user_firstname() {
-        return "OK";
+        $user = User::find_by_id($_SESSION['user']);
+        return isset($user) ? $user['firstname'] : false;
     }
 
     public function user() {
@@ -41,6 +43,24 @@ class Auth
             return User::find_by_id($_SESSION['user']);
         }
         return false;
+    }
+
+    public function get_user_avatar($user_id, $size) {
+        $user = User::find_by_id($user_id);
+        if($user['fb_access_token']) {
+            $longLivedAccessToken = unserialize($user['fb_access_token']);
+
+            $fb = new Facebook([
+                'app_id' => getenv('FACEBOOK_APP_ID'),
+                'app_secret' => getenv('FACEBOOK_APP_SECRET'),
+                'default_graph_version' => getenv('FACEBOOK_GRAPH_VERSION')
+            ]);
+             $fbPictures = $fb->get('/me/picture?redirect=0&height='.$size, $longLivedAccessToken);
+             $picture = $fbPictures->getGraphUser();
+             return $picture['url'];
+        } else {
+            return Helper::get_gravatar($user['email'], $size);
+        }
     }
 
 }

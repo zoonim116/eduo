@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Text</label>
-                            <div class="medium-text">{{ fields.text | markdown }} </div>
+                            <div class="medium-text"> </div>
                             <input type="hidden" name="text" class="hidden-medium-text" />
                             {% if errors.text %}
                                 <div class="invalid-feedback">
@@ -64,6 +64,13 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/js/medium_editor_init.js"></script>
+    <script>
+        var content = [
+                {% for text in fields.text %}
+                    '{{ text }}',
+                {% endfor %}
+        ].join('\n');
+        console.log(content)
+    </script>
 {% endblock %}
 

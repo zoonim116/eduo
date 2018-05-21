@@ -25,7 +25,8 @@
         "slim/csrf": "^0.8.2",
         "aptoma/twig-markdown": "^3.0",
         "michelf/php-markdown": "~1.3",
-        "components/revealjs": "~3.6.0"
+        "components/revealjs": "~3.6.0",
+        "facebook/graph-sdk": "^5.6"
     },
     "autoload": {
       "psr-4": {

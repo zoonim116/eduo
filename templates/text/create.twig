@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Text</label>
-                            <div class="medium-text">{{ fields.text | raw }} </div>
+                            <div class="medium-text"></div>
                             <input type="hidden" name="text" class="hidden-medium-text" />
                             {% if errors.text %}
                                 <div class="invalid-feedback">
@@ -57,13 +57,17 @@
                                 {% endfor  %}
                             </select>
                         </div>
-                        <button type="submit" name="publish" class="btn btn-success float-right " id="publish">Publush</button>
+                        <button type="submit" name="publish" class="btn btn-success float-right " id="publish">Publish</button>
                         <button type="submit"  name="draft" class="btn btn-info float-right mr-2" id="draft">Save to Draft</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/js/medium_editor_init.js"></script>
+
+    <script>
+        var content = '{{ fields.text }}'
+    </script>
+
 {% endblock %}
 

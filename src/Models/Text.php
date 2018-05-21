@@ -19,7 +19,7 @@ class Text extends Model
         $db->insert(self::$_table, [
             'title' => $data['title'],
             'short_description' => $data['short_description'],
-            'text' => rtrim($data['text'],"+"),
+            'text' => $data['text'],
             'status' => $status,
             'user_id' => $user_id,
             'repository_id' => $data['repository'],

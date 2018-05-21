@@ -18,6 +18,8 @@ $app->group('', function () {
 $app->group('', function () {
     $this->get('/home/dashboard', \App\Controllers\HomeController::class. ':dashboard')->setName('dashboard');
     $this->get('/user/logout', \App\Controllers\UserController::class. ':logout')->setName('logout');
+    $this->get('/user/settings', \App\Controllers\UserController::class. ':settings')->setName('user.settings');
+    $this->post('/user/settings', \App\Controllers\UserController::class. ':settings');
     $this->get('/repository/my', \App\Controllers\RepositoryController::class. ':my')->setName('repository.my');
     $this->post('/repository/my', \App\Controllers\RepositoryController::class. ':my');
 
@@ -49,3 +51,4 @@ $app->post('/repository/all', \App\Controllers\RepositoryController::class. ':al
 $app->get('/text/view/{id:[0-9]+}', \App\Controllers\TextController::class. ':view')->setName('text.view');
 $app->get('/text/presentation/{id:[0-9]+}', \App\Controllers\TextController::class. ':presentation')->setName('text.presentation');
 $app->get('/repository/view/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':view')->setName('repository.view');
+$app->get('/user/callback', \App\Controllers\UserController::class. ':callback');

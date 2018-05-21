@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $('.menu-popover').popover({
         html: true,
         content: function() {
@@ -71,4 +72,29 @@ $(document).ready(function () {
             });
         }
     });
+
+    if (window.content !== undefined) {
+        var editorrr = new tui.Editor({
+            el: document.querySelector('.medium-text'),
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical',
+            height: '500px',
+            hideModeSwitch: true,
+            usageStatistics: false,
+            exts: ['scrollSync', 'table'],
+            initialValue: content,
+            events: {
+                change: function() {
+                    $('.hidden-medium-text').val(editorrr.getMarkdown());
+                }
+            }
+        });
+    }
+
+    $('.delete-my-account').on('click', function () {
+        var res = confirm('Are you sure you want to delete you account?');
+        if(!res) {
+            return false;
+        }
+    })
 });
