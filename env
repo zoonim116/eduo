@@ -3,3 +3,8 @@ DATABASE_NAME=""
 DATABASE_SERVER="localhost"
 DATABASE_USERNAME=""
 DATABASE_PASSWORD=""
+
+#Facebook app settings https://developers.facebook.com/apps/
+FACEBOOK_APP_ID = ""
+FACEBOOK_APP_SECRET = ""
+FACEBOOK_GRAPH_VERSION = "v2.2"
