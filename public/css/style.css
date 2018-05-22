@@ -27,7 +27,7 @@ main {
 
 .repository-item strong {
     float: left;
-    width: calc(100% - 180px);
+    width: calc(100% - 195px);
 }
 
 html {
@@ -126,7 +126,7 @@ div {
     color: #000;
 }
 
-.post-item-avatar + span {
+.dropdown span {
     position: relative;
     top: 8px;
     left: 3px;
@@ -156,6 +156,7 @@ div {
     color: #fff;
     background-color: #3b5998;
     border-color: rgba(0,0,0,0.2);
+    font-size: 1rem;
 }
 
 .btn-facebook:hover {

@@ -77,6 +77,12 @@ class User extends Model {
         ]);
     }
 
+
+    /**
+     * Update user settings
+     * @param $id
+     * @param $data
+     */
     public static function update($id, $data) {
         $db = self::forge();
         $db->update(self::$_table, $data,
@@ -84,6 +90,18 @@ class User extends Model {
                 'id[=]' => $id
             ]
         );
+    }
+
+
+    /**
+     * Save new user
+     * @param $data
+     * @return bool|int|mixed|string
+     */
+    public static function save($data) {
+        $db = self::forge();
+        $db->insert(self::$_table, $data);
+        return $db->id() ? $db->id() : false;
     }
 
 }
