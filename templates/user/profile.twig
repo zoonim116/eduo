@@ -1,0 +1,54 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <p class="h3 d-inline">Profile info:</p>
+    <div class="row profile mt-3">
+
+            <div class="col-sm-2">
+                <img title="" class="post-item-avatar" src="{{ avatar }}">
+            </div>
+            <div class="ml-2 col-sm-9">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div>Firstname: <b>{{ profile.firstname }}</b></div>
+                        <div>Lastname: <b>{{ profile.lastname }}</b></div>
+                        <div>Email: <b>{{ profile.email }}</b></div>
+                        <div>Register date: <b>{{ profile.created_at | date("d/m/Y") }}</b></div>
+                    </div>
+                    <div class="col-sm-2 follow-sidebar">
+                        {%  if(auth.check) %}
+
+                            {% if(profile.id != auth.user.id) %}
+                                {% if(isWatching) %}
+                                    <a href="#" data-sub-id="{{ isWatching.id }}" class="btn float-right btn-outline-warning profile-unsubscribe"><i class="fa fa-eye-slash" aria-hidden="true"></i> Unfollow</a>
+                                {% else %}
+                                    <a href="#" data-profile-id="{{ profile.id }}"  class="btn float-right btn-outline-warning profile-subscribe"><i class="fa fa-eye" aria-hidden="true"></i> Follow</a>
+                                {% endif %}
+                            {% endif %}
+                        {%  endif %}
+                    </div>
+                </div>
+
+            </div>
+    </div>
+    <p class="h3 d-inline">User repos:</p>
+    {% if(repos) %}
+        <div class="card-columns mt-3">
+            {% for repo in repos %}
+                {% include '_partials/homepage/repository_item.twig' %}
+            {% endfor  %}
+        </div>
+    {% else %}
+        <p class="text-center mt-3">No repositories :(</p>
+    {% endif %}
+
+    <p class="h3 d-inline">User texts:</p>
+    {% if(texts) %}
+        <div class="card-columns mt-3">
+            {% for text in texts %}
+                {% include '_partials/homepage/text_item.twig' %}
+            {% endfor  %}
+        </div>
+    {% else %}
+        <p class="text-center mt-3">No text :(</p>
+    {% endif %}
+{% endblock %}

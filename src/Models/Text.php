@@ -141,4 +141,20 @@ class Text extends Model
         ], $columns, ["AND" => [self::$_table.'.status' => 2, 'repositories.visibility' => 2], 'ORDER' => [self::$_table.'.updated_at' => 'DESC'], 'LIMIT' => 12]);
 
     }
+
+    public static function get_by_user($user_id) {
+        $db = self::forge();
+        $columns = [
+            'texts.id(text_id)',
+            self::$_table.'.title',
+            self::$_table.'.short_description',
+            self::$_table.'.text',
+            self::$_table.'.status',
+            self::$_table.'.user_id',
+            self::$_table.'.repository_id',
+            self::$_table.'.created_at',
+            self::$_table.'.updated_at',
+        ];
+        return $db->select(self::$_table, $columns, ["user_id[=]" => $user_id, "status[=]" =>2]);
+    }
 }

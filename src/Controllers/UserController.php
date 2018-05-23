@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 use App\Auth;
+use App\Models\Profile_Tracking;
+use App\Models\Repository;
 use App\Models\Repository_Tracking;
 use App\Models\Text;
 use App\Models\Text_Tracking;
@@ -90,6 +92,49 @@ class UserController extends BaseController
         unset($_SESSION['user']);
 
         return $response->withRedirect($this->router->pathFor('sign_in'));
+    }
+
+    public function profile(Request $request, Response $response, $args) {
+        $user = User::find_by_id($args['id']);
+        if($user) {
+            $this->title = $user['firstname']. ' ' . $user['lastname'] . ' profile info';
+            $isWatching = false;
+            if($user['id'] !== $this->auth->get_user_id()){
+                $isWatching = Profile_Tracking::isWatching($this->auth->get_user_id(), $user['id']);
+            }
+            $this->render($response, 'user/profile.twig', [
+                'profile' => $user,
+                'avatar' => $this->auth->get_user_avatar($user['id'], 150),
+                'repos' => Repository::find($user['id'], 2),
+                'texts' => Text::get_by_user($user['id']),
+                'isWatching' => $isWatching
+            ]);
+        } else {
+            $response->withStatus(404, "User not found");
+        }
+    }
+
+    public function watch(Request $request, Response $response, $args) {
+        $profile_id = $request->getParam('profile_id');
+        $user = User::find_by_id($profile_id);
+        if($user && $profile_id !== $this->auth->get_user_id()) {
+            $sub_id =  Profile_Tracking::create($this->auth->get_user_id(), $profile_id);
+            if ($sub_id)
+                die(json_encode(['status' => 'success', 'sub_id' => $sub_id]));
+        }
+        die(json_encode(['status' => 'error']));
+    }
+
+    public function unwatch(Request $request, Response $response, $args) {
+        $sub_id = $request->getParam('sub_id');
+        if($sub_id && (int)$sub_id > 0) {
+            $subscription = Profile_Tracking::get($sub_id);
+            if($subscription && $subscription['user_id'] === $this->auth->get_user_id()) {
+                if(Profile_Tracking::delete($sub_id))
+                    die(json_encode(['status' => 'success', 'profile_id' => $subscription['profile_id']]));
+            }
+        }
+        die(json_encode(['status' => 'error']));
     }
 
     public function settings(Request $request, Response $response, $args) {
@@ -240,6 +285,7 @@ class UserController extends BaseController
                 'lastname' => $profile->getLastName(),
                 'fb_user_id' => $profile->getId(),
                 'fb_access_token' => serialize($longLivedAccessToken),
+                'created_at' => time()
             ]);
             if($res) {
                 return $profile;

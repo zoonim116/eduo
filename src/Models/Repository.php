@@ -38,6 +38,7 @@ class Repository extends Model
         $db = self::forge();
         $columns = [
             self::$_table.'.id',
+            self::$_table.'.id(repo_id)',
             self::$_table.'.name',
             self::$_table.'.description',
             self::$_table.'.visibility',

@@ -43,7 +43,6 @@ $(document).ready(function () {
     });
 
     //Watch for text
-
     $(document).on('click', '.text-subscribe', function (e) {
         e.preventDefault();
         var text_id = $(this).data('text-id');
@@ -68,6 +67,36 @@ $(document).ready(function () {
                 if(response.status == 'success') {
                     $('.text-unsubscribe').remove();
                     $('.title').append("<a href=\"#\" data-text-id=\""+ response.text_id +"\" class=\"btn float-right btn-outline-warning text-subscribe\"><i class=\"fa fa-eye\" aria-hidden=\"true\"></i></a>");
+                }
+            });
+        }
+    });
+
+    //Watch for profile
+    $(document).on('click', '.profile-subscribe', function (e) {
+        e.preventDefault();
+        var profile_id = $(this).data('profile-id');
+        if(profile_id && profile_id > 0) {
+            $.post( "/user/watch", { profile_id: profile_id}).done(function( data ) {
+                var response = JSON.parse(data);
+                if(response.status == 'success') {
+                    $('.profile-subscribe').remove();
+                    $('.follow-sidebar').append("<a href=\"#\" data-sub-id=\""+ response.sub_id +"\" class=\"btn float-right btn-outline-warning profile-unsubscribe\"><i class=\"fa fa-eye-slash\" aria-hidden=\"true\"></i> Unfollow</a>");
+                }
+            });
+        }
+    });
+
+    // Unwatch for profile
+    $(document).on('click', '.profile-unsubscribe', function (e) {
+        e.preventDefault();
+        var sub_id = $(this).data('sub-id');
+        if(sub_id && sub_id > 0) {
+            $.post( "/user/unwatch", { sub_id: sub_id}).done(function( data ) {
+                var response = JSON.parse(data);
+                if(response.status == 'success') {
+                    $('.profile-unsubscribe').remove();
+                    $('.follow-sidebar').append("<a href=\"#\" data-profile-id=\""+ response.profile_id +"\" class=\"btn float-right btn-outline-warning profile-subscribe\"><i class=\"fa fa-eye\" aria-hidden=\"true\"></i> Follow</a>");
                 }
             });
         }

@@ -24,6 +24,9 @@ $app->group('', function () {
     $this->get('/repository/my', \App\Controllers\RepositoryController::class. ':my')->setName('repository.my');
     $this->post('/repository/my', \App\Controllers\RepositoryController::class. ':my');
 
+    $this->post('/user/watch', \App\Controllers\UserController::class. ':watch');
+    $this->post('/user/unwatch', \App\Controllers\UserController::class. ':unwatch');
+
     $this->get('/repository/create', \App\Controllers\RepositoryController::class. ':create')->setName('repository.create');
     $this->post('/repository/create', \App\Controllers\RepositoryController::class. ':create');
     $this->get('/repository/delete/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':delete')->setName('repository.delete');
@@ -53,3 +56,4 @@ $app->get('/text/view/{id:[0-9]+}', \App\Controllers\TextController::class. ':vi
 $app->get('/text/presentation/{id:[0-9]+}', \App\Controllers\TextController::class. ':presentation')->setName('text.presentation');
 $app->get('/repository/view/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':view')->setName('repository.view');
 $app->get('/user/callback/{type}', \App\Controllers\UserController::class. ':callback');
+$app->get('/user/profile/{id:[0-9]+}', \App\Controllers\UserController::class.  ':profile');

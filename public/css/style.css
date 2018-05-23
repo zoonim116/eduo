@@ -100,7 +100,7 @@ div {
 
 .post-item-avatar {
     overflow: hidden;
-    margin-left: 20px;
+    /*margin-left: 20px;*/
     float: left;
     border-top-left-radius: 100%;
     border-top-right-radius: 100%;
@@ -196,6 +196,10 @@ div {
     font-size: 1.6em;
     text-align: center;
     border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+.profile {
+    align-items: center;
 }
 
 @media only screen and (max-width: 480px) {

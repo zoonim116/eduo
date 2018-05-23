@@ -104,7 +104,7 @@ class RepositoryController extends BaseController
         $repo = Repository::get($repo_id);
         $isWatching = false;
 
-        if($this->auth->check() && $repo_id && $repo['user_id'] !== $this->auth->get_user_id()) {
+        if($this->auth->check() && $repo['user_id'] !== $this->auth->get_user_id()) {
             $isWatching = Repository_Tracking::isWatching($this->auth->get_user_id(), $repo_id);
         }
         $texts = Text::get_by_repo($repo_id);
