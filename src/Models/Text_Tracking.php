@@ -96,4 +96,9 @@ class Text_Tracking extends Model
         ], ['AND' => ['user_id' => $user_id, 'text_id' => $text_id]]);
     }
 
+    public static function delete_all($user_id) {
+        $db = self::forge();
+        return $db->delete(self::$_table, ['user_id' => $user_id])->rowCount();
+    }
+
 }

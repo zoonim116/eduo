@@ -77,7 +77,6 @@ class User extends Model {
         ]);
     }
 
-
     /**
      * Update user settings
      * @param $id
@@ -92,7 +91,6 @@ class User extends Model {
         );
     }
 
-
     /**
      * Save new user
      * @param $data
@@ -104,4 +102,13 @@ class User extends Model {
         return $db->id() ? $db->id() : false;
     }
 
+    /**
+     * Delete user
+     * @param $user_id
+     * @return int
+     */
+    public static function delete($user_id) {
+        $db = self::forge();
+        return $db->delete(self::$_table, ['id' => $user_id])->rowCount();
+    }
 }

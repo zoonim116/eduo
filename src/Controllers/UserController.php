@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 use App\Auth;
+use App\Models\Repository_Tracking;
+use App\Models\Text;
+use App\Models\Text_Tracking;
 use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -71,10 +74,22 @@ class UserController extends BaseController
         if(isset($args['type']) && $args['type'] == 'signin') {
             $this->save_fb_data();
             return $response->withRedirect($this->router->pathFor('dashboard'));
-        } else {
+        } if(isset($args['type']) && $args['type'] == 'settings'){
             $this->update_fb_data();
             return $response->withRedirect($this->router->pathFor('user.settings'));
         }
+        return $response->withStatus(404);
+    }
+
+    public function delete(Request $request, Response $response, $args) {
+        Text_Tracking::delete_all($this->auth->get_user_id());
+        Repository_Tracking::delete_all($this->auth->get_user_id());
+        //TODO: remove subscriptions on another users
+        User::delete($this->auth->get_user_id());
+        $this->flash->addMessage('success', "Account was successfully deleted");
+        unset($_SESSION['user']);
+
+        return $response->withRedirect($this->router->pathFor('sign_in'));
     }
 
     public function settings(Request $request, Response $response, $args) {

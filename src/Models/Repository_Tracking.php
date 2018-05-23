@@ -83,4 +83,9 @@ class Repository_Tracking extends Model
         $db = self::forge();
         return $db->delete(self::$_table, ['id' => $subscription_id])->rowCount();
     }
+
+    public static function delete_all($user_id) {
+        $db = self::forge();
+        return $db->delete(self::$_table, ['user_id' => $user_id])->rowCount();
+    }
 }
