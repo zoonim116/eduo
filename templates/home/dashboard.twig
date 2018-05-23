@@ -74,6 +74,13 @@
                 </tbody>
             </table>
 
+            <p class="h1">Recently watched profiles:</p>
+            <div class="card-columns mt-3">
+                {% for profile in trackings_profile %}
+                    {% include '_partials/dashboard/profile_item.twig' %}
+                {% endfor  %}
+            </div>
+
             <p class="h1">My highlights:</p>
             {% if (highlights) %}
                 {% for highlight in highlights %}

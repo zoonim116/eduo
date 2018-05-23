@@ -56,4 +56,4 @@ $app->get('/text/view/{id:[0-9]+}', \App\Controllers\TextController::class. ':vi
 $app->get('/text/presentation/{id:[0-9]+}', \App\Controllers\TextController::class. ':presentation')->setName('text.presentation');
 $app->get('/repository/view/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':view')->setName('repository.view');
 $app->get('/user/callback/{type}', \App\Controllers\UserController::class. ':callback');
-$app->get('/user/profile/{id:[0-9]+}', \App\Controllers\UserController::class.  ':profile');
+$app->get('/user/profile/{id:[0-9]+}', \App\Controllers\UserController::class.  ':profile')->setName('user.profile');

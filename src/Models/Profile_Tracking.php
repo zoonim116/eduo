@@ -3,6 +3,8 @@
 namespace App\Models;
 
 
+use App\Helper;
+
 class Profile_Tracking extends Model
 {
     private static $_table = 'profile_tracking';
@@ -60,6 +62,34 @@ class Profile_Tracking extends Model
     public static function delete_all($user_id) {
         $db = self::forge();
         return $db->delete(self::$_table, ['user_id' => $user_id])->rowCount();
+    }
+
+    /**
+     * Get track info by user id
+     * @param $user_id
+     * @return array|bool
+     */
+    public static function get_by_user($user_id) {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.user_id',
+            self::$_table.'.profile_id',
+            self::$_table.'.created_at',
+            'users' => [
+                'users.firstname',
+                'users.lastname',
+                'users.email'
+            ]
+        ];
+        $profiles = $db->select(self::$_table, [
+            "[>]users" => ['profile_id' => 'id'],
+        ], $columns, [self::$_table.'.user_id' => $user_id, 'GROUP' => self::$_table.'.profile_id', 'ORDER' => [self::$_table.'.created_at' => 'DESC']]);
+
+        foreach ($profiles as $index => $profile) {
+            $profiles[$index]['avatar'] = Helper::get_user_avatar($profile['profile_id'], 100);
+        }
+
+        return $profiles;
     }
 
 }
