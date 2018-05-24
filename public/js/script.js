@@ -112,6 +112,23 @@ $(document).ready(function () {
             usageStatistics: false,
             exts: ['scrollSync', 'table'],
             initialValue: content,
+            hooks: {
+                addImageBlobHook: function(blob, callback) {
+                    var fd = new FormData;
+                    fd.append('files', blob);
+                    $.ajax({
+                        url: '/text/upload',
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            callback(data.url, 'alt text');
+                        }
+                    });
+                },
+            },
             events: {
                 change: function() {
                     $('.hidden-medium-text').val(editorrr.getMarkdown());

@@ -97,7 +97,6 @@ class TextController extends BaseController
         foreach ($text['text'] as $key => $t) {
             $text['text'][$key] = str_replace(array("\n", "\r"), '', $t);
         }
-
         $repos = Repository::find($this->auth->get_user_id());
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
@@ -142,11 +141,14 @@ class TextController extends BaseController
                 $isWatching = Text_Tracking::isWatching($this->auth->get_user_id(), $text_id);
             }
             $this->title = $text['title'];
+            $text['text'] = explode("\n", $text['text']);
+            foreach ($text['text'] as $key => $t) {
+                $text['text'][$key] = str_replace(array("\n", "\r"), '', $t);
+            }
             $this->render($response,'text/view.twig', compact('text', 'diffs', 'user', 'highlights',
                                                                         'comments', 'isWatching'));
         } else {
             $this->render($response, '404.twig',[], 404 );
-//            die("Access denied");
         }
     }
 
@@ -159,7 +161,6 @@ class TextController extends BaseController
                                                                         'comments', 'isWatching'));
         } else {
             $this->render($response, '404.twig',[], 404 );
-//            die("Access denied");
         }
     }
 
@@ -237,17 +238,13 @@ class TextController extends BaseController
      */
     public function upload(Request $request, Response $response, $args) {
         $directory = $this->container->get('settings')['uploadDirectory'] ;
-        $uploadedFiles = $request->getUploadedFiles();
-
-        // handle single input with single file upload
-        foreach ($uploadedFiles['files'] as $uploadedFile) {
-            if(in_array($uploadedFile->getClientMediaType(), ['image/jpeg', 'image/png', ['image/gif']])) {
-                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                    $filename = Helper::moveUploadedFile($directory, $uploadedFile);
-                    $url = $request->getUri()->getBaseUrl().'/uploads/'.$filename;
-                    $this->logger->debug($url);
-                    die(json_encode(['files' => [['url' => $url]]]));
-                }
+        $uploadedFile = $request->getUploadedFiles()['files'];
+        if(in_array($uploadedFile->getClientMediaType(), ['image/jpeg', 'image/png', ['image/gif']])) {
+            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                $filename = Helper::moveUploadedFile($directory, $uploadedFile);
+                $url = $request->getUri()->getBaseUrl().'/uploads/'.$filename;
+                $this->logger->debug($url);
+                die(json_encode(['url' => $url]));
             }
         }
         $response->write(json_encode(['status' => 'error']));

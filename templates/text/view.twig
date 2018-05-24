@@ -22,7 +22,6 @@
             {% endif %}
         </div>
         <div class="col-md-12 text ">
-            {{ text.text | markdown}}
         </div>
 
         {% if(diffs) %}
@@ -84,5 +83,19 @@
         });
     </script>
     {% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var text_view = [
+                {% for text in text.text %}
+                '{{ text }}',
+                {% endfor %}
+            ].join('\n');
+
+            var viewer = new tui.Editor({
+                el: document.querySelector('.text'),
+                initialValue: text_view
+            });
+        });
+    </script>
 {% endblock %}
 

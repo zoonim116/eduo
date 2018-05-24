@@ -202,6 +202,10 @@ div {
     align-items: center;
 }
 
+.Left span, .Right span {
+    display: none;
+}
+
 @media only screen and (max-width: 480px) {
     .flex-nowrap {
         flex-wrap: wrap !important;

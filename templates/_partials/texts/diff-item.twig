@@ -1,6 +1,23 @@
 <div class="card changes-item">
     <div class="card-body table-responsive">
         <h5 class="card-title"><i>{{ text.user.firstname }} {{ text.user.lastname }}</i> updated {{ diff.created_at | timeDiff }}</h5>
-        <p class="card-text">{{ diff.diff | markdown }}</p>
+        <p class="card-text" id="diff-{{ loop.index }}">{{ diff.diff | markdown }}</p>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#diff-{{ loop.index }}').next().find('.Left').map(function (index, elem) {
+            new tui.Editor({
+                el: elem,
+                initialValue: $(elem).find('span').html()
+            });
+
+        });
+        $('#diff-{{ loop.index }}').next().find('.Right').map(function (index, elem) {
+            new tui.Editor({
+                el: elem,
+                initialValue: $(elem).find('span').html()
+            });
+        });
+    });
+</script>

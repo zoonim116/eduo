@@ -112,7 +112,11 @@
 <script src="/lib/squire-rte/build/squire-raw.js"></script>
 <link rel="stylesheet" href="/lib/codemirror/lib/codemirror.css">
 <link rel="stylesheet" href="/lib/highlightjs/styles/github.css">
-<script src="/js/tui.editor-1.1.1/tui-editor-Editor-all.js"></script>
+{% if editor == 'show' %}
+    <script src="/js/tui.editor-1.1.1/tui-editor-Viewer-all.min.js"></script>
+{% else %}
+    <script src="/js/tui.editor-1.1.1/tui-editor-Editor-all.min.js"></script>
+{% endif %}
 <script type="text/javascript" src="/js/script.js"></script>
 </body>
 </html>

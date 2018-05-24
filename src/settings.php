@@ -6,6 +6,7 @@ return [
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
         'librariesPath' => __DIR__ . '/Libraries/',
         'uploadDirectory' => __DIR__ . '/../public/uploads',
+        'determineRouteBeforeAppMiddleware' => true,
 
         // Renderer settings
         'renderer' => [
