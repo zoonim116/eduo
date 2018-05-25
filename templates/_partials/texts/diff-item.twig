@@ -6,13 +6,14 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
         $('#diff-{{ loop.index }}').next().find('.Left').map(function (index, elem) {
             new tui.Editor({
                 el: elem,
                 initialValue: $(elem).find('span').html()
             });
-
         });
+
         $('#diff-{{ loop.index }}').next().find('.Right').map(function (index, elem) {
             new tui.Editor({
                 el: elem,

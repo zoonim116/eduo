@@ -134,6 +134,9 @@ class TextController extends BaseController
         if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || $text && Text::is_owner($text_id, $this->auth->get_user_id())) {
             $isWatching = false;
             $diffs = Diff::get($text_id);
+            foreach ($diffs as $index => $diff) {
+                $diffs[$index]['diff'] = html_entity_decode($diff['diff']);
+            }
             $highlights = Highlight::get_by_id($text_id, $this->auth->get_user_id());
             $comments = Comment::get_all($text_id);
             $user = User::find_by_id($this->auth->get_user_id());
