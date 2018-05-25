@@ -136,7 +136,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 								$toLine = $change['base']['offset'] + $no + 1;
 								$changedLine = '<span>'.$change['changed']['lines'][$no].'</span>';
 							}
-							$html .= '<td class="Right">'.$changedLine.'</td>';
+							$html .= '<td class="Right"><span>'.$changedLine.'</span></td>';
 							$html .= '</tr>';
 						}
 					}
@@ -159,7 +159,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 //							$html .= '<th>'.$fromLine.'</th>';
 							$html .= '<td class="Left"><span>'.$line.'</span>&nbsp;</td>';
 							$toLine = $change['changed']['offset'] + $no + 1;
-							$html .= '<td class="Right">'.$changedLine.'</td>';
+							$html .= '<td class="Right"><span>'.$changedLine.'</span></td>';
 							$html .= '</tr>';
 						}
 					}
