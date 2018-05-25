@@ -3,6 +3,8 @@
 namespace App\Models;
 
 
+use App\Helper;
+
 class Text extends Model
 {
     private static $_table = 'texts';
@@ -135,10 +137,15 @@ class Text extends Model
                 'repositories.visibility'
             ],
         ];
-        return $db->select(self::$_table, [
+        $data =  $db->select(self::$_table, [
             "[>]users" => ['user_id' => 'id'],
             "[>]repositories" => ['repository_id' => 'id']
         ], $columns, ["AND" => [self::$_table.'.status' => 2, 'repositories.visibility' => 2], 'ORDER' => [self::$_table.'.updated_at' => 'DESC'], 'LIMIT' => 12]);
+
+        foreach ($data as $index => $d) {
+            $data[$index]['user']['avatar'] = Helper::get_user_avatar($d['user']['id'], 40);
+        }
+        return $data;
 
     }
 
