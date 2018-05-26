@@ -105,10 +105,9 @@ $(document).ready(function () {
     if (window.content !== undefined) {
         var editorrr = new tui.Editor({
             el: document.querySelector('.medium-text'),
-            initialEditType: 'wysiwyg',
+            // initialEditType: 'markdown',
             previewStyle: 'vertical',
             height: '500px',
-            hideModeSwitch: true,
             usageStatistics: false,
             exts: ['scrollSync', 'table'],
             initialValue: content,
