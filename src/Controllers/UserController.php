@@ -288,6 +288,7 @@ class UserController extends BaseController
                 'created_at' => time()
             ]);
             if($res) {
+                $_SESSION['user'] = $res;
                 return $profile;
             }
             return $res;
