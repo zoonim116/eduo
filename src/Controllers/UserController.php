@@ -238,7 +238,7 @@ class UserController extends BaseController
             $oAuth2Client = $fb->getOAuth2Client();
             // Exchanges a short-lived access token for a long-lived one
             $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-            $fbData = $fb->get('/me?fields=email,picture,short_name,id,first_name,last_name', $longLivedAccessToken);
+            $fbData = $fb->get('/me?fields=email,picture,id,first_name,last_name', $longLivedAccessToken);
 
         } catch(FacebookResponseException $e) {
             // When Graph returns an error
