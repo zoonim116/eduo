@@ -94,7 +94,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 						$html .= '<tr>';
 
 						$html .= '<td class="Left"> </td>';
-						$html .= '<td class="Right"><ins>'.$line.'</ins> </td>';
+						$html .= '<td class="Right"><ins>'.$line.'</ins></td>';
 						$html .= '</tr>';
 					}
 				}
@@ -110,7 +110,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 						$fromLine = $change['base']['offset'] + $no + 1;
 						$html .= '<tr>';
 //						$html .= '<th>'.$fromLine.'</th>';
-						$html .= '<td class="Left"><del>'.$line.'</del> </td>';
+						$html .= '<td class="Left"><del>'.$line.'</del></td>';
 						$html .= '<td class="Right"> </td>';
 						$html .= '</tr>';
 					}
@@ -118,6 +118,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 				// Show modified lines on both sides
 				else if($change['tag'] == 'replace') {
 					if(count($change['base']['lines']) >= count($change['changed']['lines'])) {
+//					    die("1");
 						foreach($change['base']['lines'] as $no => $line) {
                             if ($url = strstr($line, "![](")) {
                                 $url = strrchr($line,'(');
@@ -141,6 +142,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 						}
 					}
 					else {
+
 						foreach($change['changed']['lines'] as $no => $changedLine) {
 							if(!isset($change['base']['lines'][$no])) {
 								$fromLine = '&nbsp;';
@@ -159,9 +161,19 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 //							$html .= '<th>'.$fromLine.'</th>';
 							$html .= '<td class="Left"><span>'.$line.'</span> </td>';
 							$toLine = $change['changed']['offset'] + $no + 1;
-							$html .= '<td class="Right"><span>'.$changedLine.'</span></td>';
+//							var_dump($changedLine);
+//							var_dump($line);
+//                            var_dump(strcasecmp(trim($changedLine), trim(strip_tags($line))));
+							if(strcasecmp(trim($changedLine), trim(strip_tags($line))) != 0) {
+                                $html .= '<td class="Right"><span><ins>'.$changedLine.'</ins></span></td>';
+                            } else {
+                                $html .= '<td class="Right"><span>'.$changedLine.'</span></td>';
+                            }
+
 							$html .= '</tr>';
 						}
+//						var_dump($html);
+//                        die();
 					}
 				}
 				$html .= '</tbody>';

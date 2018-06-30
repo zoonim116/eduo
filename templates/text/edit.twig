@@ -57,6 +57,24 @@
                                 {% endfor  %}
                             </select>
                         </div>
+                        <div class="form-group">
+                            <select id="text-category" name="category" required placeholder="Select a category...">
+                                <option value="">Select a category...</option>
+                                {% for category in categories %}
+                                    {% if category.id == fields.category_id %}
+                                        <option value="{{ category.id }}" selected>{{ category.name }}</option>
+                                    {% else %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endif  %}
+
+                                {% endfor %}
+                            </select>
+                            {% if errors.category %}
+                                <div class="invalid-feedback" style="display: block !important;">
+                                    {{ errors.category | first }}
+                                </div>
+                            {% endif %}
+                        </div>
                         <button type="submit" name="publish" class="btn btn-success float-right " id="publish">Update</button>
                         <button type="submit"  name="draft" class="btn btn-info float-right mr-2" id="draft">Save to Draft</button>
                     </form>

@@ -3,6 +3,8 @@
 namespace App;
 use App\Models\User;
 use Facebook\Facebook;
+use phpFastCache\CacheManager;
+use phpFastCache\Core\phpFastCache;
 
 class Helper
 {
@@ -132,16 +134,26 @@ class Helper
 
     public static function get_user_avatar($user_id, $size) {
         $user = User::find_by_id($user_id);
+        $instanceCache = CacheManager::getInstance('files');
         if($user['fb_access_token']) {
             $longLivedAccessToken = unserialize($user['fb_access_token']);
-
-            $fb = new Facebook([
-                'app_id' => getenv('FACEBOOK_APP_ID'),
-                'app_secret' => getenv('FACEBOOK_APP_SECRET'),
-                'default_graph_version' => getenv('FACEBOOK_GRAPH_VERSION')
-            ]);
-            $fbPictures = $fb->get('/me/picture?redirect=0&height='.$size, $longLivedAccessToken);
-            $picture = $fbPictures->getGraphUser();
+            $cached_avatar = $instanceCache->getItem(hash('md5', $user['email']).'_avatar');
+//            echo "<pre>";
+//            die(var_dump($cached_avatar->isHit()));
+//            die(var_dump($cached_avatar->get()));
+            if(!$cached_avatar->isHit()) {
+                $fb = new Facebook([
+                    'app_id' => getenv('FACEBOOK_APP_ID'),
+                    'app_secret' => getenv('FACEBOOK_APP_SECRET'),
+                    'default_graph_version' => getenv('FACEBOOK_GRAPH_VERSION')
+                ]);
+                $fbPictures = $fb->get('/me/picture?redirect=0&height='.$size, $longLivedAccessToken);
+                $picture = $fbPictures->getGraphUser();
+                $cached_avatar->set(serialize($picture))->expiresAfter(86400);
+                $instanceCache->save($cached_avatar);
+            } else {
+                 $picture = unserialize($cached_avatar->get()) ;
+            }
             return $picture['url'];
         } else {
             return Helper::get_gravatar($user['email'], $size);

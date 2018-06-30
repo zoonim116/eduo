@@ -113,6 +113,9 @@ div {
     position: relative;
 }
 
+.is-invalid {
+    border-color: #dc3545 !important;
+}
 
 .menu-wrap {
     justify-content: space-between;

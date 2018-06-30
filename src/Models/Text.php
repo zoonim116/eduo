@@ -25,6 +25,7 @@ class Text extends Model
             'status' => $status,
             'user_id' => $user_id,
             'repository_id' => $data['repository'],
+            'category_id' => $data['category'],
             'created_at' => time(),
             'updated_at' => time(),
         ]);
@@ -58,6 +59,7 @@ class Text extends Model
             'user_id',
             'status',
             'repository_id',
+            'category_id',
             'created_at',
             'updated_at'
         ];
@@ -105,6 +107,8 @@ class Text extends Model
             'title' => $data['title'],
             'short_description' => $data['short_description'],
             'text' => rtrim($data['text'],"+"),
+            'repository_id' => $data['repository'],
+            'category_id' => $data['category'],
             'status' => $status,
             'updated_at' => time()
         ], [

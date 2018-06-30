@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Helper;
 use App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Context;
 use App\Libraries\Diff\Renderer\Text\Diff_Renderer_Text_Unified;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Diff;
 use App\Models\Highlight;
@@ -22,10 +23,12 @@ class TextController extends BaseController
 
     public function create(Request $request, Response $response, $args){
         $repos = Repository::find($this->auth->get_user_id());
+        $categories = Category::get_all();
         if ($request->isPost()) {
             $validation = $this->validator->validate($request, [
                 'title' => v::notEmpty(),
                 'short_description' => v::notEmpty(),
+                'category' => v::notEmpty()->numeric(),
                 'text' => v::notEmpty(),
                 'repository' => v::notEmpty()->IsRepositoryOwner()
             ]);
@@ -42,7 +45,7 @@ class TextController extends BaseController
 
         }
         $this->title = "Add new text";
-        $this->render($response,'text/create.twig', compact('repos'));
+        $this->render($response,'text/create.twig', compact('repos','categories'));
     }
 
     public function delete(Request $request, Response $response, $args) {
@@ -98,6 +101,7 @@ class TextController extends BaseController
             $text['text'][$key] = str_replace(array("\n", "\r"), '', $t);
         }
         $repos = Repository::find($this->auth->get_user_id());
+        $categories = Category::get_all();
         if(Text::is_owner($text_id, $this->auth->get_user_id())) {
             if($request->isPost()) {
                 if((int)$text['status'] === 2) {
@@ -125,7 +129,7 @@ class TextController extends BaseController
             }
         }
         $this->title = "Edit: {$text['title']}";
-        $this->render($response,'text/edit.twig', ['fields' => $text, 'repos' => $repos]);
+        $this->render($response,'text/edit.twig', ['fields' => $text, 'repos' => $repos, 'categories' => $categories]);
     }
 
     public function view(Request $request, Response $response, $args) {

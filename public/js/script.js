@@ -8,6 +8,29 @@ $(document).ready(function () {
         },
     });
 
+    if($('#text-category').length > 0) {
+        $('#text-category').selectize({
+            allowEmptyOption: false,
+            create: true
+        });
+    }
+    
+    function alphabet_filter(character) {
+        $('.category-list div[data-character]').hide();
+        $.map($('.category-list div[data-character]'), function (val) {
+            if($(val).data('character') === character) {
+                $(val).show();
+            }
+        });
+    }
+
+    if($('.category-list').length > 0) {
+        alphabet_filter('A');
+        $('.alphabet-buttons button').on('click', function () {
+            alphabet_filter($(this).text());
+        });
+    }
+
     $('.medium-text').focusout(function () {
         document.querySelector('.medium-text').dispatchEvent(new Event('upd'));
     });

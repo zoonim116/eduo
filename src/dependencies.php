@@ -13,10 +13,16 @@ use Dotenv\Dotenv;
 use \Slim\Csrf\Guard;
 use Aptoma\Twig\Extension\MarkdownExtension;
 use Aptoma\Twig\Extension\MarkdownEngine;
+use phpFastCache\CacheManager;
+use phpFastCache\Core\phpFastCache;
 // DIC configuration
 
 $container = $app->getContainer();
 
+CacheManager::setDefaultConfig([
+    "path" => sys_get_temp_dir(),
+    "itemDetailedDate" => false
+]);
 
 $dotenv = new Dotenv(__DIR__ . '/../');
 $dotenv->load();

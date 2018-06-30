@@ -1,0 +1,40 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group mr-auto ml-auto alphabet-buttons" role="group">
+            <button type="button" class="btn btn-primary active">A</button>
+            <button type="button" class="btn btn-primary">B</button>
+            <button type="button" class="btn btn-primary">C</button>
+            <button type="button" class="btn btn-primary">D</button>
+            <button type="button" class="btn btn-primary">E</button>
+            <button type="button" class="btn btn-primary">F</button>
+            <button type="button" class="btn btn-primary">G</button>
+            <button type="button" class="btn btn-primary">H</button>
+            <button type="button" class="btn btn-primary">I</button>
+            <button type="button" class="btn btn-primary">J</button>
+            <button type="button" class="btn btn-primary">K</button>
+            <button type="button" class="btn btn-primary">L</button>
+            <button type="button" class="btn btn-primary">M</button>
+            <button type="button" class="btn btn-primary">N</button>
+            <button type="button" class="btn btn-primary">O</button>
+            <button type="button" class="btn btn-primary">P</button>
+            <button type="button" class="btn btn-primary">Q</button>
+            <button type="button" class="btn btn-primary">R</button>
+            <button type="button" class="btn btn-primary">S</button>
+            <button type="button" class="btn btn-primary">T</button>
+            <button type="button" class="btn btn-primary">U</button>
+            <button type="button" class="btn btn-primary">V</button>
+            <button type="button" class="btn btn-primary">W</button>
+            <button type="button" class="btn btn-primary">X</button>
+            <button type="button" class="btn btn-primary">W</button>
+            <button type="button" class="btn btn-primary">Z</button>
+        </div>
+    </div>
+    <div class="row category-list">
+        {% for category in categories %}
+            <div class="col-sm-3" data-character="{{ category.name | first }}" style="display: none;">
+                <a href="{{ path_for('category.view', {id: category.id}) }}"><span>{{ category.name }} <b>({{ category.text_count }})</b></span></a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

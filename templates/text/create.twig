@@ -57,6 +57,19 @@
                                 {% endfor  %}
                             </select>
                         </div>
+                        <div class="form-group">
+                            <select id="text-category" name="category" required placeholder="Select a category...">
+                                <option value="">Select a category...</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if errors.category %}
+                                <div class="invalid-feedback" style="display: block !important;">
+                                    {{ errors.category | first }}
+                                </div>
+                            {% endif %}
+                        </div>
                         <button type="submit" name="publish" class="btn btn-success float-right " id="publish">Publish</button>
                         <button type="submit"  name="draft" class="btn btn-info float-right mr-2" id="draft">Save to Draft</button>
                     </form>
@@ -66,8 +79,9 @@
     </div>
 
     <script>
-        var content = '{{ fields.text }}'
+        var content = '{{ fields.text }}';
     </script>
+
 
 {% endblock %}
 
