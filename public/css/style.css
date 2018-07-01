@@ -209,7 +209,67 @@ div {
     display: none;
 }
 
+
+.navbar-nav .dropdown-menu {
+    position: absolute;
+}
+
+.navbar-expand-lg .navbar-collapse {
+    justify-content: flex-end;
+}
+
+.alphabet-buttons {
+    margin-bottom: 20px;
+}
+
+.category-list > div {
+    margin-bottom: 10px;
+}
+
+.btn-success {
+    padding: 8px 15px;
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 991px) {
+
+    .navbar-nav .dropdown-menu {
+        position: relative;
+    }
+
+    .repository-item {
+        margin-bottom: 30px;
+    }
+
+    .alphabet-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .alphabet-buttons .btn {
+        width: 37px;
+        border-radius: 0px;
+    }
+
+    .btn-group>.btn:first-child {
+        margin-left: -1px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .col-sm-4 .btn, .col-sm-8 .btn {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+
 @media only screen and (max-width: 480px) {
+
+    .h1 {
+        font-size: 25px;
+    }
     .flex-nowrap {
         flex-wrap: wrap !important;
     }
@@ -220,5 +280,10 @@ div {
         -ms-flex-pack: center !important;
         text-align: right;
         margin-bottom: 10px;
+    }
+
+    .navbar-nav {
+        width: 100%;
+        justify-content: center;
     }
 }

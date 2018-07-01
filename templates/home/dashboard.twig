@@ -3,26 +3,22 @@
     {% include '_partials/greeting.twig' %}
     
     <div class="row">
+        {% include '_partials/flash.twig' %}
 
-        <div class="col-md-12">
-            {% include '_partials/flash.twig' %}
+                {% if(repos) %}
+                    {% for repository in repos %}
+                        {% include '_partials/repository/list-item.twig' %}
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-primary mt-3">
+                        <span>There is no repositories</span>
+                    </div>
 
-                    {% if(repos) %}
-                        {% for repository in repos %}
-                            {% include '_partials/repository/list-item.twig' %}
-                        {% endfor %}
-                    {% else %}
-                        <div class="alert alert-primary mt-3">
-                            <span>There is no repositories</span>
-                        </div>
-
-                    {% endif %}
+                {% endif %}
 
 
-            <div class="col-md-12 clearfix">
-                <a href="{{ path_for('repository.create') }}" class="btn btn-success float-left"><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
-            </div>
-
+        <div class="col-md-12 clearfix d-none">
+            <a href="{{ path_for('repository.create') }}" class="btn btn-success float-left"><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
         </div>
 	</div>
     
