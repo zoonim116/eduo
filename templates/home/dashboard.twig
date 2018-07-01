@@ -72,9 +72,13 @@
 
             <p class="h1">Recently watched profiles:</p>
             <div class="card-columns mt-3">
-                {% for profile in trackings_profile %}
-                    {% include '_partials/dashboard/profile_item.twig' %}
-                {% endfor  %}
+                {% if (highlights) %}
+                    {% for profile in trackings_profile %}
+                        {% include '_partials/dashboard/profile_item.twig' %}
+                    {% endfor  %}
+                {% else %}
+                    <p class="text-center mt-3">No profiles :(</p>
+                {% endif %}
             </div>
 
             <p class="h1">My highlights:</p>
