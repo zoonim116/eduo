@@ -168,4 +168,35 @@ class Text extends Model
         ];
         return $db->select(self::$_table, $columns, ["user_id[=]" => $user_id, "status[=]" =>2]);
     }
+
+    public static function search($q) {
+        $db = self::forge();
+        $columns = [
+            'texts.id(text_id)',
+            self::$_table.'.title',
+            self::$_table.'.short_description',
+            self::$_table.'.text',
+            self::$_table.'.status',
+            self::$_table.'.user_id',
+            self::$_table.'.repository_id',
+            self::$_table.'.created_at',
+            self::$_table.'.updated_at',
+            'user' => [
+                'users.firstname',
+                'users.lastname',
+                'users.id',
+                'users.email',
+            ],
+        ];
+        $data = $db->select(self::$_table, ["[>]users" => ['user_id' => 'id']], $columns, ["OR" => [
+                                                                "texts.text[~]" => "%{$q}%",
+                                                                "texts.title[~]" => "%{$q}%",
+                                                                "texts.short_description[~]" => "%{$q}%",
+                                                            ], "AND" => ['texts.status' => 2]]
+                                                     );
+        foreach ($data as $index => $d) {
+            $data[$index]['user']['avatar'] = Helper::get_user_avatar($d['user']['id'], 40);
+        }
+        return $data;
+    }
 }

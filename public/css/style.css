@@ -226,7 +226,7 @@ div {
     margin-bottom: 10px;
 }
 
-.btn-success {
+.btn-success, .btn-info {
     padding: 8px 15px;
     font-size: 16px;
 }

@@ -257,4 +257,14 @@ class TextController extends BaseController
         $response->write(json_encode(['status' => 'error']));
 
     }
+
+    public function search(Request $request, Response $response, $args) {
+        if($search = $request->getParam('q')) {
+            $results = Text::search($search);
+            $this->title = "Search results: {$search}";
+            $this->render($response,'text/search.twig', compact('results', 'search'));
+        } else {
+            $this->render($response, '404.twig',[], 404 );
+        }
+    }
 }

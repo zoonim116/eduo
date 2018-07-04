@@ -1,0 +1,9 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <p class="d-inline h1">Search results: <b>{{ search }}</b></p>
+    <div class="card-columns mt-3">
+        {% for text in results %}
+            {% include '_partials/homepage/text_item.twig' %}
+        {% endfor  %}
+    </div>
+{% endblock %}

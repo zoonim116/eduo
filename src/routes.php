@@ -54,6 +54,7 @@ $app->get('/repository/all', \App\Controllers\RepositoryController::class. ':all
 $app->post('/repository/all', \App\Controllers\RepositoryController::class. ':all');
 $app->get('/text/view/{id:[0-9]+}', \App\Controllers\TextController::class. ':view')->setName('text.view');
 $app->get('/text/presentation/{id:[0-9]+}', \App\Controllers\TextController::class. ':presentation')->setName('text.presentation');
+$app->get('/search', \App\Controllers\TextController::class. ':search')->setName('text.search');
 $app->get('/repository/view/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':view')->setName('repository.view');
 $app->get('/user/callback/{type}', \App\Controllers\UserController::class. ':callback');
 $app->get('/user/profile/{id:[0-9]+}', \App\Controllers\UserController::class.  ':profile')->setName('user.profile');
