@@ -46,6 +46,8 @@ $app->group('', function () {
     $this->post('/text/watch', \App\Controllers\TextController::class. ':watch');
     $this->post('/text/unwatch', \App\Controllers\TextController::class. ':unwatch');
     $this->post('/text/upload', \App\Controllers\TextController::class. ':upload');
+    $this->post('/wall/add', \App\Controllers\WallController::class. ':add')->setName('wall.add');
+    $this->get('/wall/delete/{id:[0-9]+}', \App\Controllers\WallController::class. ':delete')->setName('wall.delete');
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 
@@ -60,3 +62,4 @@ $app->get('/user/callback/{type}', \App\Controllers\UserController::class. ':cal
 $app->get('/user/profile/{id:[0-9]+}', \App\Controllers\UserController::class.  ':profile')->setName('user.profile');
 $app->get('/categories/', \App\Controllers\HomeController::class. ':category_page')->setName('category.list');
 $app->get('/category/view/{id:[0-9]+}', \App\Controllers\HomeController::class. ':category_view')->setName('category.view');
+$app->post('/wall/parse_url/', \App\Controllers\WallController::class. ':parse_url')->setName('wall.parse_url');

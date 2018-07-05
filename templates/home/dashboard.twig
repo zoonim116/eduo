@@ -25,50 +25,54 @@
     <div class="row">
         <div class="col-md-12">
             <p class="h1">Recently watched repos:</p>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Visited</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for tracking in trackings %}
-                    <tr>
-                        <th scope="row"> {{ loop.index }}</th>
-                        <td> <a href="{{ path_for('repository.view', {id: tracking.repository_id}) }}"> {{ tracking.repository.name }} </a></td>
-                        <td>{{ tracking.repository.description }}</td>
-                        <td>{{ tracking.created_at | timeDiff }}</td>
-                    </tr>
-                {% endfor  %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Visited</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for tracking in trackings %}
+                        <tr>
+                            <th scope="row"> {{ loop.index }}</th>
+                            <td> <a href="{{ path_for('repository.view', {id: tracking.repository_id}) }}"> {{ tracking.repository.name }} </a></td>
+                            <td>{{ tracking.repository.description }}</td>
+                            <td>{{ tracking.created_at | timeDiff }}</td>
+                        </tr>
+                    {% endfor  %}
+                    </tbody>
+                </table>
+            </div>
 
             <p class="h1">Recently watched texts:</p>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Repository</th>
-                    <th scope="col">Visited</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for tt in trackings_text %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
                     <tr>
-                        <th scope="row"> {{ loop.index }}</th>
-                        <td> <a href="{{ path_for('text.view', {id: tt.text_id}) }}"> {{ tt.text.title }} </a></td>
-                        <td>{{ tt.text.short_description }}</td>
-                        <td><a href="{{ path_for('repository.view', {id: tt.repository.repo_id}) }}">{{ tt.repository.name }}</a> </td>
-                        <td>{{ tt.created_at | timeDiff }}</td>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Repository</th>
+                        <th scope="col">Visited</th>
                     </tr>
-                {% endfor  %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for tt in trackings_text %}
+                        <tr>
+                            <th scope="row"> {{ loop.index }}</th>
+                            <td> <a href="{{ path_for('text.view', {id: tt.text_id}) }}"> {{ tt.text.title }} </a></td>
+                            <td>{{ tt.text.short_description }}</td>
+                            <td><a href="{{ path_for('repository.view', {id: tt.repository.repo_id}) }}">{{ tt.repository.name }}</a> </td>
+                            <td>{{ tt.created_at | timeDiff }}</td>
+                        </tr>
+                    {% endfor  %}
+                    </tbody>
+                </table>
+            </div>
 
             <p class="h1">Recently watched profiles:</p>
             <div class="card-columns mt-3">
@@ -91,4 +95,58 @@
             {% endif %}
         </div>
     </div>
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <form method="post" name="post_on_wall" action="{{ path_for('wall.add') }}">
+                {{ csrf.field | raw }}
+                <div class="form-group">
+                    <label class="">Message:</label>
+                    <textarea class="form-control {{ errors.post ? ' is-invalid' : '' }}" name="post" required></textarea>
+                    {% if errors.post %}
+                        <div class="invalid-feedback">
+                            {{ errors.post | first }}
+                        </div>
+                    {% endif %}
+                </div>
+                <input type="submit" value="Post" class="btn btn-sm btn-outline-success mt-2 pull-right">
+            </form>
+        </div>
+        <div class="col-sm-8">
+            {% if(wall_posts) %}
+                <div class="row" id="wall-posts">
+                    {% for post in wall_posts %}
+                        {% include '_partials/dashboard/wall_post_item.twig' %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center mt-3">No posts :(</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            $("#wall-posts .post-item").each(function (counter, post) {
+                var text = $($(post).find('.post-message p')[0]).text();
+                var post_id = $(this).data('post-id');
+                var self = this;
+                var newst =  URI.withinString(text, function (url) {
+                    $(self).find('.post-url-preview').html('<img src="https://camo.githubusercontent.com/60d741b9bfc3081d1c9f4aa6297ba82db8b706b7/687474703a2f2f692e696d6775722e636f6d2f4c4475485a65662e676966" class="preloader" />');
+                    $.ajax({
+                        url: "{{ path_for('wall.parse_url') }}",
+                        type: "POST",
+                        data: {url: url},
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            if(data.status == 'success') {
+                                $(self).find('.post-url-preview').html(data.template);
+                            }
+                        }
+                    })
+                    return '';
+                });
+                $($(post).find('.post-message p')[0]).text(newst);
+            });
+        });
+    </script>
 {% endblock %}

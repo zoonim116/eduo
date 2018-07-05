@@ -231,6 +231,40 @@ div {
     font-size: 16px;
 }
 
+.post-item {
+    margin-bottom: 20px;
+}
+
+.post-url-preview {
+    padding: 10px 0px;
+}
+
+.post-url-preview .preview a {
+    display: block;
+    color: #000;
+}
+
+.post-url-preview .preview {
+    display: flex;
+    align-items: center;
+}
+
+.post-url-preview .preview > div {
+    padding: 0px 10px;
+}
+
+.post-url-preview .preview .title {
+    font-weight: bold;
+}
+
+.post-url-preview .preview a.url-wrap {
+    color: #28a745;
+}
+
+.img-wrap {
+    width: 100px;
+}
+
 @media only screen and (max-width: 991px) {
 
     .navbar-nav .dropdown-menu {
@@ -266,6 +300,20 @@ div {
 
 
 @media only screen and (max-width: 480px) {
+    .btn.menu-popover {
+        display: inline-block;
+        width: auto;
+        margin: 0px;
+    }
+    .post-url-preview .preview {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .post-url-preview .preview a.img-wrap {
+        margin: 10px auto;
+
+    }
 
     .h1 {
         font-size: 25px;

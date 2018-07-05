@@ -8,6 +8,7 @@ use App\Models\Repository_Tracking;
 use App\Models\Text;
 use App\Models\Text_Tracking;
 use App\Models\User;
+use App\Models\Wall;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Facebook\Exceptions\FacebookResponseException;

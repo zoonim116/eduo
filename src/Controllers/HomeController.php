@@ -9,6 +9,7 @@ use App\Models\Repository;
 use App\Models\Repository_Tracking;
 use App\Models\Text;
 use App\Models\Text_Tracking;
+use App\Models\Wall;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -39,16 +40,18 @@ class HomeController extends BaseController
         $trackings_profile = Profile_Tracking::get_by_user($this->auth->get_user_id());
         $highlights = Highlight::get_by_user($this->auth->get_user_id());
 
-        $repos = Repository::find($this->auth->get_user_id() );
+        $repos = Repository::find($this->auth->get_user_id());
         //$public = Repository::find($this->auth->get_user_id(), 2);
         
-        
+        $wall_posts = Wall::find($this->auth->get_user_id());
+
         $this->title = "Dashboard";
         $this->render($response,'home/dashboard.twig', compact('trackings',
                                                             'trackings_text',
                                                                 'highlights',
                                                                 'repos',
-                                                                'trackings_profile'));
+                                                                'trackings_profile',
+                                                                'wall_posts'));
     }
 
     public function category_page(Request $request, Response $response, $args) {
