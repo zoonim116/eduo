@@ -237,6 +237,12 @@ div {
 
 .post-url-preview {
     padding: 10px 0px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.preloader {
+    width: 100px;
 }
 
 .post-url-preview .preview a {
@@ -260,6 +266,7 @@ div {
 .post-url-preview .preview a.url-wrap {
     color: #28a745;
 }
+
 
 .img-wrap {
     width: 100px;

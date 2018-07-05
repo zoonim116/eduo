@@ -47,16 +47,13 @@ class WallController extends BaseController
             $description = $tags['description'];
             $img = Helper::get_img_preview($url);
             $template = "<div class=\"preview\">
-                
                     <div class=\"left\" class=\"thumbnail\">
-                        <a href=\"{$url}\" class=\"img-wrap\"><img width=\"100\" src=\"{$img}\"></a>
+                        <a href=\"{$url}\" target='_blank' class=\"img-wrap\"><img width=\"100\" src=\"{$img}\"></a>
                     </div>		
-            
                     <div class=\"left\" class=\"content\">
-                        
-                        <a href=\"{$url}\"><span class=\"title\">{$title}</span></a>
-                        <a href=\"{$url}\"><span class=\"description\">{$description}</span></a>
-                        <a href=\"{$url}\" class=\"url-wrap\">{$host}</a>
+                        <a href=\"{$url}\" target='_blank'><span class=\"title\">{$title}</span></a>
+                        <a href=\"{$url}\" target='_blank'><span class=\"description\">{$description}</span></a>
+                        <a href=\"{$url}\" class=\"url-wrap\" target='_blank'>{$host}</a>
                     </div>
                 </a>
             </div>";
