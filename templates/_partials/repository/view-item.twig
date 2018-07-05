@@ -1,5 +1,6 @@
 <div class="card">
     <div class="card-body">
+        {% if show_menu == 1 %}
         <button type="button" class="btn btn-light menu-popover float-right" data-container="body" data-toggle="popover" data-placement="bottom" data-popover-content="#rep-{{ text.id }}">
             <i class="fa fa-angle-down fa-xs"></i>
         </button>
@@ -9,7 +10,7 @@
                 <a class="btn btn-outline-danger btn-sm" href="{{ path_for('text.delete', {'id': text.id}) }}">Delete</a>
             </div>
         </div>
-      
+        {% endif %}
         <h5 class="card-title"><a href="{{ path_for('text.view', {'id': text.id }) }}" >{{ text.title }}</a></h5>
 
   
