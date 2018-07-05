@@ -28,7 +28,7 @@ class Wall extends Model {
             self::$_table.'.message',
             self::$_table.'.created_at'
         ];
-        return $db->select(self::$_table, $columns, [self::$_table.'.user_id' => $user_id]);
+        return $db->select(self::$_table, $columns, [self::$_table.'.user_id' => $user_id, 'ORDER' => [self::$_table.'.created_at' => 'DESC']] );
     }
 
     public static function get($id) {

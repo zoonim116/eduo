@@ -103,12 +103,14 @@ class UserController extends BaseController
             if($user['id'] !== $this->auth->get_user_id()){
                 $isWatching = Profile_Tracking::isWatching($this->auth->get_user_id(), $user['id']);
             }
+            $posts = Wall::find($user['id']);
             $this->render($response, 'user/profile.twig', [
                 'profile' => $user,
                 'avatar' => $this->auth->get_user_avatar($user['id'], 150),
                 'repos' => Repository::find($user['id'], 2),
                 'texts' => Text::get_by_user($user['id']),
-                'isWatching' => $isWatching
+                'isWatching' => $isWatching,
+                'wall_posts' => $posts
             ]);
         } else {
             $response->withStatus(404, "User not found");

@@ -1,5 +1,6 @@
 <div class="col-md-11 ml-3 post-item" data-post-id="{{ post.id }}">
     <div class="repository-item__title clearfix">
+        {% if show_delete == 1 %}
         <button type="button" class="btn btn-light menu-popover float-right" data-container="body" data-toggle="popover" data-placement="bottom" data-popover-content="#post-{{ post.id }}">
             <i class="fa fa-angle-down fa-xs"></i>
         </button>
@@ -8,6 +9,7 @@
                 <a class="btn btn-outline-danger btn-sm" href="{{ path_for('wall.delete', {'id': post.id}) }}">Delete</a>
             </div>
         </div>
+        {% endif %}
         <small class="float-right"> {{ post.created_at | timeDiff }} </small>
 
     </div>
@@ -18,5 +20,4 @@
 
 
     </div>
-
 </div>

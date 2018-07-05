@@ -115,7 +115,7 @@
             {% if(wall_posts) %}
                 <div class="row" id="wall-posts">
                     {% for post in wall_posts %}
-                        {% include '_partials/dashboard/wall_post_item.twig' %}
+                        {% include '_partials/dashboard/wall_post_item.twig' with { 'show_delete' : 1 } %}
                     {% endfor %}
                 </div>
             {% else %}

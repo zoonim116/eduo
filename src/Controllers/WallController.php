@@ -14,6 +14,8 @@ use App\Models\Wall;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
+use phpFastCache\CacheManager;
+use phpFastCache\Core\phpFastCache;
 
 class WallController extends BaseController
 {
@@ -41,11 +43,26 @@ class WallController extends BaseController
     public function parse_url(Request $request, Response $response, $args) {
         if($request->getParam('url') && filter_var($request->getParam('url'), FILTER_VALIDATE_URL)) {
             $url = $request->getParam('url');
-            $host = parse_url($url, PHP_URL_HOST);
-            $tags = get_meta_tags($url);
-            $title = Helper::get_title($url);
-            $description = $tags['description'];
-            $img = Helper::get_img_preview($url);
+            $instanceCache = CacheManager::getInstance('files');
+            $cached_url = $instanceCache->getItem(hash('md5', $url).'_metadata');
+            if(!$cached_url->isHit()) {
+                $host = parse_url($url, PHP_URL_HOST);
+                $tags = get_meta_tags($url);
+                $title = Helper::get_title($url);
+                $description = $tags['description'];
+                $img = Helper::get_img_preview($url);
+                $cached_url->set(serialize([
+                    'title' => $title,
+                    'description' => $description,
+                    'img' => $img,
+                    'host' => $host
+                ]))->expiresAfter(31622400);
+                $instanceCache->save($cached_url);
+            } else {
+                $data = unserialize($cached_url->get()) ;
+                extract($data);
+            }
+
             $template = "<div class=\"preview\">
                     <div class=\"left\" class=\"thumbnail\">
                         <a href=\"{$url}\" target='_blank' class=\"img-wrap\"><img width=\"100\" src=\"{$img}\"></a>

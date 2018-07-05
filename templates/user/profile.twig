@@ -51,4 +51,46 @@
     {% else %}
         <p class="text-center mt-3">No text :(</p>
     {% endif %}
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <p class="h3">Wall posts:</p>
+        </div>
+        <div class="col-sm-8">
+            {% if(wall_posts) %}
+                <div class="row" id="wall-posts">
+                    {% for post in wall_posts %}
+                        {% include '_partials/dashboard/wall_post_item.twig' with { 'show_delete' : 0 } %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center mt-3">No posts :(</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            $("#wall-posts .post-item").each(function (counter, post) {
+                var text = $($(post).find('.post-message p')[0]).text();
+                var post_id = $(this).data('post-id');
+                var self = this;
+                var newst =  URI.withinString(text, function (url) {
+                    $(self).find('.post-url-preview').html('<img src="https://camo.githubusercontent.com/60d741b9bfc3081d1c9f4aa6297ba82db8b706b7/687474703a2f2f692e696d6775722e636f6d2f4c4475485a65662e676966" class="preloader" />');
+                    $.ajax({
+                        url: "{{ path_for('wall.parse_url') }}",
+                        type: "POST",
+                        data: {url: url},
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            if(data.status == 'success') {
+                                $(self).find('.post-url-preview').html(data.template);
+                            }
+                        }
+                    })
+                    return '';
+                });
+                $($(post).find('.post-message p')[0]).text(newst);
+            });
+        });
+    </script>
 {% endblock %}
