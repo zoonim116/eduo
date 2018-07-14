@@ -45,6 +45,7 @@ class WallController extends BaseController
         if($request->getParam('url') && filter_var($request->getParam('url'), FILTER_VALIDATE_URL)) {
             $url = $request->getParam('url');
             $instanceCache = CacheManager::getInstance('files');
+//            $instanceCache->clear();
             $cached_url = $instanceCache->getItem(hash('md5', $url).'_metadata');
             if(!$cached_url->isHit()) {
                 $host = parse_url($url, PHP_URL_HOST);
@@ -65,10 +66,10 @@ class WallController extends BaseController
             }
 
             $template = "<div class=\"preview\">
-                    <div class=\"left\" class=\"thumbnail\">
+                    <div class=\"\" class=\"thumbnail\">
                         <a href=\"{$url}\" target='_blank' class=\"img-wrap\"><img width=\"100\" src=\"{$img}\"></a>
                     </div>		
-                    <div class=\"left\" class=\"content\">
+                    <div class=\"\" class=\"content\">
                         <a href=\"{$url}\" target='_blank'><span class=\"title\">{$title}</span></a>
                         <a href=\"{$url}\" target='_blank'><span class=\"description\">{$description}</span></a>
                         <a href=\"{$url}\" class=\"url-wrap\" target='_blank'>{$host}</a>
