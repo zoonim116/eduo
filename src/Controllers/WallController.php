@@ -41,6 +41,7 @@ class WallController extends BaseController
     }
 
     public function parse_url(Request $request, Response $response, $args) {
+
         if($request->getParam('url') && filter_var($request->getParam('url'), FILTER_VALIDATE_URL)) {
             $url = $request->getParam('url');
             $instanceCache = CacheManager::getInstance('files');
@@ -50,7 +51,7 @@ class WallController extends BaseController
                 $tags = get_meta_tags($url);
                 $title = Helper::get_title($url);
                 $description = $tags['description'];
-                $img = Helper::get_img_preview($url);
+                $img = Helper::get_img_preview($url, $request);
                 $cached_url->set(serialize([
                     'title' => $title,
                     'description' => $description,

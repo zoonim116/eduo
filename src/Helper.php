@@ -169,11 +169,16 @@ class Helper
         }
     }
 
-    public static function get_img_preview($url) {
-        $str = file_get_contents($url);
-        if(strlen($str)>0) {
-            preg_match('/<img[^>]*'.'src=[\"|\'](.*)[\"|\']/Ui',$str,$img); // ignore case
-            return $img[1];
+    public static function get_img_preview($url, $request) {
+        if(file_exists(__DIR__ . '/../public/url-preview/'.sha1($url).'.jpg')) {
+            return $request->getUri()->getBaseUrl().'/url-preview/'.sha1($url).'.jpg';
+        } else {
+            $fetchUrl = "https://api.thumbnail.ws/api/".getenv('THUMBNAIL_API_KEY') ."/thumbnail/get?url=".
+                urlencode($url)."&width=". urlencode(getenv('THUMBNAIL_WIDHT'));
+            $image = file_get_contents($fetchUrl);
+            file_put_contents(__DIR__ . '/../public/url-preview/'.sha1($url).'.jpg', $image);
+            return $request->getUri()->getBaseUrl().'/url-preview/'.sha1($url).'.jpg';
         }
+
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 class Category extends Model {
-    private static $_table = 'category';
+    private static $_table = 'categories';
 
     public static function get($category_id) {
         $db = self::forge();
@@ -15,7 +15,7 @@ class Category extends Model {
             'id',
             'name'
         ];
-        return $db->select('categories', $columns);
+        return $db->select(self::$_table, $columns);
     }
 
     public static function get_with_text_count() {
