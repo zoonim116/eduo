@@ -8,3 +8,7 @@ DATABASE_PASSWORD=""
 FACEBOOK_APP_ID = ""
 FACEBOOK_APP_SECRET = ""
 FACEBOOK_GRAPH_VERSION = "v2.2"
+
+#Thumbnail.ws settings https://thumbnail.ws/sign-up.html
+THUMBNAIL_API_KEY = ""
+THUMBNAIL_WIDHT = 665
