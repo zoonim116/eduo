@@ -1,0 +1,1 @@
+CREATE TABLE `notifications` ( `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT , `type` ENUM('success','info','warning','error') NOT NULL , `from_user_id` INT UNSIGNED NOT NULL , `to_user_id` INT UNSIGNED NOT NULL , `text` TEXT NOT NULL , `created_at` INT UNSIGNED NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
