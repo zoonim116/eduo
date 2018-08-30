@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../src/notification_strings.php';
+
 return [
     'settings' => [
         'appName' => 'Eduo',
@@ -21,4 +23,5 @@ return [
             'level' => \Monolog\Logger::ERROR,
         ],
     ],
+    'notification_strings' => $notification_strings
 ];

@@ -1,6 +1,6 @@
 <div class="card changes-item">
     <div class="card-body">
-        <h5 class="card-title"><i>{{ comment.user.firstname }} {{ comment.user.lastname }}</i> added comment {{ comment.created_at | timeDiff }}</h5>
+        <h5 class="card-title"><a href="{{ path_for('user.profile', {'id' : comment.user.id}) }}"><i>{{ comment.user.firstname }} {{ comment.user.lastname }}</i> </a> added comment {{ comment.created_at | timeDiff }}</h5>
         <blockquote class="blockquote">
             <p class="mb-0">{{ comment.text }}.</p>
         </blockquote>

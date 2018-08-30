@@ -15,6 +15,7 @@ use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Respect\Validation\Validator as v;
+use App\Notification;
 
 class UserController extends BaseController
 {
@@ -122,8 +123,11 @@ class UserController extends BaseController
         $user = User::find_by_id($profile_id);
         if($user && $profile_id !== $this->auth->get_user_id()) {
             $sub_id =  Profile_Tracking::create($this->auth->get_user_id(), $profile_id);
-            if ($sub_id)
+            if ($sub_id) {
+                Notification::create('info', $this->auth->get_user_id(), $profile_id,
+                    strtr($this->container->get('notification_strings')['someone_follows_you'], ['{NAME}' => $this->auth->get_user_firstname()]));
                 die(json_encode(['status' => 'success', 'sub_id' => $sub_id]));
+            }
         }
         die(json_encode(['status' => 'error']));
     }

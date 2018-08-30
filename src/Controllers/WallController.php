@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: maxiim
- * Date: 7/5/18
- * Time: 12:24 PM
- */
 
 namespace App\Controllers;
 
 
 use App\Helper;
+use App\Models\Profile_Tracking;
 use App\Models\Wall;
+use App\Notification;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
@@ -28,6 +24,13 @@ class WallController extends BaseController
             return $response->withRedirect($this->router->pathFor('dashboard'));
         }
         Wall::create_post($request->getParam('post'), $this->auth->get_user_id());
+
+        //Add subscribers notification
+        $subscribers = Profile_Tracking::get_user_followers($this->auth->get_user_id());
+        foreach ($subscribers as $subscriber) {
+            Notification::create('info', $this->auth->get_user_id(), $subscriber['user_id'],
+                            $this->container->get('notification_strings')['follower_post_to_wall']);
+        }
         return $response->withRedirect($this->router->pathFor('dashboard'));
     }
 

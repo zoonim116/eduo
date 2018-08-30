@@ -48,6 +48,8 @@ $app->group('', function () {
     $this->post('/text/upload', \App\Controllers\TextController::class. ':upload');
     $this->post('/wall/add', \App\Controllers\WallController::class. ':add')->setName('wall.add');
     $this->get('/wall/delete/{id:[0-9]+}', \App\Controllers\WallController::class. ':delete')->setName('wall.delete');
+
+    $this->get('/notifications', \App\Controllers\NotificationController::class. ':index')->setName('notification.index');
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 

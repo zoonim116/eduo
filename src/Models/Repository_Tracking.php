@@ -88,4 +88,21 @@ class Repository_Tracking extends Model
         $db = self::forge();
         return $db->delete(self::$_table, ['user_id' => $user_id])->rowCount();
     }
+
+    public static function get_folowers($repo_id) {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.user_id',
+            self::$_table.'.repository_id',
+            self::$_table.'.created_at',
+            'users' => [
+                'users.firstname',
+                'users.lastname',
+                'users.email'
+            ]
+        ];
+        return $db->select(self::$_table, [
+            "[>]users" => ['user_id' => 'id'],
+        ], $columns, [self::$_table.'.repository_id' => $repo_id]);
+    }
 }

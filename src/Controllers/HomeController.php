@@ -10,6 +10,7 @@ use App\Models\Repository_Tracking;
 use App\Models\Text;
 use App\Models\Text_Tracking;
 use App\Models\Wall;
+use App\Notification;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -61,7 +62,6 @@ class HomeController extends BaseController
 
     public function category_view(Request $request, Response $response, $args) {
         $id = (int)$args['id'];
-        echo "<pre>";
-        die(var_dump($id));
+        Notification::create('success', 2, 1, 'test text');;
     }
 }

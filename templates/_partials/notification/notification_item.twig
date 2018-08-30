@@ -1,0 +1,16 @@
+<div class="notification-item media text-muted pt-3">
+    <a href="{{ path_for('user.profile', {'id' : notification.user.id}) }}">
+        <img alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{ notification.user.id | getUserAvatar(32) }}" data-holder-rendered="true">
+    </a>
+    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <a href="{{ path_for('user.profile', {'id' : notification.user.id}) }}">
+            <strong class="d-block text-gray-dark">{{ notification.user.firstname }} {{ notification.user.lastname }}</strong>
+        </a>
+        {{ notification.text }}
+        {% if notification.is_seen == 0 %}
+            <span class="new">
+                <i class="fa fa-exclamation fa-2x" aria-hidden="true"></i>
+            </span>
+        {% endif %}
+    </p>
+</div>

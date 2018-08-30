@@ -76,6 +76,7 @@ class Profile_Tracking extends Model
             self::$_table.'.profile_id',
             self::$_table.'.created_at',
             'users' => [
+                'users.id',
                 'users.firstname',
                 'users.lastname',
                 'users.email'
@@ -90,6 +91,29 @@ class Profile_Tracking extends Model
         }
 
         return $profiles;
+    }
+
+
+    /**
+     * Get user followers
+     * @param $user_id
+     * @return array|bool
+     */
+    public static function get_user_followers($user_id) {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.user_id',
+            self::$_table.'.profile_id',
+            self::$_table.'.created_at',
+            'users' => [
+                'users.firstname',
+                'users.lastname',
+                'users.email'
+            ]
+        ];
+        return  $db->select(self::$_table, [
+            "[>]users" => ['profile_id' => 'id'],
+        ], $columns, [self::$_table.'.profile_id' => $user_id]);
     }
 
 }

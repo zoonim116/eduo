@@ -9,6 +9,7 @@ class AppExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('timeDiff', array($this, 'timediffFilter')),
+            new \Twig_SimpleFilter('getUserAvatar', array($this, 'getUserAvatar')),
         );
     }
 
@@ -18,5 +19,12 @@ class AppExtension extends \Twig_Extension
             return Helper::time_elapsed_string("@{$time}");
         }
         return '';
+    }
+
+    public function getUserAvatar($user_id, $size)
+    {
+        if($user_id && $size) {
+            return Helper::get_user_avatar($user_id, $size);
+        }
     }
 }

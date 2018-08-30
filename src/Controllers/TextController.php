@@ -12,6 +12,7 @@ use App\Models\Highlight;
 use App\Models\Model;
 use App\Models\Text_Tracking;
 use App\Models\User;
+use App\Notification;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Models\Repository;
@@ -110,8 +111,8 @@ class TextController extends BaseController
                     $new = explode("\n", rtrim($request->getParam('text'), '+'));
 
                     $options = array(
-                        'ignoreWhitespace' => true,
-                        'ignoreCase' => true,
+                        'ignoreWhitespace' => false,
+                        'ignoreCase' => false,
                     );
                     require_once $this->container->get('settings')['librariesPath'] . 'Diff.php';
                     $diff = new \App\Libraries\Diff($old, $new, $options);
@@ -124,6 +125,14 @@ class TextController extends BaseController
                     $status = 1;
                 }
                 Text::update($text_id, $request->getParams(), $status);
+
+                //Add subscribers notification
+                $subscribers = Text_Tracking::get_folowers($text_id);
+
+                foreach ($subscribers as $subscriber) {
+                    Notification::create('info', $this->auth->get_user_id(), $subscriber['user_id'],
+                                        $this->container->get('notification_strings')['follower_edited_text']);
+                }
                 $this->flash->addMessage('success', "Text successfully updated");
                 return $response->withRedirect($this->router->pathFor('repository.texts', ['id' => $text['repository_id']]));
             }
@@ -135,6 +144,7 @@ class TextController extends BaseController
     public function view(Request $request, Response $response, $args) {
         $text_id = $args['id'];
         $text = Text::get_with_relations($text_id);
+
         if($text && $text['status'] == 2 && $text['repository']['visibility'] == 2 || $text && Text::is_owner($text_id, $this->auth->get_user_id())) {
             $isWatching = false;
             $diffs = Diff::get($text_id);
@@ -202,7 +212,10 @@ class TextController extends BaseController
                     }
                     $result = Comment::create($this->auth->get_user_id(), $request->getParam('comment'),
                                     $request->getParam('text'), $text_id);
+                    $text = Text::get($text_id);
                     if($result) {
+                        Notification::create('info', $this->auth->get_user_id(), $text['user_id'],
+                                                $this->container->get('notification_strings')['someone_comment_text']);
                         die(json_encode(['status' => 'success']));
                     }
                 }
@@ -218,8 +231,11 @@ class TextController extends BaseController
         $text = Text::get($text_id);
         if($text && $text['status'] == 2 && $text['user_id'] !== $this->auth->get_user_id()) {
             $sub_id =  Text_Tracking::create($this->auth->get_user_id(), $text_id);
-            if ($sub_id)
+            if ($sub_id) {
+                Notification::create('info', $this->auth->get_user_id(), $text['user_id'],
+                                    $this->container->get('notification_strings')['someone_follow_your_text']);
                 die(json_encode(['status' => 'success', 'sub_id' => $sub_id]));
+            }
         }
         die(json_encode(['status' => 'error']));
     }

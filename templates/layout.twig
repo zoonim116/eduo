@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/css/selection-sharer.css">
     <link rel="stylesheet" href="/css/tui-editor.min.css">
     <link rel="stylesheet" href="/js/tui.editor-1.1.1/tui-editor-contents.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     {#<link rel="stylesheet" href="/css/selectize.bootstrap3.css">#}
     <link rel="stylesheet" href="/css/selectize.bootstrap4.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -52,6 +53,9 @@
                                 <a class="dropdown-item" href="{{ path_for('repository.create') }}">Repository</a>
                             </div>
                         </div>
+                    </li>
+                    <li class="nav-item mt-1">
+                        <a class="nav-link" href="{{ path_for('notification.index') }}"><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a>
                     </li>
                   <li class="nav-item dropdown">
                       <a class="btn dropdown-toggle mr-2" href="#" role="button" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -98,13 +102,60 @@
 
 </footer>
 
+{% if notifications is iterable %}
+<style>
+    .fa-bell-o {
+        color: orangered;
+    }
+</style>
+{% endif %}
+
+
+{#{% if notifications|length > 0 %}#}
+    {#<script type="text/javascript">#}
+        {#window.addEventListener('DOMContentLoaded', function () {#}
+            {#var options = {#}
+                {#"closeButton": true,#}
+                {#"debug": false,#}
+                {#"newestOnTop": false,#}
+                {#"progressBar": true,#}
+                {#"positionClass": "toast-top-right",#}
+                {#"preventDuplicates": true,#}
+                {#"showDuration": "300",#}
+                {#"hideDuration": "1000",#}
+                {#"timeOut": "5000",#}
+                {#"extendedTimeOut": "1000",#}
+                {#"showEasing": "swing",#}
+                {#"hideEasing": "linear",#}
+                {#"showMethod": "fadeIn",#}
+                {#"hideMethod": "fadeOut"#}
+            {#};#}
+
+            {#{% for notification in notifications %}#}
+                {#var settings =  {#}
+                    {#text: '{{notification.text}}',#}
+                    {#type: '{{notification.type}}',#}
+                    {#build_notification: function () {#}
+                        {#eval("toastr." + this.type + "('"+this.text+"', 'Info', " + JSON.stringify(options) + ")");#}
+                    {#}#}
+                {#};#}
+                {#{% verbatim %}#}
+                    {#settings.build_notification();#}
+                {#{% endverbatim %}#}
+            {#{% endfor %}#}
+        {#});#}
+
+    {#</script>#}
+{#{% endif %}#}
+
 
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/selection-sharer.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="/js/selection-sharer.js"></script>
 <script src='/lib/markdown-it/dist/markdown-it.js'></script>
 <script src="/lib/to-mark/dist/to-mark.js"></script>
 <script src="/lib/tui-code-snippet/dist/tui-code-snippet.js"></script>

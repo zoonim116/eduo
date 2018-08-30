@@ -99,6 +99,10 @@ div {
 #fof #respond input{width:200px; padding:5px; border:1px solid #CCCCCC;}
 #fof #respond #submit{width:auto;}
 
+.navbar-nav .post-item-avatar, .card-text .post-item-avatar {
+    width: auto;
+}
+
 .post-item-avatar {
     overflow: hidden;
     /*margin-left: 20px;*/
@@ -269,9 +273,21 @@ div {
     color: #28a745;
 }
 
-
 .img-wrap {
     /*width: 100px;*/
+}
+
+.recently-watched-profile-item img {
+    width: 100px;
+}
+
+.notification-item .media-body{
+    position: relative;
+}
+
+.notification-item .new {
+    position: absolute;
+    right: 15px;
 }
 
 @media only screen and (max-width: 991px) {

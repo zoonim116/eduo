@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Notification;
 use App\Models\Repository;
 use App\Models\Repository_Tracking;
 use App\Models\Text;
@@ -77,6 +78,11 @@ class RepositoryController extends BaseController
                     return $response->withRedirect($this->router->pathFor('repository.edit'));
                 }
                 Repository::update($repo_id, $request->getParams());
+                $subcribers = Repository_Tracking::get_folowers($repo_id);
+                foreach ($subcribers as $subcriber) {
+                    Notification::create('info', $this->auth->get_user_id(), $subcriber['user_id'],
+                                            $this->container->get('notification_strings')['follower_edited_repository']);
+                }
                 $this->flash->addMessage('success', "Repository was successfully updated");
                 return $response->withRedirect($this->router->pathFor('repository.my'));
             }
@@ -118,8 +124,11 @@ class RepositoryController extends BaseController
             $repo = Repository::get($repo_id);
             if($repo['user_id'] !== $this->auth->get_user_id()) {
                 $res = Repository_Tracking::create($this->auth->get_user_id(), $repo_id);
-                if($res)
+                if($res) {
+                    Notification::create('info', $this->auth->get_user_id(), $repo['user_id'],
+                        $this->container->get('notification_strings')['someone_follow_your_repo']);
                     die(json_encode(['status' => 'success', 'sub_id' => $res]));
+                }
             }
         }
         die(json_encode(['status' => 'error']));

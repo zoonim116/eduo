@@ -1,6 +1,6 @@
 <div class="card changes-item">
     <div class="card-body table-responsive">
-        <h5 class="card-title"><i>{{ text.user.firstname }} {{ text.user.lastname }}</i> updated {{ diff.created_at | timeDiff }}</h5>
+        <h5 class="card-title"><a href="{{ path_for('user.profile', {'id' : text.user.id}) }}"> <i>{{ text.user.firstname }} {{ text.user.lastname }}</i> </a> updated {{ diff.created_at | timeDiff }}</h5>
         <p class="card-text" id="diff-{{ loop.index }}">{{ diff.diff | raw }}</p>
     </div>
 </div>

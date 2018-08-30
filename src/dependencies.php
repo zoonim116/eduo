@@ -80,6 +80,12 @@ $container['WallController'] = function ($c) {
     return new Controllers\WallController($view);
 };
 
+$container['NotificationController'] = function ($c) {
+    $settings = $c->get('settings')['renderer'];
+    $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
+    return new Controllers\NotificationController($view);
+};
+
 $container['validator'] = function ($c) {
     return new Validator;
 };
@@ -105,6 +111,7 @@ $app->add(new \App\Middleware\CsrfViewMiddleware($container));
 $app->add(new \App\Middleware\AuthMiddleware($container));
 $app->add(new \App\Middleware\FlashMiddleware($container));
 $app->add(new \App\Middleware\EditorMiddleware($container));
+$app->add(new \App\Middleware\NotificationMiddleware($container));
 if(!$container->request->isXhr()) {
     $app->add($container->csrf);
 }
