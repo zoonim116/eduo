@@ -11,8 +11,18 @@
         <form class="form " role="form" name="create_lesson" action="{{ path_for('lessons.create', {'id' : repo_id}) }}" novalidate="" method="POST" class="border">
             {{ csrf.field | raw }}
             <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Repository</label>
+                <div class="col-sm-6">
+                    <select  class="custom-select" name="repository">
+                        {% for repository in repositories %}
+                            <option value="{{ repository.id }}">{{ repository.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Date</label>
-                <div class="input-group date col-sm-10" id="datetimepicker1" data-target-input="nearest">
+                <div class="input-group date col-sm-6" id="datetimepicker1" data-target-input="nearest">
                     <input type="text" class="form-control datetimepicker-input rounded-0{{ errors.datetime ? ' is-invalid' : '' }}" name="datetime" value="{{ fields.datetime }}" data-target="#datetimepicker1"/>
                     <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -26,7 +36,7 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Rating</label>
-                <div class="col-sm-6">
+                <div class="col-sm-10">
                     <select id="rating" name="rating">
                         <option value="1">1</option>
                         <option value="2">2</option>

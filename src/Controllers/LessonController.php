@@ -21,7 +21,7 @@ class LessonController extends BaseController
     public function edit(Request $request, Response $response, $args) {
         $lesson_id = $args['id'];
         $lesson = Lesson::find($lesson_id);
-
+        $repositories = Repository::find($this->auth->get_user_id());
         if(!$lesson || ($lesson['user_id'] !== $this->auth->get_user_id())) {
             $this->render($response, '404.twig',[], 404 );
         }
@@ -29,6 +29,7 @@ class LessonController extends BaseController
         if($request->isPost()) {
 
             $validation = $this->validator->validate($request, [
+                'repository' => v::notEmpty()->numeric(),
                 'datetime' => v::date('d-m-Y H:i'),
                 'rating' => v::intVal()->between(1, 10, true)
             ]);
@@ -36,7 +37,7 @@ class LessonController extends BaseController
                 return $response->withRedirect($this->router->pathFor('lessons.edit', ['id' => $lesson_id]));
             }
 
-            $res = Lesson::update($lesson_id, $request->getParam('datetime'), $request->getParam('notes'), $request->getParam('rating'));
+            $res = Lesson::update($lesson_id, $request->getParam('repository'), $request->getParam('datetime'), $request->getParam('notes'), $request->getParam('rating'));
 
             if($res) {
                 $this->flash->addMessage('success', "Lesson was successfully updated");
@@ -46,7 +47,7 @@ class LessonController extends BaseController
             return $response->withRedirect($this->router->pathFor('lessons.edit', ['id' => $lesson_id]));
         }
         $this->title = "Edit lesson";
-        $this->render($response,'lesson/edit.twig', ['fields' => $lesson]);
+        $this->render($response,'lesson/edit.twig', ['fields' => $lesson, 'repositories' => $repositories]);
     }
 
     public function delete(Request $request, Response $response, $args) {
@@ -61,18 +62,20 @@ class LessonController extends BaseController
     }
 
     public function create(Request $request, Response $response, $args) {
-        $repo_id = $args['id'];
-        $repo = Repository::get($repo_id);
-        if($repo['user_id'] !== $this->auth->get_user_id()) {
-            $response->withStatus(403, "Access denied");
-        }
+        $repositories = Repository::find($this->auth->get_user_id());
         if($request->isPost()) {
             $validation = $this->validator->validate($request, [
+                'repository' => v::notEmpty()->numeric(),
                 'datetime' => v::date('d-m-Y H:i'),
                 'rating' => v::intVal()->between(1, 10, true)
             ]);
+            $repo_id = $request->getParam('repository');
+            $repo = Repository::get($repo_id);
+            if($repo['user_id'] !== $this->auth->get_user_id()) {
+                $response->withStatus(403, "Access denied");
+            }
             if($validation->failed()) {
-                return $response->withRedirect($this->router->pathFor('lessons.create', ['id' => $repo_id]));
+                return $response->withRedirect($this->router->pathFor('lessons.create'));
             }
             $res = Lesson::create($this->auth->get_user_id(), $repo_id, $request->getParam('datetime'), $request->getParam('notes'), $request->getParam('rating'));
             if($res) {
@@ -84,6 +87,6 @@ class LessonController extends BaseController
             }
         }
         $this->title = "Add new lesson";
-        $this->render($response,'lesson/create.twig', compact('repo_id'));
+        $this->render($response,'lesson/create.twig', compact('repo_id', 'repositories'));
     }
 }

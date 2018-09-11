@@ -48,7 +48,7 @@ $app->group('', function () {
 
     $this->group('/lessons', function () {
         $this->get('/view/{id:[0-9]+}', \App\Controllers\LessonController::class. ':view')->setName('lessons.view');
-        $this->map(['GET', 'POST'], '/create/{id:[0-9]+}', \App\Controllers\LessonController::class. ':create')->setName('lessons.create');
+        $this->map(['GET', 'POST'], '/create/', \App\Controllers\LessonController::class. ':create')->setName('lessons.create');
         $this->get('/delete/{id:[0-9]+}', \App\Controllers\LessonController::class. ':delete')->setName('lessons.delete');
         $this->map(['GET', 'POST'], '/edit/{id:[0-9]+}', \App\Controllers\LessonController::class. ':edit')->setName('lessons.edit');
     });

@@ -11,6 +11,21 @@
         <form class="form " role="form" name="update_lesson" action="{{ path_for('lessons.edit', {'id' : fields.lesson_id }) }}" novalidate="" method="POST" class="border">
             {{ csrf.field | raw }}
             <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Repository</label>
+                <div class="col-sm-6">
+                    <select  class="custom-select" name="repository">
+                        {% for repository in repositories %}
+
+                            {% if(fields.repository_id == repository.id) %}
+                                <option value="{{ repository.id }}" selected>{{ repository.name }}</option>
+                            {% else %}
+                                <option value="{{ repository.id }}">{{ repository.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Date</label>
                 <div class="input-group date col-sm-10" id="datetimepicker1" data-target-input="nearest">
                     <input type="text" class="form-control datetimepicker-input rounded-0{{ errors.datetime ? ' is-invalid' : '' }}" name="datetime" value="{{ fields.datetime|date('d-m-Y H:i') }}" data-target="#datetimepicker1"/>

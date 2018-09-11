@@ -18,6 +18,7 @@ class Lesson extends Model
         $columns = [
             self::$_table.'.id(lesson_id)',
             self::$_table.'.note',
+            self::$_table.'.repository_id',
             self::$_table.'.datetime',
             self::$_table.'.rating',
             self::$_table.'.user_id',
@@ -79,10 +80,11 @@ class Lesson extends Model
         );
     }
 
-    public static function update($lesson_id, $datetime, $note, $rating) {
+    public static function update($lesson_id, $repo_id, $datetime, $note, $rating) {
         $db = self::forge();
         return $db->update(self::$_table, [
             'datetime' => strtotime($datetime),
+            'repository_id' => $repo_id,
             'note' => strip_tags($note),
             'rating' => (int)$rating
         ], [
