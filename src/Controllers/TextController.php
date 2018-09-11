@@ -109,7 +109,9 @@ class TextController extends BaseController
 
                     $old = $text['text'];
                     $new = explode("\n", rtrim($request->getParam('text'), '+'));
-
+                    foreach ($new as $key => $t) {
+                        $new[$key] = str_replace(array("\n", "\r"), '', $t);
+                    }
                     $options = array(
                         'ignoreWhitespace' => false,
                         'ignoreCase' => false,
@@ -266,7 +268,6 @@ class TextController extends BaseController
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 $filename = Helper::moveUploadedFile($directory, $uploadedFile);
                 $url = $request->getUri()->getBaseUrl().'/uploads/'.$filename;
-                $this->logger->debug($url);
                 die(json_encode(['url' => $url]));
             }
         }

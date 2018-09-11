@@ -165,4 +165,21 @@ $(document).ready(function () {
             return false;
         }
     })
+
+    if($('#rating').length > 0) {
+        $('#rating').barrating({
+            theme: 'bars-1to10'
+        });
+    }
+    $('select[id^="disabled_rating_"]').barrating({
+        readonly:true,
+        theme: 'bars-1to10'
+    });
+
+    if($('#datetimepicker1').length > 0) {
+        $('#datetimepicker1').datetimepicker({
+            format: 'DD-MM-YYYY HH:mm',
+            pickSeconds: false
+        });
+    }
 });

@@ -1,13 +1,14 @@
 {% extends "layout.twig" %}
 {% block content %}
     {% include '_partials/greeting.twig' %}
-    
+
+    <p class="h1">My repos:</p>
     <div class="row">
         {% include '_partials/flash.twig' %}
 
                 {% if(repos) %}
                     {% for repository in repos %}
-                        {% include '_partials/repository/list-item.twig' %}
+                        {% include '_partials/homepage/list-item.twig' %}
                     {% endfor %}
                 {% else %}
                     <div class="alert alert-primary mt-3">

@@ -1,0 +1,55 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-offset-4 col-md-5">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <h1>{{ repo.name }}</h1>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ path_for('lessons.create', {'id' : repo.id}) }}" class="btn btn-success float-right"> Add lesson</a>
+        </div>
+    </div>
+    {%  if(lessons) %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>Notes</td>
+                <td>Date</td>
+                <td>Rating</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in lessons %}
+                <tr>
+                    <td>{{ lesson.note }}</td>
+                    <td>{{ lesson.datetime|date("d-m-Y H:i") }}</td>
+                    <td>
+                        <select id="disabled_rating_{{ loop.index }}" name="rating">
+                            {% for i in 0..10 %}
+                                {% if i == lesson.rating %}
+                                    <option value="{{ i }}" selected>{{ i }}</option>
+                                {% else %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        {{ lesson.id }}
+                        <a href="{{ path_for('lessons.delete', {'id' : lesson.lesson_id }) }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ path_for('lessons.edit', {'id' : lesson.lesson_id}) }}" class="btn btn-info">Edit</a>
+                    </td>
+
+                </tr>
+            {% endfor  %}
+        </tbody>
+    </table>
+    {% else %}
+        <span>There is no lessons in this repo</span>
+    {% endif  %}
+{% endblock %}

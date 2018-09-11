@@ -87,7 +87,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var text_view = [
                 {% for text in text.text %}
-                '{{ text }}',
+                '{{ text|raw }}',
                 {% endfor %}
             ].join('\n');
 

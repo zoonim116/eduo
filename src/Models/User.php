@@ -111,4 +111,14 @@ class User extends Model {
         $db = self::forge();
         return $db->delete(self::$_table, ['id' => $user_id])->rowCount();
     }
+
+    public static function get_all() {
+        $db = self::forge();
+        $columns = [
+            self::$_table.'.id',
+            self::$_table.'.firstname',
+            self::$_table.'.lastname',
+        ];
+        return $db->select(self::$_table, $columns);
+    }
 }

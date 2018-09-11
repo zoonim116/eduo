@@ -85,7 +85,7 @@
     <script>
         var content = [
                 {% for text in fields.text %}
-                    '{{ text }}',
+                    '{{ text|raw }}',
                 {% endfor %}
         ].join('\n');
     </script>

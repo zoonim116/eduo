@@ -28,6 +28,7 @@ $dotenv = new Dotenv(__DIR__ . '/../');
 $dotenv->load();
 
 
+
 // monolog
 $container['logger'] = function ($c) {
     $settings = $c->get('settings')['logger'];
@@ -85,6 +86,11 @@ $container['NotificationController'] = function ($c) {
     $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
     return new Controllers\NotificationController($view);
 };
+$container['LessonController'] = function ($c) {
+    $settings = $c->get('settings')['renderer'];
+    $view = new Twig($settings['template_path'], compact('$settings["cache"]'));
+    return new Controllers\LessonController($view);
+};
 
 $container['validator'] = function ($c) {
     return new Validator;
@@ -103,6 +109,10 @@ $container['auth'] = function ($c) {
     return new \App\Auth;
 };
 
+$container['instanceCache'] = function ($c) {
+    return CacheManager::getInstance('files');
+};
+
 $container['upload_directory'] = __DIR__ . '/../public/uploads';
 
 $app->add(new \App\Middleware\ValidationMiddleware($container));
@@ -116,6 +126,6 @@ if(!$container->request->isXhr()) {
     $app->add($container->csrf);
 }
 
-
+new \App\Helper($container);
 
 v::with('App\\Validation\\Rules');

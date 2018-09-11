@@ -16,46 +16,56 @@ $app->group('', function () {
 
 //For Authorized Only
 $app->group('', function () {
+    $this->group('/user', function () {
+        $this->get('/logout', \App\Controllers\UserController::class. ':logout')->setName('logout');
+        $this->get('/settings', \App\Controllers\UserController::class. ':settings')->setName('user.settings');
+        $this->get('/delete', \App\Controllers\UserController::class. ':delete')->setName('user.delete');
+        $this->post('/settings', \App\Controllers\UserController::class. ':settings');
+        $this->post('/watch', \App\Controllers\UserController::class. ':watch');
+        $this->post('/unwatch', \App\Controllers\UserController::class. ':unwatch');
+    });
+
+    $this->group('/repository', function () {
+        $this->map(['GET', 'POST'], '/create', \App\Controllers\RepositoryController::class. ':create')->setName('repository.create');
+        $this->get('/delete/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':delete')->setName('repository.delete');
+        $this->map(['GET', 'POST'] ,'/edit/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':edit')->setName('repository.edit');
+        $this->post('/watch', \App\Controllers\RepositoryController::class. ':watch');
+        $this->post('/unwatch', \App\Controllers\RepositoryController::class. ':unwatch');
+        $this->get('/texts/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':texts')->setName('repository.texts');
+        $this->map(['GET', 'POST'], '/my', \App\Controllers\RepositoryController::class. ':my')->setName('repository.my');
+    });
+
+    $this->group('/text', function () {
+        $this->map(['GET', 'POST'], '/create', \App\Controllers\TextController::class. ':create')->setName('text.create');
+        $this->get('/delete/{id:[0-9]+}', \App\Controllers\TextController::class. ':delete')->setName('text.delete');
+        $this->map(['GET', 'POST'], '/edit/{id:[0-9]+}', \App\Controllers\TextController::class. ':edit')->setName('text.edit');
+        $this->post('/highlight', \App\Controllers\TextController::class. ':highlight');
+        $this->post('/comment/{id:[0-9]+}', \App\Controllers\TextController::class. ':comment');
+        $this->post('/watch', \App\Controllers\TextController::class. ':watch');
+        $this->post('/unwatch', \App\Controllers\TextController::class. ':unwatch');
+        $this->post('/upload', \App\Controllers\TextController::class. ':upload');
+    });
+
+    $this->group('/lessons', function () {
+        $this->get('/view/{id:[0-9]+}', \App\Controllers\LessonController::class. ':view')->setName('lessons.view');
+        $this->map(['GET', 'POST'], '/create/{id:[0-9]+}', \App\Controllers\LessonController::class. ':create')->setName('lessons.create');
+        $this->get('/delete/{id:[0-9]+}', \App\Controllers\LessonController::class. ':delete')->setName('lessons.delete');
+        $this->map(['GET', 'POST'], '/edit/{id:[0-9]+}', \App\Controllers\LessonController::class. ':edit')->setName('lessons.edit');
+    });
+
     $this->get('/home/dashboard', \App\Controllers\HomeController::class. ':dashboard')->setName('dashboard');
-    $this->get('/user/logout', \App\Controllers\UserController::class. ':logout')->setName('logout');
-    $this->get('/user/settings', \App\Controllers\UserController::class. ':settings')->setName('user.settings');
-    $this->get('/user/delete', \App\Controllers\UserController::class. ':delete')->setName('user.delete');
-    $this->post('/user/settings', \App\Controllers\UserController::class. ':settings');
-    $this->get('/repository/my', \App\Controllers\RepositoryController::class. ':my')->setName('repository.my');
-    $this->post('/repository/my', \App\Controllers\RepositoryController::class. ':my');
 
-    $this->post('/user/watch', \App\Controllers\UserController::class. ':watch');
-    $this->post('/user/unwatch', \App\Controllers\UserController::class. ':unwatch');
-
-    $this->get('/repository/create', \App\Controllers\RepositoryController::class. ':create')->setName('repository.create');
-    $this->post('/repository/create', \App\Controllers\RepositoryController::class. ':create');
-    $this->get('/repository/delete/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':delete')->setName('repository.delete');
-    $this->get('/repository/edit/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':edit')->setName('repository.edit');
-    $this->post('/repository/watch', \App\Controllers\RepositoryController::class. ':watch');
-    $this->post('/repository/unwatch', \App\Controllers\RepositoryController::class. ':unwatch');
-
-    $this->get('/repository/texts/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':texts')->setName('repository.texts');
-    $this->post('/repository/edit/{id:[0-9]+}', \App\Controllers\RepositoryController::class. ':edit');
-    $this->get('/text/create', \App\Controllers\TextController::class. ':create')->setName('text.create');
-    $this->post('/text/create', \App\Controllers\TextController::class. ':create');
-    $this->get('/text/delete/{id:[0-9]+}', \App\Controllers\TextController::class. ':delete')->setName('text.delete');
-    $this->get('/text/edit/{id:[0-9]+}', \App\Controllers\TextController::class. ':edit')->setName('text.edit');
-    $this->post('/text/edit/{id:[0-9]+}', \App\Controllers\TextController::class. ':edit');
-    $this->post('/text/highlight', \App\Controllers\TextController::class. ':highlight');
-    $this->post('/text/comment/{id:[0-9]+}', \App\Controllers\TextController::class. ':comment');
-    $this->post('/text/watch', \App\Controllers\TextController::class. ':watch');
-    $this->post('/text/unwatch', \App\Controllers\TextController::class. ':unwatch');
-    $this->post('/text/upload', \App\Controllers\TextController::class. ':upload');
     $this->post('/wall/add', \App\Controllers\WallController::class. ':add')->setName('wall.add');
     $this->get('/wall/delete/{id:[0-9]+}', \App\Controllers\WallController::class. ':delete')->setName('wall.delete');
 
     $this->get('/notifications', \App\Controllers\NotificationController::class. ':index')->setName('notification.index');
+
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 
 // Both
-$app->get('/repository/all', \App\Controllers\RepositoryController::class. ':all')->setName('repository.all');
-$app->post('/repository/all', \App\Controllers\RepositoryController::class. ':all');
+
+$app->map(['GET', 'POST'], '/repository/all', \App\Controllers\RepositoryController::class. ':all')->setName('repository.all');
 $app->get('/text/view/{id:[0-9]+}', \App\Controllers\TextController::class. ':view')->setName('text.view');
 $app->get('/text/presentation/{id:[0-9]+}', \App\Controllers\TextController::class. ':presentation')->setName('text.presentation');
 $app->get('/search', \App\Controllers\TextController::class. ':search')->setName('text.search');
@@ -65,3 +75,4 @@ $app->get('/user/profile/{id:[0-9]+}', \App\Controllers\UserController::class.  
 $app->get('/categories/', \App\Controllers\HomeController::class. ':category_page')->setName('category.list');
 $app->get('/category/view/{id:[0-9]+}', \App\Controllers\HomeController::class. ':category_view')->setName('category.view');
 $app->post('/wall/parse_url/', \App\Controllers\WallController::class. ':parse_url')->setName('wall.parse_url');
+$app->get('/users/all', \App\Controllers\UserController::class. ':all')->setName('users.all');

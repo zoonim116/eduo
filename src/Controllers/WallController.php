@@ -47,9 +47,7 @@ class WallController extends BaseController
 
         if($request->getParam('url') && filter_var($request->getParam('url'), FILTER_VALIDATE_URL)) {
             $url = $request->getParam('url');
-            $instanceCache = CacheManager::getInstance('files');
-//            $instanceCache->clear();
-            $cached_url = $instanceCache->getItem(hash('md5', $url).'_metadata');
+            $cached_url = $this->instanceCache->getItem(hash('md5', $url).'_metadata');
             if(!$cached_url->isHit()) {
                 $host = parse_url($url, PHP_URL_HOST);
                 $tags = get_meta_tags($url);
@@ -62,7 +60,7 @@ class WallController extends BaseController
                     'img' => $img,
                     'host' => $host
                 ]))->expiresAfter(31622400);
-                $instanceCache->save($cached_url);
+                $this->instanceCache->save($cached_url);
             } else {
                 $data = unserialize($cached_url->get()) ;
                 extract($data);

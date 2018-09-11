@@ -48,4 +48,14 @@ class Auth
         return Helper::get_user_avatar($user_id, $size);
     }
 
+    public function is_teacher($user_id = false) {
+        if ($user_id) {
+            $user = User::find_by_id($user_id);
+            return $user['is_teacher'];
+        } else {
+            $user = User::find_by_id($_SESSION['user']);
+            return $user['is_teacher'];
+        }
+    }
+
 }

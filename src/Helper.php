@@ -8,6 +8,11 @@ use phpFastCache\Core\phpFastCache;
 
 class Helper
 {
+    public static $app;
+    public function __construct($app)
+    {
+        self::$app = $app;
+    }
     public static function time_elapsed_string($datetime, $full = false) {
 
         $now = new \DateTime();
@@ -134,13 +139,10 @@ class Helper
 
     public static function get_user_avatar($user_id, $size) {
         $user = User::find_by_id($user_id);
-        $instanceCache = CacheManager::getInstance('files');
+
         if($user['fb_access_token']) {
             $longLivedAccessToken = unserialize($user['fb_access_token']);
-            $cached_avatar = $instanceCache->getItem(hash('md5', $user['email']).'_avatar');
-//            echo "<pre>";
-//            die(var_dump($cached_avatar->isHit()));
-//            die(var_dump($cached_avatar->get()));
+            $cached_avatar = self::$app->instanceCache->getItem(hash('md5', $user['email']).'_avatar');
             if(!$cached_avatar->isHit()) {
                 $fb = new Facebook([
                     'app_id' => getenv('FACEBOOK_APP_ID'),
@@ -150,13 +152,13 @@ class Helper
                 $fbPictures = $fb->get('/me/picture?redirect=0&height='.$size, $longLivedAccessToken);
                 $picture = $fbPictures->getGraphUser();
                 $cached_avatar->set(serialize($picture))->expiresAfter(86400);
-                $instanceCache->save($cached_avatar);
+                self::$app->instanceCache->save($cached_avatar);
             } else {
                  $picture = unserialize($cached_avatar->get()) ;
             }
             return $picture['url'];
         } else {
-            return Helper::get_gravatar($user['email'], $size);
+            return self::get_gravatar($user['email'], $size);
         }
     }
 
@@ -180,5 +182,60 @@ class Helper
             return $request->getUri()->getBaseUrl().'/url-preview/'.sha1($url).'.jpg';
         }
 
+    }
+
+    public static function get_diff($old, $new) {
+        $old_count = count($old);
+        $new_count = count($new);
+        $html = "<table>";
+        $diff = [];
+        if($old_count == $new_count) {
+            // размер текста одинаковый, надо пройти построчно и сверить строки между собой
+            foreach ($new as $string_number => $string_value) {
+                $new_str_arr = str_split($new[$string_number]);
+                $old_str_arr = str_split($old[$string_number]);
+                if(count($new_str_arr) == count($old_str_arr)) {
+                    // строки по длине одинаковые, но надо проверить на замену символа
+                    $res = array_diff($new_str_arr, $old_str_arr);
+                    echo "<pre>";
+                    die(var_dump($res));
+
+                } elseif(count($new_str_arr) > count($old_str_arr)) {
+                    // в новую строку добавили символы
+                    $res = array_diff($new_str_arr, $old_str_arr);
+                    if(count($res) > 0) {
+                        $diff['old'][] = "{$old[$string_number]}" ;
+                        $diff['new'][] = str_replace(implode($res), "<ins>".implode($res)."</ins>", $new[$string_number]);
+                    }
+                } else {
+                    // из новой строки убрали симоволы
+                    $res = array_diff($old_str_arr, $new_str_arr);
+                    if(count($res) > 0) {
+                        $diff['old'][] = "{$old[$string_number]}" ;
+                        $diff['new'][] = str_replace(implode($res), "<del>".implode($res)."</del>", $old[$string_number]);
+                    }
+                }
+                $res = array_diff($new_str_arr, $old_str_arr);
+                echo "<pre>";
+                die(var_dump($res));
+
+            }
+        } elseif($old_count > $new_count) {
+            // из нового текста удаляли строки
+        } else {
+            // в новый текст добавили строки
+        }
+        foreach ($new as $key => $string) {
+            if($new[$key] === $old[$key]) {
+                // the same strings
+            } else {
+              if(isset($old[$key])) {
+
+              }
+            }
+        }
+//        var_dump(count($old));
+//        var_dump(count($new));
+//        die("Asd");
     }
 }

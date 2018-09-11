@@ -1,0 +1,56 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>New Lesson</h1>
+        </div>
+    </div>
+    <div class="col-md-8 offset-md-2">
+        {{ repo.id | raw }}
+        {% include '_partials/flash.twig' %}
+        <form class="form " role="form" name="create_lesson" action="{{ path_for('lessons.create', {'id' : repo_id}) }}" novalidate="" method="POST" class="border">
+            {{ csrf.field | raw }}
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Date</label>
+                <div class="input-group date col-sm-10" id="datetimepicker1" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input rounded-0{{ errors.datetime ? ' is-invalid' : '' }}" name="datetime" value="{{ fields.datetime }}" data-target="#datetimepicker1"/>
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    {% if errors.datetime %}
+                        <div class="invalid-feedback">
+                            {{ errors.datetime | first }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Rating</label>
+                <div class="col-sm-6">
+                    <select id="rating" name="rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="notes">Notes</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="notes" rows="4" name="notes" placeholder="Your notes here"></textarea>
+                </div>
+            </div>
+            <div class="clearfix">
+                <input type="submit" class="btn btn-success pull-right" value="Create">
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
