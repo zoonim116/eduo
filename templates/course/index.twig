@@ -1,0 +1,54 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-offset-4 col-md-5">
+            {% include '_partials/flash.twig' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <h1>{{ title }}</h1>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ path_for('course.create') }}" class="btn btn-success float-right"> Add course</a>
+        </div>
+    </div>
+    {%  if(courses) %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Date from</td>
+                <td>Date to</td>
+                <td># of lessons</td>
+                <td># of students</td>
+                <td>School</td>
+                <td>Repository</td>
+                <td>Note</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for course in courses %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ course.datetime_from|date("d-m-Y H:i") }}</td>
+                    <td>{{ course.datetime_to|date("d-m-Y H:i") }}</td>
+                    <td>{{ course.number_of_lessons }}</td>
+                    <td>{{ course.number_of_students }}</td>
+                    <td>{{ course.school.school_name }}</td>
+                    <td>{{ course.repository.repo_name }}</td>
+                    <td>{{ course.note }}</td>
+                    <td>
+                        <a href="{{ path_for('course.delete', {'id' : course.course_id}) }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ path_for('course.edit', {'id' : course.course_id}) }}" class="btn btn-info">Edit</a>
+                    </td>
+
+                </tr>
+            {% endfor  %}
+            </tbody>
+        </table>
+    {% else %}
+        <span>There is no courses</span>
+    {% endif  %}
+{% endblock %}

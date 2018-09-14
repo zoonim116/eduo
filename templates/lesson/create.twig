@@ -6,7 +6,6 @@
         </div>
     </div>
     <div class="col-md-8 offset-md-2">
-        {{ repo.id | raw }}
         {% include '_partials/flash.twig' %}
         <form class="form " role="form" name="create_lesson" action="{{ path_for('lessons.create', {'id' : repo_id}) }}" novalidate="" method="POST" class="border">
             {{ csrf.field | raw }}

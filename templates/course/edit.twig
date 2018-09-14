@@ -1,0 +1,119 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
+    <div class="col-md-6 offset-md-2">
+        {% include '_partials/flash.twig' %}
+        <form class="form " role="form" name="edit_course" action="{{ path_for('course.edit', {'id': fields.id }) }}" novalidate="" method="POST" class="border">
+            {{ csrf.field | raw }}
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Date From</label>
+                <div class="input-group date col-sm-9" id="date_from" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input {{ errors.datetime_from ? ' is-invalid' : '' }}" name="datetime_from" value="{{ fields.datetime_from|date("d-m-Y H:i") }}" data-target="#date_from"/>
+                    <div class="input-group-append" data-target="#date_from" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    {% if errors.datetime %}
+                        <div class="invalid-feedback">
+                            {{ errors.datetime_from | first }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Date To</label>
+                <div class="input-group date col-sm-9" id="date_to" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input {{ errors.datetime_to ? ' is-invalid' : '' }}" name="datetime_to" value="{{ fields.datetime_to|date("d-m-Y H:i") }}" data-target="#date_to"/>
+
+                    <div class="input-group-append" data-target="#date_to" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+
+                </div>
+                {% if errors.datetime %}
+                    <div class="invalid-feedback">
+                        {{ errors.datetime_to | first }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Lessons</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control {{ errors.lessons ? ' is-invalid' : '' }}" name="lessons" value="{{ fields.number_of_lessons }}" placeholder="Number of lessons">
+                    {% if errors.lessons %}
+                        <div class="invalid-feedback">
+                            {{ errors.lessons | first }}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Students</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control {{ errors.students ? ' is-invalid' : '' }}" name="students" value="{{ fields.number_of_students }}" placeholder="Number of students">
+                    {% if errors.students %}
+                        <div class="invalid-feedback">
+                            {{ errors.students | first }}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">School</label>
+                <div class="col-sm-9">
+                    <select  class="custom-select {{ errors.school ? ' is-invalid' : '' }}" name="school">
+                        <option value="">------ Select School ------</option>
+                        {% for school in schools %}
+                            {% if(school.id == fields.school_id) %}
+                                <option value="{{ school.id }}" selected>{{ school.name }}</option>
+                            {% else %}
+                                <option value="{{ school.id }}">{{ school.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% if errors.school %}
+                        <div class="invalid-feedback">
+                            {{ errors.school | first }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Repository</label>
+                <div class="col-sm-9">
+                    <select  class="custom-select {{ errors.repository ? ' is-invalid' : '' }}" name="repository">
+                        <option value="">------ Select Repository ------</option>
+                        {% for repository in repositories %}
+                            {% if(repository.id == fields.repository_id) %}
+                                <option value="{{ repository.id }}" selected>{{ repository.name }}</option>
+                            {% else %}
+                                <option value="{{ repository.id }}">{{ repository.name }}</option>
+                            {% endif %}
+
+                        {% endfor %}
+                    </select>
+                    {% if errors.repository %}
+                        <div class="invalid-feedback">
+                            {{ errors.repository | first }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="notes">Notes</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="notes" rows="4" name="notes" placeholder="Your notes here">{{ fields.note }}</textarea>
+                </div>
+            </div>
+            <div class="clearfix">
+                <input type="submit" class="btn btn-success pull-right" value="Update">
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-
-use App\Auth;
-
 class Repository extends Model
 {
     private static $_table = 'repositories';

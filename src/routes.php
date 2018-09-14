@@ -60,6 +60,13 @@ $app->group('', function () {
 
     $this->get('/notifications', \App\Controllers\NotificationController::class. ':index')->setName('notification.index');
 
+    $this->group('/courses', function () {
+        $this->map(['GET', 'POST'], '/create/', \App\Controllers\CourseController::class. ':create')->setName('course.create');
+        $this->get('/delete/{id:[0-9]+}', \App\Controllers\CourseController::class.':delete')->setName('course.delete');
+        $this->map(['GET', 'POST'], '/edit/{id:[0-9]+}', \App\Controllers\CourseController::class.':edit')->setName('course.edit');
+        $this->get('/all/', \App\Controllers\CourseController::class.':index')->setName('course.all');
+    });
+
 })->add(new \App\Middleware\IsAuthMiddleware($container));
 
 

@@ -182,4 +182,18 @@ $(document).ready(function () {
             pickSeconds: false
         });
     }
+
+    $('#date_from').datetimepicker({
+        format: 'DD-MM-YYYY HH:mm',
+    });
+    $('#date_to').datetimepicker({
+        format: 'DD-MM-YYYY HH:mm',
+        useCurrent: false
+    });
+    $("#date_from").on("change.datetimepicker", function (e) {
+        $('#date_to').datetimepicker('minDate', e.date);
+    });
+    $("#date_to").on("change.datetimepicker", function (e) {
+        $('#date_from').datetimepicker('maxDate', e.date);
+    });
 });
