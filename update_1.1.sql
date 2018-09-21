@@ -4,4 +4,6 @@ CREATE TABLE `lessons` ( `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT , `reposit
 
 CREATE TABLE `schools` ( `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
-CREATE TABLE `edoo`.`courses` ( `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT , `datetime_from` INT NOT NULL , `datetime_to` INT NOT NULL , `number_of_lessons` TINYINT NOT NULL , `number_of_students` TINYINT NOT NULL , `school_id` BIGINT UNSIGNED NOT NULL , `repository_id` BIGINT UNSIGNED NOT NULL , `note` TEXT NOT NULL , `user_id` BIGINT UNSIGNED NOT NULL, `created_at` INT UNSIGNED NOT NULL  , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `courses` ( `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT , `datetime_from` INT NOT NULL , `datetime_to` INT NOT NULL , `number_of_lessons` TINYINT NOT NULL , `number_of_students` TINYINT NOT NULL , `school_id` BIGINT UNSIGNED NOT NULL , `repository_id` BIGINT UNSIGNED NOT NULL , `note` TEXT NOT NULL , `user_id` BIGINT UNSIGNED NOT NULL, `created_at` INT UNSIGNED NOT NULL  , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `notifications` ADD `is_seen` TINYINT(1) NOT NULL DEFAULT '0' AFTER `text`;
